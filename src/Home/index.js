@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getListByPage  } from '../Service/topologyService';
-import { Pagination, Col, Row, Card, Avatar, Icon, Spin } from 'antd';
+import { Pagination, Col, Row, Card, Avatar, Icon, Spin, message } from 'antd';
 const { Meta } = Card;
 const colorList = ['#f56a00', '#7265e6', '#ffbf00', '#00a2ae', '#f56a00'];
 const Home = ({ history }) => {
@@ -16,11 +16,17 @@ const Home = ({ history }) => {
   useEffect(() => {
 
     async function loadData() {
-      await setLoading(true);
-      const data =  await getListByPage(currentPageIndex);
-      setList(data.list);
-      setTotal(data.count);
-      await setLoading(false);
+      try {
+        await setLoading(true);
+        const data =  await getListByPage(currentPageIndex);
+        setList(data.list);
+        setTotal(data.count);
+        message.success('加载成功!');
+      } catch (error) {
+        message.error('加载失败!');
+      } finally {
+        await setLoading(false);
+      }
     }
 
     loadData()

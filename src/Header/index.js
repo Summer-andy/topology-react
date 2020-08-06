@@ -1,12 +1,20 @@
-import React from 'react';
+import React,  { useContext } from 'react';
 import { Menu, Icon } from 'antd';
+import { Context } from '../index';
 import './index.css';
 
 const { SubMenu } = Menu;
 const Header = () => {
+
+  const { dispatch } = useContext(Context);
+
+  const onHandleSelect = data => {
+    dispatch({ type: 'addNode', data: data.key });
+  }
+
   return (
-    <div>
-      <Menu mode="horizontal">
+    <div style={{ height: 48, width: '100vw', borderBottom: '1px solid #e8e8e8' }}>
+      <Menu mode="horizontal" style={{ width: 500, float: 'left' }} onSelect={onHandleSelect}>
         <SubMenu
           title={
             <span className="submenu-title-wrapper">
@@ -15,7 +23,7 @@ const Header = () => {
             </span>
           }
         >
-          <Menu.Item key="setting:1">新建文件</Menu.Item>
+          <Menu.Item key="create_new">新建文件</Menu.Item>
           <Menu.Item key="setting:2">打开本地文件</Menu.Item>
           <Menu.Item key="setting:3">保存到本地</Menu.Item>
           <Menu.Item key="setting:4">保存为PNG</Menu.Item>
@@ -58,10 +66,10 @@ const Header = () => {
             </span>
           }
         >
-          <Menu.Item key="setting:11">在线官网</Menu.Item>
-          <Menu.Item key="setting:12">许可与申明</Menu.Item>
-          <Menu.Item key="setting:13">资助与加入</Menu.Item>
-          <Menu.Item key="setting:14">关于</Menu.Item>
+          <Menu.Item key="setting:14">在线官网</Menu.Item>
+          <Menu.Item key="setting:15">许可与申明</Menu.Item>
+          <Menu.Item key="setting:16">资助与加入</Menu.Item>
+          <Menu.Item key="setting:17">关于</Menu.Item>
         </SubMenu>
 
       </Menu>

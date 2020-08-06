@@ -49,9 +49,9 @@ const CanvasProps = ({ data, form: { getFieldDecorator }, form, onFormValueChang
 
   return (
     <div>
-      <div className="title">位置和大小</div>
+      
       {
-        data.node ? renderForm : ''
+        data.node ? <><div className="title">位置和大小</div>{renderForm}</> : ''
       }
     </div>
   );

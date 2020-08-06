@@ -80,14 +80,32 @@ import {
 import './index.css'
 import { getNodeById } from '../Service/topologyService'
 import CanvasProps from './component/canvasProps';
-import { useEffect } from 'react';
+import { useEffect, useContext } from 'react';
 import { useState } from 'react';
-
+import { Context } from '../index';
 let canvas;
 
 const Layout = ({ history }) => {
   
   const [selected, setSelected] = useState({});
+
+  const { state } = useContext(Context);
+
+
+  /**
+  * 处理顶部栏的操作
+  */
+
+  useEffect(() => {
+    switch (state.eventKey) {
+      case 'create_new':
+        canvas.open({ nodes: [], lines: [] });
+        break;
+    
+      default:
+        break;
+    }
+  }, [state.eventKey])
 
   
   useEffect(() => {
