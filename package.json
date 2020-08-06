@@ -12,10 +12,11 @@
     "@topology/core": "^0.2.26",
     "@topology/flow-diagram": "^0.2.24",
     "@topology/sequence-diagram": "^0.2.24",
-    "antd": "^4.5.1",
+    "antd": "3.26.7",
     "axios": "^0.19.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1"
   },
   "scripts": {
@@ -38,5 +39,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "http-proxy-middleware": "^1.0.5"
   }
 }

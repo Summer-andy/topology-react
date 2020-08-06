@@ -2,12 +2,17 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import Layout from './Layout';
+import Header from './Header';
+import Home from './Home';
 import * as serviceWorker from './serviceWorker';
+import {  Route, BrowserRouter } from 'react-router-dom';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Layout />
-  </React.StrictMode>,
+  <BrowserRouter>
+    <Header />
+    <Route exact path="/" component={Home} />
+    <Route exact path="/workspace" component={Layout} />
+  </BrowserRouter>,
   document.getElementById('root')
 );
 

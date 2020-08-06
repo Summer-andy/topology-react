@@ -40,7 +40,7 @@ import {
   flowCommentAnchors
 } from '@topology/flow-diagram';
 
-import { 
+import {
   activityFinal,
   activityFinalIconRect,
   activityFinalTextRect,
@@ -55,34 +55,60 @@ import {
   forkIconRect,
   forkTextRect,
   forkVAnchors
- } from '@topology/activity-diagram';
+} from '@topology/activity-diagram';
 
- import { 
+import {
   simpleClass,
   simpleClassIconRect,
   simpleClassTextRect,
   interfaceClass,
   interfaceClassIconRect,
   interfaceClassTextRect
-  } from '@topology/class-diagram';
+} from '@topology/class-diagram';
 
-  import { 
-    lifeline,
-    lifelineAnchors,
-    lifelineIconRect,
-    lifelineTextRect,
-    sequenceFocus,
-    sequenceFocusAnchors,
-    sequenceFocusIconRect,
-    sequenceFocusTextRect
-   } from '@topology/sequence-diagram';
+import {
+  lifeline,
+  lifelineAnchors,
+  lifelineIconRect,
+  lifelineTextRect,
+  sequenceFocus,
+  sequenceFocusAnchors,
+  sequenceFocusIconRect,
+  sequenceFocusTextRect
+} from '@topology/sequence-diagram';
 
 import './index.css'
+import { getNodeById } from '../Service/topologyService'
+import CanvasProps from './component/canvasProps';
 import { useEffect } from 'react';
+import { useState } from 'react';
 
 let canvas;
 
-const Layout = () => {
+const Layout = ({ history }) => {
+  
+  const [selected, setSelected] = useState({});
+
+  
+  useEffect(() => {
+    const canvasOptions = {
+      rotateCursor: '/rotate.cur'
+    };
+    canvasOptions.on = onMessage;
+    canvasRegister();
+    canvas = new Topology('topology-canvas', canvasOptions);
+    if(history.location?.state?.id) {
+      async function getNodeData() {
+        const data = await getNodeById(history.location.state.id);
+        canvas.open(data.data)
+      }
+      getNodeData();
+    }
+  }, [history]);
+
+  /**
+  * 注册图形库
+  */
 
   const canvasRegister = () => {
     registerNode('flowData', flowData, flowDataAnchors, flowDataIconRect, flowDataTextRect);
@@ -125,45 +151,81 @@ const Layout = () => {
     registerNode('sequenceFocus', sequenceFocus, sequenceFocusAnchors, sequenceFocusIconRect, sequenceFocusTextRect);
   }
 
-  useEffect(() => {  
-    const canvasOptions = {
-      rotateCursor: '/rotate.cur'
-    };
-    canvasRegister();
-    canvas = new Topology('topology-canvas', canvasOptions);
-  }, []);
+  /**
+  * 监听画布上元素的事件
+  * @params {string} event - 事件名称
+  * @params {object} data - 节点数据
+  */
+
+  const onMessage = (event, data) => {
+    switch (event) {
+      case 'node':
+      case 'addNode':
+        setSelected({
+          node: data,
+          line: null,
+          multi: false,
+          nodes: null,
+          locked: data.locked
+        });
+        break;
+    
+      default:
+        break;
+    }
+  }
 
   const onDrag = (event, node) => {
     event.dataTransfer.setData('Text', JSON.stringify(node.data));
   }
 
-  const handleClick = () => {
-    console.log(canvas.data);
+  /**
+  * 当表单数据变化时, 重新渲染canvas
+  * @params {object} value - 图形的宽度,高度,长度,宽度
+  */
+
+  const onHandleFormValueChange = value => {
+    const changedValues = { node: { rect: value  } }
+    if (changedValues.node) {
+      // 遍历查找修改的属性，赋值给原始Node
+      for (const key in changedValues.node) {
+        if (Array.isArray(changedValues.node[key])) {
+        } else if (typeof changedValues.node[key] === 'object') {
+          for (const k in changedValues.node[key]) {
+            selected.node[key][k] = changedValues.node[key][k];
+          }
+        } else {
+          selected.node[key] = changedValues.node[key];
+        }
+      }
+    }
+    canvas.updateProps(selected.node);
   }
 
   return (
     <div className="page">
-        <div className="tool">
-            {
-              Tools.map((item, index) => <div key={index}>
-                  <div className="title">{item.group}</div>
-                  <div className="button">
-                    {
-                     item.children.map((item, idx) => {
-                       return  (<a key={idx} title={item.name} draggable href="#" onDragStart={ev => onDrag(ev, item)}>
-                       <i className={'iconfont ' + item.icon} style={{ fontSize: 13 }}>
-                       </i>
-                     </a>)
-                     }) 
-                    }
-                  </div>
-              </div>)
-            }
-        </div>
-        <div id="topology-canvas" className="full" />
-        <div className="props">
-          <button onClick={handleClick}>点击</button>
-        </div>
+      <div className="tool">
+        {
+          Tools.map((item, index) => <div key={index}>
+            <div className="title">{item.group}</div>
+            <div className="button">
+              {
+                item.children.map((item, idx) => {
+                  // eslint-disable-next-line jsx-a11y/anchor-is-valid
+                  return (<a key={idx} title={item.name} draggable href="#" onDragStart={ev => onDrag(ev, item)}>
+                    <i className={'iconfont ' + item.icon} style={{ fontSize: 13 }}>
+                    </i>
+                  </a>)
+                })
+              }
+            </div>
+          </div>)
+        }
+      </div>
+      <div id="topology-canvas" className="full" />
+      <div className="props">
+        <CanvasProps data={selected} onFormValueChange={onHandleFormValueChange} />
+      </div>
     </div>
   );
 };
