@@ -1,0 +1,63 @@
+.page {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  background: red;
+}
+
+.page .tool {
+  flex-shrink: 0;
+  width: 250px;
+  background-color: #f8f8f8;
+  border-right: 1px solid #d9d9d9;
+  overflow-y: auto;
+}
+
+.page .tool .title {
+  color: #0d1a26;
+  font-weight: 600;
+  font-size: 12x;
+  padding: 10px 10px;
+  margin-top: 0.08rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.page .tool .title:first-child {
+  border-top: none;
+}
+
+.page .tool .button {
+  padding: 10px 0;
+}
+
+.page .tool .button a {
+    display: inline-block;
+    color: #333;
+    line-height: 1;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    text-decoration: none !important;
+}
+
+.page .tool .button a .iconfont {
+  font-size: 20px !important;
+}
+
+.page .full {
+  flex: 1;
+  width: initial;
+  position: relative;
+  overflow: auto;
+  background: #fff;
+}
+
+.page .props {
+  flex-shrink: 0;
+  width: 250px;
+  padding: 0.1rem 0;
+  background-color: #f8f8f8;
+  border-left: 1px solid #d9d9d9;
+  overflow-y: auto;
+  position: relative;
+}
