@@ -183,7 +183,7 @@ const Layout = ({ history }) => {
           } catch (e) {
             return false;
           } finally {
-            
+
           }
         };
         reader.readAsText(elem.files[0]);
@@ -309,7 +309,9 @@ const Layout = ({ history }) => {
   */
 
   const onHandleFormValueChange = value => {
-    const changedValues = { node: { rect: value } }
+    const { rotate, ...other } = value;
+    const changedValues = { node: { rect: other, rotate } }
+    console.log(changedValues);
     if (changedValues.node) {
       // 遍历查找修改的属性，赋值给原始Node
       for (const key in changedValues.node) {
@@ -346,7 +348,30 @@ const Layout = ({ history }) => {
           </div>)
         }
       </div>
-      <div id="topology-canvas" className="full" />
+      <div className="full" >
+        <svg
+          width="100%"
+          height="100%"
+          style={{
+            background: '#fff',
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            top: 0,
+            bottom: 0
+          }}
+          xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
+              <path d="M 10 0 L 0 0 0 10" fill="none" stroke="#f3f3f3" strokeWidth="1" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#grid)" >
+
+          </rect>
+        </svg>
+        <div id="topology-canvas" style={{ height: '100%', width: '100%' }} />
+      </div>
       <div className="props">
         <CanvasProps data={selected} onFormValueChange={onHandleFormValueChange} />
       </div>

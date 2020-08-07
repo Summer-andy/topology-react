@@ -1,4 +1,4 @@
-import React,  { useContext } from 'react';
+import React, { useContext } from 'react';
 import { Menu, Icon } from 'antd';
 import { Context } from '../index';
 import './index.css';
@@ -55,24 +55,11 @@ const Header = () => {
             </span>
           }
         >
-          <Menu.Item key="setting:11">咨询与建议</Menu.Item>
-          <Menu.Item key="setting:12">开源github</Menu.Item>
-          <Menu.Item key="setting:13">开发文档</Menu.Item>
+          <Menu.Item key="issues"><a href="https://github.com/Summer-andy/topology-react/issues" rel="noopener noreferrer" target="_blank">咨询与建议</a></Menu.Item>
+          <Menu.Item key="github"><a href="https://github.com/Summer-andy/topology-react/" rel="noopener noreferrer" target="_blank">开源github</a></Menu.Item>
+          <Menu.Item key="docs"> <a href="https://www.yuque.com/alsmile/topology/installation" rel="noopener noreferrer" target="_blank">开发文档</a></Menu.Item>
         </SubMenu>
 
-        <SubMenu
-          title={
-            <span className="submenu-title-wrapper">
-              <Icon type="question-circle" />
-              帮助
-            </span>
-          }
-        >
-          <Menu.Item key="setting:14">在线官网</Menu.Item>
-          <Menu.Item key="setting:15">许可与申明</Menu.Item>
-          <Menu.Item key="setting:16">资助与加入</Menu.Item>
-          <Menu.Item key="setting:17">关于</Menu.Item>
-        </SubMenu>
 
       </Menu>
     </div>
