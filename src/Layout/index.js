@@ -76,38 +76,31 @@ import {
   sequenceFocusIconRect,
   sequenceFocusTextRect
 } from '@topology/sequence-diagram';
-
-import './index.css'
+import * as FileSaver from 'file-saver';
 import { getNodeById } from '../Service/topologyService'
 import CanvasProps from './component/canvasProps';
 import { useEffect, useContext } from 'react';
 import { useState } from 'react';
 import { Context } from '../index';
+import './index.css'
+import { useCallback } from 'react';
 let canvas;
 
 const Layout = ({ history }) => {
-  
+
   const [selected, setSelected] = useState({});
 
-  const { state } = useContext(Context);
+  const { state, dispatch } = useContext(Context);
 
-
-  /**
-  * 处理顶部栏的操作
-  */
+  const clearEventKey = useCallback(() => {
+    dispatch({ type: 'addNode', data: '' });
+  }, []);
 
   useEffect(() => {
-    switch (state.eventKey) {
-      case 'create_new':
-        canvas.open({ nodes: [], lines: [] });
-        break;
-    
-      default:
-        break;
-    }
-  }, [state.eventKey])
+    window.addEventListener("popstate", () => clearEventKey());
+    window.removeEventListener('popstate', () => clearEventKey());
+  }, [clearEventKey]);
 
-  
   useEffect(() => {
     const canvasOptions = {
       rotateCursor: '/rotate.cur'
@@ -115,7 +108,7 @@ const Layout = ({ history }) => {
     canvasOptions.on = onMessage;
     canvasRegister();
     canvas = new Topology('topology-canvas', canvasOptions);
-    if(history.location?.state?.id) {
+    if (history.location?.state?.id) {
       async function getNodeData() {
         const data = await getNodeById(history.location.state.id);
         canvas.open(data.data)
@@ -123,6 +116,119 @@ const Layout = ({ history }) => {
       getNodeData();
     }
   }, [history]);
+
+
+  /**
+  * 处理顶部栏的操作
+  */
+
+  useEffect(() => {
+    clearEventKey();
+    switch (state.eventKey) {
+      case 'create_new':
+        canvas.open({ nodes: [], lines: [] });
+        break;
+      case 'import_json':
+        onHandleImportJson();
+        break;
+      case 'save_json':
+        FileSaver.saveAs(
+          new Blob([JSON.stringify(canvas.data)], { type: 'text/plain;charset=utf-8' }),
+          `le5le.topology.json`
+        );
+        break;
+      case 'save_png':
+        canvas.saveAsImage('le5le.topology.png');
+        break;
+      case 'save_svg':
+        onHandleSaveToSvg();
+        break;
+      case 'undo':
+        canvas.undo();
+        break;
+      case 'redo':
+        canvas.redo();
+        break;
+      case 'copy':
+        canvas.copy();
+        break;
+      case 'cut':
+        canvas.cut();
+        break;
+      case 'paste':
+        canvas.paste();
+        break;
+      default:
+        break;
+    }
+  }, [state.eventKey])
+
+
+  /**
+  * 导入json文件
+  */
+
+  const onHandleImportJson = () => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.onchange = event => {
+      const elem = event.srcElement || event.target;
+      if (elem.files && elem.files[0]) {
+        const reader = new FileReader();
+        reader.onload = e => {
+          const text = e.target.result + '';
+          try {
+            const data = JSON.parse(text);
+            canvas.open(data);
+          } catch (e) {
+            return false;
+          } finally {
+            
+          }
+        };
+        reader.readAsText(elem.files[0]);
+      }
+    };
+    dispatch({ type: 'addNode', data: '' });
+    input.click();
+  }
+
+  /**
+  * 保存为svg
+  */
+
+  const onHandleSaveToSvg = () => {
+    const C2S = window.C2S;
+    const ctx = new C2S(canvas.canvas.width + 200, canvas.canvas.height + 200);
+    if (canvas.data.pens) {
+      for (const item of canvas.data.pens) {
+        item.render(ctx);
+      }
+    }
+    let mySerializedSVG = ctx.getSerializedSvg();
+    mySerializedSVG = mySerializedSVG.replace(
+      '<defs/>',
+      `<defs>
+      <style type="text/css">
+        @font-face {
+          font-family: 'topology';
+          src: url('http://at.alicdn.com/t/font_1331132_h688rvffmbc.ttf?t=1569311680797') format('truetype');
+        }
+      </style>
+    </defs>`
+    );
+    mySerializedSVG = mySerializedSVG.replace(/--le5le--/g, '&#x');
+    const urlObject = window.URL || window;
+    const export_blob = new Blob([mySerializedSVG]);
+    const url = urlObject.createObjectURL(export_blob);
+    const a = document.createElement('a');
+    a.setAttribute('download', 'le5le.topology.svg');
+    a.setAttribute('href', url);
+    const evt = document.createEvent('MouseEvents');
+    evt.initEvent('click', true, true);
+    a.dispatchEvent(evt);
+  }
+
 
   /**
   * 注册图形库
@@ -187,7 +293,7 @@ const Layout = ({ history }) => {
           locked: data.locked
         });
         break;
-    
+
       default:
         break;
     }
@@ -203,7 +309,7 @@ const Layout = ({ history }) => {
   */
 
   const onHandleFormValueChange = value => {
-    const changedValues = { node: { rect: value  } }
+    const changedValues = { node: { rect: value } }
     if (changedValues.node) {
       // 遍历查找修改的属性，赋值给原始Node
       for (const key in changedValues.node) {

@@ -14,7 +14,7 @@ const Header = () => {
 
   return (
     <div style={{ height: 48, width: '100vw', borderBottom: '1px solid #e8e8e8' }}>
-      <Menu mode="horizontal" style={{ width: 500, float: 'left' }} onSelect={onHandleSelect}>
+      <Menu mode="horizontal" style={{ width: 500, float: 'left' }} onClick={onHandleSelect}>
         <SubMenu
           title={
             <span className="submenu-title-wrapper">
@@ -24,10 +24,11 @@ const Header = () => {
           }
         >
           <Menu.Item key="create_new">新建文件</Menu.Item>
-          <Menu.Item key="setting:2">打开本地文件</Menu.Item>
-          <Menu.Item key="setting:3">保存到本地</Menu.Item>
-          <Menu.Item key="setting:4">保存为PNG</Menu.Item>
-          <Menu.Item key="setting:5">保存为SVG</Menu.Item>
+          <Menu.Item key="import_json">打开本地文件</Menu.Item>
+          <Menu.Divider>{}</Menu.Divider>
+          <Menu.Item key="save_json">保存到本地</Menu.Item>
+          <Menu.Item key="save_png">保存为PNG</Menu.Item>
+          <Menu.Item key="save_svg">保存为SVG</Menu.Item>
         </SubMenu>
 
         <SubMenu
@@ -38,11 +39,12 @@ const Header = () => {
             </span>
           }
         >
-          <Menu.Item key="setting:6">撤销</Menu.Item>
-          <Menu.Item key="setting:7">恢复</Menu.Item>
-          <Menu.Item key="setting:8">复制</Menu.Item>
-          <Menu.Item key="setting:9">剪切</Menu.Item>
-          <Menu.Item key="setting:10">粘贴</Menu.Item>
+          <Menu.Item key="undo">撤销</Menu.Item>
+          <Menu.Item key="redo">恢复</Menu.Item>
+          <Menu.Divider>{}</Menu.Divider>
+          <Menu.Item key="copy">复制</Menu.Item>
+          <Menu.Item key="cut">剪切</Menu.Item>
+          <Menu.Item key="paste">粘贴</Menu.Item>
         </SubMenu>
 
         <SubMenu
