@@ -94,7 +94,7 @@ const Layout = ({ history }) => {
 
   const clearEventKey = useCallback(() => {
     dispatch({ type: 'addNode', data: '' });
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     window.addEventListener("popstate", () => clearEventKey());
@@ -161,6 +161,7 @@ const Layout = ({ history }) => {
       default:
         break;
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.eventKey])
 
 

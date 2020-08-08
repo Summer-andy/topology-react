@@ -19,6 +19,7 @@ const CanvasProps = ({ data, form: { getFieldDecorator }, form, onFormValueChang
       onFormValueChange(value);
       form.resetFields();
     })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form.getFieldValue('x'), form.getFieldValue('y'), form.getFieldValue('width'), form.getFieldValue('height'), form.getFieldValue('rotate')])
 
   const renderForm = useMemo(() => {
@@ -51,6 +52,7 @@ const CanvasProps = ({ data, form: { getFieldDecorator }, form, onFormValueChang
         })(<InputNumber />)}
       </Form.Item>
     </Form>
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [x, y, width, height, rotate, form]);
 
   return (
