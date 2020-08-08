@@ -1,68 +1,61 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## topology-react
 
-## Available Scripts
+### 什么是topology?
 
-In the project directory, you can run:
+   [topology](https://www.yuque.com/alsmile/topology/about)是一款开源的基于canvas+typescript的绘图引擎，可用于实现软件架构图、微服务部署结构图、流程图、活动图、类图、时序图、SCADA等;我们也可以按照自己的想法实现任何我们想要的图形库.
 
-### `yarn start`
+### 为什么要有topology-react？
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+   topology-react是一个零侵入式(指的是数据层)的基于topology编写的exmaple, 它可以很方便地集成到其他react项目中。
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+### 💡技术栈(主要)
 
-### `yarn test`
+  - react 16.13.1
+  - antd 3.26.7
+  - react-router-dom 5.2.0
+  - @topology/activity-diagram  0.2.24
+  - @topology/chart-diagram  0.2.24
+  - @topology/class-diagram  0.2.24
+  - @topology/core 0.2.26
+  - @topology/flow-diagram  0.2.24
+  - @topology/sequence-diagram  0.2.24
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 🎉  愿景
 
-### `yarn build`
+  1. 基于topology完成react版本的最佳实践。
+  2. topology-react能够很简单的与其他系统完成融合。
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 🏷️ 开发进程
+  - [ ] 丰富画布右侧元素属性区域的外观属性(位置大小边距, 边框样式, 字体样式)
+  - [ ] 显示画布元素的数据属性(比如Id)
+  - [ ] 顶部新增预览功能
+  - [ ] 顶部新增锁定功能
+  - [ ] 顶部新增连线方式功能
+  - [ ] 顶部新增预览功能
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 🤝 提交规范
 
-### `yarn eject`
+- perf: 优化相关，比如提升性能、体验
+- feat: 新功能(feature)
+- fix: 修补 bug
+- docs: 文档(documentation)
+- style: 格式(不影响代码运行的变动)
+- refactor: 重构(即不是新增功能，也不是修改 bug 的代码变动)
+- test: 增加测试
+- chore: 构建过程或辅助工具的变动
+- upgrade: 第三方库升级
+- revert: 回滚
+- scope: commit 影响的范围, 比如: route, component, utils, build...
+- merge: Merge branch ? of ?.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### ❤️ 分支管理
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- 模块功能开发(feature/xxx)
+- Bug 修改(bug/xxx)
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### 🚨 其他注意事项
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+ - 项目合并到master会自动发布。如果代码有warning将会发布失败。
+ - 项目不允许使用redux或者其他的数据流方案, 可以使用useReducer。
