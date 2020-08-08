@@ -1,0 +1,38 @@
+name: deploy to aliyun
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # 切换分支
+      - name: Checkout
+        uses: actions/checkout@master
+      # 下载 git submodule
+      - uses: srt32/git-actions@v0.0.3
+        with:
+          args: git submodule update --init --recursive
+      # 使用 node:10
+      - name: use Node.js 10
+        uses: actions/setup-node@v1
+        with:
+          node-version: 10
+      # npm install
+      - name: npm install and build
+        run: |
+          npm install
+          npm run build
+        env:
+          CI: true
+      # Deploy
+      - name: Deploy aliyun
+        uses: easingthemes/ssh-deploy@v2.0.8
+        env:
+         SSH_PRIVATE_KEY: ${{ secrets.ACCESS_TOKEN }}
+         REMOTE_HOST: "139.196.82.33"
+         REMOTE_USER: "root"
+         SOURCE: "/build"
+         TARGET: "/webSrc2"
+         ARGS: '-avzr --delete'
