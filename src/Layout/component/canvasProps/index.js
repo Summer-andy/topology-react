@@ -65,8 +65,7 @@ const CanvasProps = ({ data, form: { getFieldDecorator }, form, onFormValueChang
         </Col>
       </Row>
     </Form>
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [x, y, width, height, rotate, form]);
+  }, [x, y, width, height, rotate, getFieldDecorator]);
 
   /**
   * 渲染样式的表单
@@ -105,7 +104,7 @@ const CanvasProps = ({ data, form: { getFieldDecorator }, form, onFormValueChang
         </Col>
       </Row>
     </Form>
-  }, [lineWidth, strokeStyle, dash, form]);
+  }, [lineWidth, strokeStyle, dash, getFieldDecorator]);
 
   /**
   * 渲染字体的表单
@@ -142,7 +141,7 @@ const CanvasProps = ({ data, form: { getFieldDecorator }, form, onFormValueChang
         </Form.Item>
       </Col>
     </Form>
-  }, [color, fontFamily, fontSize, text, form])
+  }, [color, fontFamily, fontSize, text, getFieldDecorator])
 
   /**
   * 渲染元素数据
@@ -160,7 +159,7 @@ const CanvasProps = ({ data, form: { getFieldDecorator }, form, onFormValueChang
         </Form.Item>
       </Col>
     </Form>
-  }, [id, form])
+  }, [id])
 
   return (
     <div className="rightArea">
