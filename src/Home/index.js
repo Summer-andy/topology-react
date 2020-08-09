@@ -1,6 +1,7 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useContext } from 'react';
 import { getListByPage } from '../Service/topologyService';
 import { Pagination, Col, Row, Card, Avatar, Icon, Spin, message } from 'antd';
+import { Context } from '../index';
 const { Meta } = Card;
 const colorList = ['#f56a00', '#7265e6', '#ffbf00', '#00a2ae', '#f56a00'];
 
@@ -13,6 +14,20 @@ const Home = ({ history }) => {
   const [total, setTotal] = useState(0);
 
   const [loading, setLoading] = useState(false);
+
+
+  const { state } = useContext(Context);
+
+  useEffect(() => {
+    switch (state.eventKey) {
+      case 'create_new':
+        history.push('/workspace')
+        break;
+      default:
+        break;
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.eventKey])
 
   useEffect(() => {
     async function loadData() {

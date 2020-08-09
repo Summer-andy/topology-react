@@ -1,7 +1,8 @@
-.title {
-  color: #0d1a26;
-  font-weight: 600;
-  padding: 10px 10px;
-  margin-bottom: 10px;
-  border-bottom: 1px solid #ccc;
+
+.rightArea .ant-tabs-nav .ant-tabs-tab {
+  margin: 0;
+}
+
+.rightArea .ant-tabs-bar {
+  margin: 0;
 }
