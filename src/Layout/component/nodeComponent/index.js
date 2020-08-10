@@ -8,14 +8,14 @@ const { TextArea } = Input;
 const CanvasProps = ({ data, form: { getFieldDecorator }, form, onFormValueChange }) => {
 
   const { x, y, width, height } = data?.node?.rect || {};
-  const { rotate, lineWidth, strokeStyle, dash, text, id } = data?.node || {};
+  const { rotate, lineWidth, strokeStyle, dash, text, id, extraFields } = data?.node || {};
   const { color, fontSize, fontFamily } = data?.node?.font || {};
 
   useEffect(() => {
     form.validateFields((err, value) => {
       if (err) return;
       if (Object.keys(data).length === 0) return;
-      if (value.x === x && value.y === y && value.width === width && value.height === height && value.rotate === rotate && value.lineWidth === lineWidth && value.strokeStyle === strokeStyle && value.dash === dash && value.color === color && value.fontFamily === fontFamily && value.fontSize === fontSize && value.text === text) return;
+      if (value.x === x && value.y === y && value.width === width && value.height === height && value.rotate === rotate && value.lineWidth === lineWidth && value.strokeStyle === strokeStyle && value.dash === dash && value.color === color && value.fontFamily === fontFamily && value.fontSize === fontSize && value.text === text && value.extraFields === extraFields) return;
       onFormValueChange(value);
       form.resetFields();
     })
@@ -130,7 +130,7 @@ const CanvasProps = ({ data, form: { getFieldDecorator }, form, onFormValueChang
       <Col span={11} offset={1}>
         <Form.Item label="字体大小">
           {getFieldDecorator('fontSize', {
-            initialValue: fontSize 
+            initialValue: fontSize
           })(<InputNumber />)}
         </Form.Item>
       </Col>
@@ -145,7 +145,7 @@ const CanvasProps = ({ data, form: { getFieldDecorator }, form, onFormValueChang
   }, [color, fontFamily, fontSize, text, getFieldDecorator])
 
   /**
-  * 渲染元素数据
+  * 渲染元素本身数据
   */
 
   const renderDataForm = useMemo(() => {
@@ -161,6 +161,25 @@ const CanvasProps = ({ data, form: { getFieldDecorator }, form, onFormValueChang
       </Col>
     </Form>
   }, [id]);
+
+
+  /**
+  * 渲染元素额外数据
+  */
+
+  const renderExtraDataForm = useMemo(() => {
+    return <Form >
+      <Col>
+        <Form.Item label="自定义数据字段">
+          {getFieldDecorator('extraFields', {
+            initialValue: extraFields
+          })(<TextArea rows={10} />)}
+        </Form.Item>
+      </Col>
+    </Form>
+  }, [extraFields, getFieldDecorator])
+
+
 
   return (
     <div className="rightArea">
@@ -185,9 +204,18 @@ const CanvasProps = ({ data, form: { getFieldDecorator }, form, onFormValueChang
           </Collapse>
         </TabPane>
         <TabPane tab="数据" key="2" style={{ margin: 0 }}>
-          {
-            renderDataForm
-          }
+          <Collapse defaultActiveKey={['1', '2']}>
+            <Panel header="本身数据" key="1">
+              {
+                renderDataForm
+              }
+            </Panel>
+            <Panel header="自定义数据" key="2">
+              {
+                renderExtraDataForm
+              }
+            </Panel>
+          </Collapse>
         </TabPane>
       </Tabs>
 

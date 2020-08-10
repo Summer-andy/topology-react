@@ -295,8 +295,8 @@ const Layout = ({ history }) => {
   */
 
   const onHandleFormValueChange = useCallback(value => {
-    const { rotate, lineWidth, strokeStyle, dash, color, fontSize, fontFamily, text, ...other } = value;
-    const changedValues = { node: { rect: other, font: { color, fontSize, fontFamily }, rotate, lineWidth, strokeStyle, dash, text } }
+    const { rotate,extraFields, lineWidth, strokeStyle, dash, color, fontSize, fontFamily, text, ...other } = value;
+    const changedValues = { node: { rect: other, font: { color, fontSize, fontFamily }, rotate, lineWidth, strokeStyle, dash, text, extraFields } }
     if (changedValues.node) {
       // 遍历查找修改的属性，赋值给原始Node
       for (const key in changedValues.node) {
