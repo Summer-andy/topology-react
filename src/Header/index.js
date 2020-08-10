@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
-import { Menu, Icon } from 'antd';
+import { Menu, Icon, Button } from 'antd';
 import { Context } from '../index';
 import './index.css';
-
+const ButtonGroup = Button.Group;
 const { SubMenu } = Menu;
 const Header = () => {
 
@@ -62,6 +62,17 @@ const Header = () => {
 
 
       </Menu>
+
+      <ButtonGroup style={{ float: 'right', right: 10, marginTop: 7 }}>
+        <Button>
+          <Icon type="eye" />
+          预览
+        </Button>
+        <Button>
+          <Icon type="lock" />
+          锁定
+        </Button>
+      </ButtonGroup>
     </div>
   );
 };

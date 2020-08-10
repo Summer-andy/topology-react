@@ -1,5 +1,4 @@
-import React from 'react';
-import { Tools } from '../config/config';
+import React, { useEffect, useContext, useState, useCallback, useMemo } from 'react';
 import { Topology, registerNode } from '@topology/core';
 import {
   flowData,
@@ -77,13 +76,13 @@ import {
   sequenceFocusTextRect
 } from '@topology/sequence-diagram';
 import * as FileSaver from 'file-saver';
+import { Tools } from '../config/config';
 import { getNodeById } from '../Service/topologyService'
-import CanvasProps from './component/canvasProps';
-import { useEffect, useContext } from 'react';
-import { useState } from 'react';
+import NodeComponent from './component/nodeComponent';
+import BackgroundComponent from './component/backgroundComponent';
+import LineComponent from './component/lineComponent';
 import { Context } from '../index';
 import './index.css'
-import { useCallback } from 'react';
 let canvas;
 
 const Layout = ({ history }) => {
@@ -158,10 +157,19 @@ const Layout = ({ history }) => {
       case 'paste':
         canvas.paste();
         break;
+      case 'preview':
+        let reader = new FileReader();
+        const result =  new Blob([JSON.stringify(canvas.data)], { type: 'text/plain;charset=utf-8' });
+        reader.readAsText(result, 'text/plain;charset=utf-8');
+        reader.onload = (e) => {
+            history.push({ pathname: '/preview', state: { data: JSON.parse(reader.result) } });
+        }
+       
+         break;  
       default:
         break;
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.eventKey])
 
 
@@ -276,29 +284,6 @@ const Layout = ({ history }) => {
     registerNode('sequenceFocus', sequenceFocus, sequenceFocusAnchors, sequenceFocusIconRect, sequenceFocusTextRect);
   }
 
-  /**
-  * 监听画布上元素的事件
-  * @params {string} event - 事件名称
-  * @params {object} data - 节点数据
-  */
-
-  const onMessage = (event, data) => {
-    switch (event) {
-      case 'node':
-      case 'addNode':
-        setSelected({
-          node: data,
-          line: null,
-          multi: false,
-          nodes: null,
-          locked: data.locked
-        });
-        break;
-
-      default:
-        break;
-    }
-  }
 
   const onDrag = (event, node) => {
     event.dataTransfer.setData('Text', JSON.stringify(node.data));
@@ -306,13 +291,12 @@ const Layout = ({ history }) => {
 
   /**
   * 当表单数据变化时, 重新渲染canvas
-  * @params {object} value - 图形的宽度,高度,长度,宽度
+  * @params {object} value - 图形的宽度,高度, x, y等等
   */
 
-  const onHandleFormValueChange = value => {
-    const { rotate, lineWidth, strokeStyle, dash, color, fontSize,fontFamily,text, ...other } = value;
-    const changedValues = { node: { rect: other, font: { color, fontSize, fontFamily } , rotate, lineWidth, strokeStyle, dash, text } }
-    console.log(changedValues, selected);
+  const onHandleFormValueChange = useCallback(value => {
+    const { rotate, lineWidth, strokeStyle, dash, color, fontSize, fontFamily, text, ...other } = value;
+    const changedValues = { node: { rect: other, font: { color, fontSize, fontFamily }, rotate, lineWidth, strokeStyle, dash, text } }
     if (changedValues.node) {
       // 遍历查找修改的属性，赋值给原始Node
       for (const key in changedValues.node) {
@@ -327,7 +311,102 @@ const Layout = ({ history }) => {
       }
     }
     canvas.updateProps(selected.node);
+  }, [selected]); 
+
+    /**
+  * 当线条表单数据变化时, 重新渲染canvas
+  * @params {object} value - 图形的宽度,高度, x, y等等
+  */
+
+ const onHandleLineFormValueChange = useCallback(value => {
+  const { dash, lineWidth, strokeStyle, ...other } = value;
+  const changedValues = { line: { rect: other, lineWidth, dash, strokeStyle } }
+  if (changedValues.line) {
+    // 遍历查找修改的属性，赋值给原始line
+    for (const key in changedValues.line) {
+      if (Array.isArray(changedValues.line[key])) {
+      } else if (typeof changedValues.line[key] === 'object') {
+        for (const k in changedValues.line[key]) {
+          selected.line[key][k] = changedValues.line[key][k];
+        }
+      } else {
+        selected.line[key] = changedValues.line[key];
+      }
+    }
   }
+  canvas.updateProps(selected.line);
+}, [selected]);
+
+
+  /**
+  * 监听画布上元素的事件
+  * @params {string} event - 事件名称
+  * @params {object} data - 节点数据
+  */
+
+  const onMessage = (event, data) => {
+    switch (event) {
+      case 'node': // 节点
+      case 'addNode':
+        setSelected({
+          node: data,
+          line: null,
+          multi: false,
+          nodes: null,
+          locked: data.locked
+        });
+        break;
+      case 'line': // 连线
+      case 'addLine':
+        setSelected({
+          node: null,
+          line: data,
+          multi: false,
+          nodes: null,
+          locked: data.locked
+        })
+        break;
+      case 'space':  // 空白处
+      setSelected({
+        node: null,
+        line: null,
+        multi: false,
+        nodes: null,
+        locked: null
+      })
+        break;
+      default:
+        break;
+    }
+  }
+
+  /**
+  * 画布右侧配置区域
+  */
+
+  const rightAreaConfig = useMemo(() => {
+    return {
+      node: selected && <NodeComponent data={selected} onFormValueChange={onHandleFormValueChange} />, // 渲染Node节点类型的组件
+      line: selected && <LineComponent data={selected} onFormValueChange={onHandleLineFormValueChange} />, // 渲染线条类型的组件
+      default: canvas && <BackgroundComponent data={canvas} /> // 渲染画布背景的组件
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selected, onHandleFormValueChange, canvas])
+
+  /**
+  * 渲染画布右侧区域操作栏
+  */
+
+  const renderRightArea = useMemo(() => {
+    let _component = rightAreaConfig.default;
+    Object.keys(rightAreaConfig).forEach(item => {
+      if (selected[item]) {
+        _component = rightAreaConfig[item]
+      }
+    })
+    return _component;
+  }, [selected, rightAreaConfig]);
+
 
   return (
     <div className="page">
@@ -354,12 +433,11 @@ const Layout = ({ history }) => {
           width="100%"
           height="100%"
           style={{
-            background: '#fff',
             position: 'absolute',
             left: 0,
             right: 0,
             top: 0,
-            bottom: 0
+            bottom: 0,
           }}
           xmlns="http://www.w3.org/2000/svg">
           <defs>
@@ -374,7 +452,9 @@ const Layout = ({ history }) => {
         <div id="topology-canvas" style={{ height: '100%', width: '100%' }} />
       </div>
       <div className="props">
-        <CanvasProps data={selected} onFormValueChange={onHandleFormValueChange} />
+        {
+          renderRightArea
+        }
       </div>
     </div>
   );

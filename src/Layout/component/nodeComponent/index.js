@@ -10,6 +10,7 @@ const CanvasProps = ({ data, form: { getFieldDecorator }, form, onFormValueChang
   const { x, y, width, height } = data?.node?.rect || {};
   const { rotate, lineWidth, strokeStyle, dash, text, id } = data?.node || {};
   const { color, fontSize, fontFamily } = data?.node?.font || {};
+
   useEffect(() => {
     form.validateFields((err, value) => {
       if (err) return;
@@ -19,7 +20,7 @@ const CanvasProps = ({ data, form: { getFieldDecorator }, form, onFormValueChang
       form.resetFields();
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [form.getFieldValue('x'), form.getFieldValue('y'), form.getFieldValue('width'), form.getFieldValue('height'), form.getFieldValue('rotate'), form.getFieldValue('lineWidth'), form.getFieldValue('strokeStyle'), form.getFieldValue('dash'), form.getFieldValue('color'), form.getFieldValue('fontSize'), form.getFieldValue('fontFamily'), form.getFieldValue('text')])
+  }, [form])
 
   /**
   * 渲染位置和大小的表单
@@ -129,7 +130,7 @@ const CanvasProps = ({ data, form: { getFieldDecorator }, form, onFormValueChang
       <Col span={11} offset={1}>
         <Form.Item label="字体大小">
           {getFieldDecorator('fontSize', {
-            initialValue: fontSize
+            initialValue: fontSize 
           })(<InputNumber />)}
         </Form.Item>
       </Col>
@@ -159,44 +160,35 @@ const CanvasProps = ({ data, form: { getFieldDecorator }, form, onFormValueChang
         </Form.Item>
       </Col>
     </Form>
-  }, [id])
+  }, [id]);
 
   return (
     <div className="rightArea">
       <Tabs defaultActiveKey="1">
         <TabPane tab="外观" key="1" style={{ margin: 0 }}>
-          <Collapse defaultActiveKey={['1']}>
+          <Collapse defaultActiveKey={['1', '2', '3']}>
             <Panel header="位置和大小" key="1">
               {
-                data.node && renderForm
+                renderForm
               }
             </Panel>
             <Panel header="样式" key="2">
               {
-                data.node && renderStyleForm
+                renderStyleForm
               }
             </Panel>
             <Panel header="文字" key="3" >
               {
-                data.node && renderFontForm
+                renderFontForm
               }
             </Panel>
           </Collapse>
         </TabPane>
         <TabPane tab="数据" key="2" style={{ margin: 0 }}>
           {
-            data.node && renderDataForm
+            renderDataForm
           }
         </TabPane>
-        {/* <TabPane tab="Tab 3" key="3" style={{ margin: 0 }}>
-          Content of Tab Pane 3
-        </TabPane>
-        <TabPane tab="Tab 4" key="4" style={{ margin: 0 }}>
-          Content of Tab Pane 3
-        </TabPane>
-        <TabPane tab="Tab 5" key="5" style={{ margin: 0 }}>
-          Content of Tab Pane 3
-        </TabPane> */}
       </Tabs>
 
     </div>
