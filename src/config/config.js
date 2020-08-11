@@ -3,21 +3,17 @@ export const Tools = [
     group: '基本形状',
     children: [
       {
-        name: 'rectangle',
-        icon: 'icon-rect',
+        name: 'jichuang',
+        icon: 'icon-jichuang',
         data: {
-          text: 'Topology',
+          text: '',
           rect: {
             width: 100,
             height: 100
           },
-          paddingLeft: 10,
-          paddingRight: 10,
-          paddingTop: 10,
-          paddingBottom: 10,
-          name: 'rectangle',
-          icon: '\ue64d',
-          iconFamily: 'topology',
+          name: 'text',
+          icon: '\ue609',
+          iconFamily: 'iconfont',
           iconColor: '#2f54eb'
         }
       },
@@ -257,20 +253,20 @@ export const Tools = [
         }
       },
       {
-        name: 'cube',
-        icon: 'icon-cube',
+        name: 'jichuang',
+        icon: 'icon-jichuang',
         data: {
           rect: {
             width: 50,
             height: 70
           },
-          is3D: true,
+          // is3D: true, 
           z: 10,
-          zRotate: 15,
-          fillStyle: '#ddd',
-          name: 'cube',
-          icon: '\ue63c',
-          iconFamily: 'topology',
+          // zRotate: 15,
+          // fillStyle: '#ddd',
+          name: 'icon-jichuang',
+          // icon: '\ue63c',
+          iconFamily: 'iconfont',
           iconColor: '#777',
           iconSize: 30
         }
