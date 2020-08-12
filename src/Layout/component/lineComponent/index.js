@@ -6,13 +6,13 @@ const { TabPane } = Tabs;
 const { Option } = Select;
 const CanvasProps = ({ data, form: { getFieldDecorator }, form, onFormValueChange }) => {
 
-  const { lineWidth, dash, strokeStyle } = data?.line || {};
+  const { lineWidth, dash, strokeStyle, name } = data?.line || {};
 
   useEffect(() => {
     form.validateFields((err, value) => {
       if (err) return;
       if (Object.keys(data).length === 0) return;
-      if (value.lineWidth === lineWidth && value.dash === dash && value.strokeStyle === strokeStyle) return;
+      if (value.lineWidth === lineWidth && value.dash === dash && value.strokeStyle === strokeStyle && value.name === name) return;
       onFormValueChange(value);
       form.resetFields();
     })
@@ -54,9 +54,22 @@ const CanvasProps = ({ data, form: { getFieldDecorator }, form, onFormValueChang
             })(<InputNumber style={{ width: '100%' }} />)}
           </Form.Item>
         </Col>
+        <Col span={12}>
+          <Form.Item label="线条类型">
+            {getFieldDecorator('name', {
+              initialValue: name
+            })(
+              <Select style={{ width: '95%' }}>
+                <Option value="curve">贝塞尔曲线</Option>
+                <Option value="polyline">折线</Option>
+                <Option value="line">直线</Option>
+              </Select>
+            )}
+          </Form.Item>
+        </Col>
       </Row>
     </Form>
-  }, [lineWidth, dash, strokeStyle, getFieldDecorator]);
+  }, [lineWidth, dash, name, strokeStyle, getFieldDecorator]);
 
 
   return (
