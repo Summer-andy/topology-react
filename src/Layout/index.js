@@ -162,10 +162,10 @@ const Layout = ({ history }) => {
         const result =  new Blob([JSON.stringify(canvas.data)], { type: 'text/plain;charset=utf-8' });
         reader.readAsText(result, 'text/plain;charset=utf-8');
         reader.onload = (e) => {
-            history.push({ pathname: '/preview', state: { data: JSON.parse(reader.result) } });
+          history.push({ pathname: '/preview', state: { data: JSON.parse(reader.result) } });
         }
-       
-         break;  
+
+        break;
       default:
         break;
     }
@@ -295,7 +295,7 @@ const Layout = ({ history }) => {
   */
 
   const onHandleFormValueChange = useCallback(value => {
-    const { rotate,extraFields, lineWidth, strokeStyle, dash, color, fontSize, fontFamily, text, ...other } = value;
+    const { rotate, extraFields, lineWidth, strokeStyle, dash, color, fontSize, fontFamily, text, ...other } = value;
     const changedValues = { node: { rect: other, font: { color, fontSize, fontFamily }, rotate, lineWidth, strokeStyle, dash, text, extraFields } }
     if (changedValues.node) {
       // 遍历查找修改的属性，赋值给原始Node
@@ -311,31 +311,31 @@ const Layout = ({ history }) => {
       }
     }
     canvas.updateProps(selected.node);
-  }, [selected]); 
+  }, [selected]);
 
-    /**
-  * 当线条表单数据变化时, 重新渲染canvas
-  * @params {object} value - 图形的宽度,高度, x, y等等
-  */
+  /**
+* 当线条表单数据变化时, 重新渲染canvas
+* @params {object} value - 图形的宽度,高度, x, y等等
+*/
 
- const onHandleLineFormValueChange = useCallback(value => {
-  const { dash, lineWidth, strokeStyle, ...other } = value;
-  const changedValues = { line: { rect: other, lineWidth, dash, strokeStyle } }
-  if (changedValues.line) {
-    // 遍历查找修改的属性，赋值给原始line
-    for (const key in changedValues.line) {
-      if (Array.isArray(changedValues.line[key])) {
-      } else if (typeof changedValues.line[key] === 'object') {
-        for (const k in changedValues.line[key]) {
-          selected.line[key][k] = changedValues.line[key][k];
+  const onHandleLineFormValueChange = useCallback(value => {
+    const { dash, lineWidth, strokeStyle, name, fromArrow, toArrow, ...other } = value;
+    const changedValues = { line: { rect: other, lineWidth, dash, strokeStyle, name, fromArrow, toArrow } }
+    if (changedValues.line) {
+      // 遍历查找修改的属性，赋值给原始line
+      for (const key in changedValues.line) {
+        if (Array.isArray(changedValues.line[key])) {
+        } else if (typeof changedValues.line[key] === 'object') {
+          for (const k in changedValues.line[key]) {
+            selected.line[key][k] = changedValues.line[key][k];
+          }
+        } else {
+          selected.line[key] = changedValues.line[key];
         }
-      } else {
-        selected.line[key] = changedValues.line[key];
       }
     }
-  }
-  canvas.updateProps(selected.line);
-}, [selected]);
+    canvas.updateProps(selected.line);
+  }, [selected]);
 
 
   /**
@@ -367,13 +367,13 @@ const Layout = ({ history }) => {
         })
         break;
       case 'space':  // 空白处
-      setSelected({
-        node: null,
-        line: null,
-        multi: false,
-        nodes: null,
-        locked: null
-      })
+        setSelected({
+          node: null,
+          line: null,
+          multi: false,
+          nodes: null,
+          locked: null
+        })
         break;
       default:
         break;
@@ -390,8 +390,8 @@ const Layout = ({ history }) => {
       line: selected && <LineComponent data={selected} onFormValueChange={onHandleLineFormValueChange} />, // 渲染线条类型的组件
       default: canvas && <BackgroundComponent data={canvas} /> // 渲染画布背景的组件
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selected, onHandleFormValueChange, canvas])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selected, onHandleFormValueChange, onHandleLineFormValueChange, canvas])
 
   /**
   * 渲染画布右侧区域操作栏
