@@ -5,17 +5,19 @@ const { TabPane } = Tabs;
 const { Panel } = Collapse;
 const CanvasProps = ({ data, form: { getFieldDecorator }, form }) => {
 
-  const { bkColor } = data.data
+  const { bkColor, bkImage } = data.data
 
   useEffect(() => {
     form.validateFields((err, value) => {
       if (err) return;
+      data.clearBkImg();
       data.data.bkColor = value.bkColor;
+      data.data.bkImage = value.bkImage;
       data.render();
       form.resetFields();
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [form.getFieldValue('bkColor')])
+  }, [form])
 
   /**
   * 渲染位置和大小的表单
@@ -35,9 +37,16 @@ const CanvasProps = ({ data, form: { getFieldDecorator }, form }) => {
             })(<Input type="color" />)}
           </Form.Item>
         </Col>
+        <Col span={24}>
+          <Form.Item label="背景图片">
+            {getFieldDecorator('bkImage', {
+              initialValue: bkImage
+            })(<Input placeholder="请输入图片的地址" />)}
+          </Form.Item>
+        </Col>
       </Row>
     </Form>
-  }, [bkColor, getFieldDecorator]);
+  }, [bkColor, bkImage, getFieldDecorator]);
 
   return (
     <div className="rightArea">
