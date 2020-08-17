@@ -15,9 +15,7 @@ export const Tools = [
           icon: '\ue662',
           iconFamily: 'iconfont',
           iconColor: '#2f54eb',
-          is3D: true,
-          z: 10,
-          zRotate: 15,
+          rotate: 60
         }
       },
       {

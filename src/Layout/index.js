@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useState, useCallback, useMemo, Fragment } from 'react';
+import React, { useEffect, useState, useCallback, useMemo, Fragment } from 'react';
 import { Topology, registerNode } from '@topology/core';
 import {
   flowData,
@@ -75,23 +75,19 @@ import {
   sequenceFocusIconRect,
   sequenceFocusTextRect
 } from '@topology/sequence-diagram';
-import { message } from 'antd';
-import * as FileSaver from 'file-saver';
 import { Tools } from '../config/config';
 import { getNodeById } from '../Service/topologyService'
 import Header from '../Header';
 import NodeComponent from './component/nodeComponent';
 import BackgroundComponent from './component/backgroundComponent';
 import LineComponent from './component/lineComponent';
-import { reducer, initState } from '../Reducer';
 import './index.css'
 let canvas;
-
 const Layout = ({ history }) => {
 
   const [selected, setSelected] = useState({});
 
-  const [state, dispatch] = useReducer(reducer, initState);
+  const [isLoadCanvas, setIsLoadCanvas] = useState(false);
 
   useEffect(() => {
     const canvasOptions = {
@@ -107,134 +103,8 @@ const Layout = ({ history }) => {
       }
       getNodeData();
     }
+    setIsLoadCanvas(true);
   }, [history]);
-
-
-  /**
-  * 处理顶部栏的操作
-  */
-
-  useEffect(() => {
-    switch (state.eventKey) {
-      case 'create_new':
-        canvas.open({ nodes: [], lines: [] });
-        break;
-      case 'import_json':
-        onHandleImportJson();
-        break;
-      case 'save_json':
-        FileSaver.saveAs(
-          new Blob([JSON.stringify(canvas.data)], { type: 'text/plain;charset=utf-8' }),
-          `le5le.topology.json`
-        );
-        break;
-      case 'save_png':
-        canvas.saveAsImage('le5le.topology.png');
-        break;
-      case 'save_svg':
-        onHandleSaveToSvg();
-        break;
-      case 'undo':
-        canvas.undo();
-        break;
-      case 'redo':
-        canvas.redo();
-        break;
-      case 'copy':
-        canvas.copy();
-        break;
-      case 'cut':
-        canvas.cut();
-        break;
-      case 'paste':
-        canvas.paste();
-        break;
-      case 'preview':
-        let reader = new FileReader();
-        const result = new Blob([JSON.stringify(canvas.data)], { type: 'text/plain;charset=utf-8' });
-        reader.readAsText(result, 'text/plain;charset=utf-8');
-        reader.onload = (e) => {
-          history.push({ pathname: '/preview', state: { data: JSON.parse(reader.result) } });
-        }
-        break;
-      case 'lock':
-        message.success('已锁定画布!');
-        canvas.lock(2);
-        break;
-      case 'unlock':
-        message.success('已解锁画布!');
-        canvas.lock(0);
-        break;
-      default:
-        break;
-    }
-  }, [state.eventKey, history])
-
-
-  /**
-  * 导入json文件
-  */
-
-  const onHandleImportJson = () => {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.onchange = event => {
-      const elem = event.srcElement || event.target;
-      if (elem.files && elem.files[0]) {
-        const reader = new FileReader();
-        reader.onload = e => {
-          const text = e.target.result + '';
-          try {
-            const data = JSON.parse(text);
-            canvas.open(data);
-          } catch (e) {
-            return false;
-          } finally {
-
-          }
-        };
-        reader.readAsText(elem.files[0]);
-      }
-    };
-    dispatch({ type: 'addNode', data: '' });
-    input.click();
-  }
-
-  /**
-  * 保存为svg
-  */
-
-  const onHandleSaveToSvg = () => {
-    const C2S = window.C2S;
-    const ctx = new C2S(canvas.canvas.width + 200, canvas.canvas.height + 200);
-    if (canvas.data.pens) {
-      for (const item of canvas.data.pens) {
-        item.render(ctx);
-      }
-    }
-    let mySerializedSVG = ctx.getSerializedSvg();
-    mySerializedSVG = mySerializedSVG.replace(
-      '<defs/>',
-      `<defs>
-      <style type="text/css">
-        @font-face {
-          font-family: 'topology';
-          src: url('http://at.alicdn.com/t/font_1331132_h688rvffmbc.ttf?t=1569311680797') format('truetype');
-        }
-      </style>
-    </defs>`
-    );
-    mySerializedSVG = mySerializedSVG.replace(/--le5le--/g, '&#x');
-    const urlObject = window.URL || window;
-    const export_blob = new Blob([mySerializedSVG]);
-    const url = urlObject.createObjectURL(export_blob);
-    const a = document.createElement('a');
-    a.setAttribute('download', 'le5le.topology.svg');
-    a.setAttribute('href', url);
-    const evt = document.createEvent('MouseEvents');
-    evt.initEvent('click', true, true);
-    a.dispatchEvent(evt);
-  }
 
 
   /**
@@ -312,9 +182,9 @@ const Layout = ({ history }) => {
   }, [selected]);
 
   /**
-* 当线条表单数据变化时, 重新渲染canvas
-* @params {object} value - 图形的宽度,高度, x, y等等
-*/
+  * 当线条表单数据变化时, 重新渲染canvas
+  * @params {object} value - 图形的宽度,高度, x, y等等
+  */
 
   const onHandleLineFormValueChange = useCallback(value => {
     const { dash, lineWidth, strokeStyle, name, fromArrow, toArrow, ...other } = value;
@@ -405,9 +275,17 @@ const Layout = ({ history }) => {
   }, [selected, rightAreaConfig]);
 
 
+   const renderHeader = useMemo(() => {
+     if(isLoadCanvas)
+     return <Header canvas={canvas} history={history} />
+   }, [isLoadCanvas, history])
+
+
   return (
     <Fragment>
-      <Header state={state} dispatch={dispatch} />
+      {
+        renderHeader
+      }
       <div className="page">
         <div className="tool">
           {

@@ -5,9 +5,8 @@ const Preview = ({ history }) => {
 
   useEffect(() => {
     canvas = new Topology('topology-canvas-preview', {});
-    canvas.open(history.location.state.data)
+    canvas.open(history.location.state.data);
   }, [history]);
-
 
   return (
     <div id="topology-canvas-preview" style={{ height: '100vh', width: '100vw' }} />
