@@ -1,7 +1,6 @@
-import React, { useEffect, useState, useMemo, useContext } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { getListByPage } from '../Service/topologyService';
 import { Pagination, Col, Row, Card, Avatar, Icon, Spin, message } from 'antd';
-import { Context } from '../index';
 const { Meta } = Card;
 const colorList = ['#f56a00', '#7265e6', '#ffbf00', '#00a2ae', '#f56a00'];
 
@@ -14,20 +13,6 @@ const Home = ({ history }) => {
   const [total, setTotal] = useState(0);
 
   const [loading, setLoading] = useState(false);
-
-
-  const { state } = useContext(Context);
-
-  useEffect(() => {
-    switch (state.eventKey) {
-      case 'create_new':
-        history.push('/workspace')
-        break;
-      default:
-        break;
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.eventKey])
 
   useEffect(() => {
     async function loadData() {
@@ -66,8 +51,8 @@ const Home = ({ history }) => {
         bordered={false}
         cover={<Spin spinning={loading}><div onClick={() => onHandleDetail(item)} style={{ height: 200, padding: 10, textAlign: 'center' }}><img alt="cover" style={{ height: '100%', width: '100%' }} src={`http://topology.le5le.com${item.image}`} /></div></Spin>}
         extra={[
-          <div style={{ display: 'inline', }}><Icon type="like" /><b style={{ fontSize: 15, marginLeft: 5 }}>{item.star}</b></div>,
-          <div style={{ display: 'inline', marginLeft: 10 }}><Icon type="heart" /><b style={{ fontSize: 15, marginLeft: 5 }}>{item.recommend}</b></div>
+          <div key="like" style={{ display: 'inline', }}><Icon type="like" /><b style={{ fontSize: 15, marginLeft: 5 }}>{item.star}</b></div>,
+          <div key="heart" style={{ display: 'inline', marginLeft: 10 }}><Icon type="heart" /><b style={{ fontSize: 15, marginLeft: 5 }}>{item.recommend}</b></div>
         ]}
       >
         <Meta
@@ -82,7 +67,7 @@ const Home = ({ history }) => {
 
 
   return (
-    <div style={{ background: '#ECECEC', padding: '30px 200px', height: 'calc(100vh - 50px)', overflow: 'auto' }}>
+    <div style={{ background: '#ECECEC', padding: '30px 200px', height: '100vh', overflow: 'auto' }}>
       <Row gutter={16}>
         {
           renderCardList

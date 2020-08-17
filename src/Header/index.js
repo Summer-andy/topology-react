@@ -1,12 +1,10 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Menu, Icon, Button } from 'antd';
-import { Context } from '../index';
 import './index.css';
 const ButtonGroup = Button.Group;
 const { SubMenu } = Menu;
-const Header = () => {
+const Header = ({ dispatch, state }) => {
 
-  const { dispatch } = useContext(Context);
 
   const onHandleSelect = data => {
     dispatch({ type: 'addNode', data: data.key });
@@ -64,14 +62,21 @@ const Header = () => {
       </Menu>
 
       <ButtonGroup style={{ float: 'right', right: 10, marginTop: 7 }}>
-        <Button>
+        <Button onClick={() => dispatch({ type: 'addNode', data: 'preview' })}>
           <Icon type="eye" />
           预览
         </Button>
-        <Button>
-          <Icon type="lock" />
+        {
+          state.eventKey === 'lock' ? <Button onClick={() => dispatch({ type: 'addNode', data: 'unlock' })}>
+            <Icon type="unlock" />
+          解锁
+        </Button> : <Button onClick={() => dispatch({ type: 'addNode', data: 'lock' })}>
+              <Icon type="lock" />
           锁定
         </Button>
+        }
+
+
       </ButtonGroup>
     </div>
   );

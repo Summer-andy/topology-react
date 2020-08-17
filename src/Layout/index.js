@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState, useCallback, useMemo } from 'react';
+import React, { useEffect, useReducer, useState, useCallback, useMemo, Fragment } from 'react';
 import { Topology, registerNode } from '@topology/core';
 import {
   flowData,
@@ -75,13 +75,15 @@ import {
   sequenceFocusIconRect,
   sequenceFocusTextRect
 } from '@topology/sequence-diagram';
+import { message } from 'antd';
 import * as FileSaver from 'file-saver';
 import { Tools } from '../config/config';
 import { getNodeById } from '../Service/topologyService'
+import Header from '../Header';
 import NodeComponent from './component/nodeComponent';
 import BackgroundComponent from './component/backgroundComponent';
 import LineComponent from './component/lineComponent';
-import { Context } from '../index';
+import { reducer, initState } from '../Reducer';
 import './index.css'
 let canvas;
 
@@ -89,16 +91,7 @@ const Layout = ({ history }) => {
 
   const [selected, setSelected] = useState({});
 
-  const { state, dispatch } = useContext(Context);
-
-  const clearEventKey = useCallback(() => {
-    dispatch({ type: 'addNode', data: '' });
-  }, [dispatch]);
-
-  useEffect(() => {
-    window.addEventListener("popstate", () => clearEventKey());
-    window.removeEventListener('popstate', () => clearEventKey());
-  }, [clearEventKey]);
+  const [state, dispatch] = useReducer(reducer, initState);
 
   useEffect(() => {
     const canvasOptions = {
@@ -122,7 +115,6 @@ const Layout = ({ history }) => {
   */
 
   useEffect(() => {
-    clearEventKey();
     switch (state.eventKey) {
       case 'create_new':
         canvas.open({ nodes: [], lines: [] });
@@ -159,18 +151,24 @@ const Layout = ({ history }) => {
         break;
       case 'preview':
         let reader = new FileReader();
-        const result =  new Blob([JSON.stringify(canvas.data)], { type: 'text/plain;charset=utf-8' });
+        const result = new Blob([JSON.stringify(canvas.data)], { type: 'text/plain;charset=utf-8' });
         reader.readAsText(result, 'text/plain;charset=utf-8');
         reader.onload = (e) => {
           history.push({ pathname: '/preview', state: { data: JSON.parse(reader.result) } });
         }
-
+        break;
+      case 'lock':
+        message.success('已锁定画布!');
+        canvas.lock(2);
+        break;
+      case 'unlock':
+        message.success('已解锁画布!');
+        canvas.lock(0);
         break;
       default:
         break;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.eventKey])
+  }, [state.eventKey, history])
 
 
   /**
@@ -295,8 +293,8 @@ const Layout = ({ history }) => {
   */
 
   const onHandleFormValueChange = useCallback(value => {
-    const { rotate, extraFields, lineWidth, strokeStyle, dash, color, fontSize, fontFamily, text, ...other } = value;
-    const changedValues = { node: { rect: other, font: { color, fontSize, fontFamily }, rotate, lineWidth, strokeStyle, dash, text, extraFields } }
+    const { rotate, data, lineWidth, strokeStyle, dash, color, fontSize, fontFamily, text, ...other } = value;
+    const changedValues = { node: { rect: other, font: { color, fontSize, fontFamily }, rotate, lineWidth, strokeStyle, dash, text, data } }
     if (changedValues.node) {
       // 遍历查找修改的属性，赋值给原始Node
       for (const key in changedValues.node) {
@@ -390,8 +388,7 @@ const Layout = ({ history }) => {
       line: selected && <LineComponent data={selected} onFormValueChange={onHandleLineFormValueChange} />, // 渲染线条类型的组件
       default: canvas && <BackgroundComponent data={canvas} /> // 渲染画布背景的组件
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selected, onHandleFormValueChange, onHandleLineFormValueChange, canvas])
+  }, [selected, onHandleFormValueChange, onHandleLineFormValueChange])
 
   /**
   * 渲染画布右侧区域操作栏
@@ -409,54 +406,57 @@ const Layout = ({ history }) => {
 
 
   return (
-    <div className="page">
-      <div className="tool">
-        {
-          Tools.map((item, index) => <div key={index}>
-            <div className="title">{item.group}</div>
-            <div className="button">
-              {
-                item.children.map((item, idx) => {
-                  // eslint-disable-next-line jsx-a11y/anchor-is-valid
-                  return (<a key={idx} title={item.name} draggable href="#" onDragStart={ev => onDrag(ev, item)}>
-                    <i className={'iconfont ' + item.icon} style={{ fontSize: 13 }}>
-                    </i>
-                  </a>)
-                })
-              }
-            </div>
-          </div>)
-        }
-      </div>
-      <div className="full" >
-        <svg
-          width="100%"
-          height="100%"
-          style={{
-            position: 'absolute',
-            left: 0,
-            right: 0,
-            top: 0,
-            bottom: 0,
-          }}
-          xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
-              <path d="M 10 0 L 0 0 0 10" fill="none" stroke="#f3f3f3" strokeWidth="1" />
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#grid)" >
+    <Fragment>
+      <Header state={state} dispatch={dispatch} />
+      <div className="page">
+        <div className="tool">
+          {
+            Tools.map((item, index) => <div key={index}>
+              <div className="title">{item.group}</div>
+              <div className="button">
+                {
+                  item.children.map((item, idx) => {
+                    // eslint-disable-next-line jsx-a11y/anchor-is-valid
+                    return (<a key={idx} title={item.name} draggable href="#" onDragStart={ev => onDrag(ev, item)}>
+                      <i className={'iconfont ' + item.icon} style={{ fontSize: 13 }}>
+                      </i>
+                    </a>)
+                  })
+                }
+              </div>
+            </div>)
+          }
+        </div>
+        <div className="full" >
+          <svg
+            width="100%"
+            height="100%"
+            style={{
+              position: 'absolute',
+              left: 0,
+              right: 0,
+              top: 0,
+              bottom: 0,
+            }}
+            xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
+                <path d="M 10 0 L 0 0 0 10" fill="none" stroke="#f3f3f3" strokeWidth="1" />
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#grid)" >
 
-          </rect>
-        </svg>
-        <div id="topology-canvas" style={{ height: '100%', width: '100%' }} />
+            </rect>
+          </svg>
+          <div id="topology-canvas" style={{ height: '100%', width: '100%' }} />
+        </div>
+        <div className="props">
+          {
+            renderRightArea
+          }
+        </div>
       </div>
-      <div className="props">
-        {
-          renderRightArea
-        }
-      </div>
-    </div>
+    </Fragment>
   );
 };
 

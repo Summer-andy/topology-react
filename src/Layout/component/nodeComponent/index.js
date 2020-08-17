@@ -8,14 +8,15 @@ const { TextArea } = Input;
 const CanvasProps = ({ data, form: { getFieldDecorator }, form, onFormValueChange }) => {
 
   const { x, y, width, height } = data?.node?.rect || {};
-  const { rotate, lineWidth, strokeStyle, dash, text, id, extraFields } = data?.node || {};
+  const { rotate, lineWidth, strokeStyle, dash, text, id } = data?.node || {};
   const { color, fontSize, fontFamily } = data?.node?.font || {};
+  const extraFields = data.node.data; // 用户自定义数据片段
 
   useEffect(() => {
     form.validateFields((err, value) => {
       if (err) return;
       if (Object.keys(data).length === 0) return;
-      if (value.x === x && value.y === y && value.width === width && value.height === height && value.rotate === rotate && value.lineWidth === lineWidth && value.strokeStyle === strokeStyle && value.dash === dash && value.color === color && value.fontFamily === fontFamily && value.fontSize === fontSize && value.text === text && value.extraFields === extraFields) return;
+      if (value.x === x && value.y === y && value.width === width && value.height === height && value.rotate === rotate && value.lineWidth === lineWidth && value.strokeStyle === strokeStyle && value.dash === dash && value.color === color && value.fontFamily === fontFamily && value.fontSize === fontSize && value.text === text && value.data === extraFields) return;
       onFormValueChange(value);
       form.resetFields();
     })
@@ -171,7 +172,7 @@ const CanvasProps = ({ data, form: { getFieldDecorator }, form, onFormValueChang
     return <Form >
       <Col>
         <Form.Item label="自定义数据字段">
-          {getFieldDecorator('extraFields', {
+          {getFieldDecorator('data', {
             initialValue: extraFields
           })(<TextArea rows={10} />)}
         </Form.Item>
