@@ -12,7 +12,7 @@ const CanvasProps = ({ data, form: { getFieldDecorator }, form, onFormValueChang
     form.validateFields((err, value) => {
       if (err) return;
       if (Object.keys(data).length === 0) return;
-      if (value.lineWidth === lineWidth && value.dash === dash && value.strokeStyle === strokeStyle && value.name === name && value.toArrow === toArrow && value.fromArrow && fromArrow) return;
+      if (value.lineWidth === lineWidth && value.dash === dash && value.strokeStyle === strokeStyle && value.name === name && value.toArrow === toArrow && value.fromArrow === fromArrow) return;
       onFormValueChange(value);
       form.resetFields();
     })

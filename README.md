@@ -6,7 +6,7 @@
 
 ### 为什么要有topology-react？
 
-   topology-react是一个零侵入式(指的是数据层)的基于topology编写的exmaple, 它可以很方便地集成到其他react项目中。
+   topology-react是一个零侵入式(指的是数据层)的基于topology编写的example, 它可以很方便地集成到其他react项目中。
 
 ### 💡技术栈(主要)
 
@@ -63,3 +63,7 @@
  - 项目合并到master会自动发布。如果代码有warning将会发布失败。
  - 项目不允许使用redux或者其他的数据流方案, 可以使用useReducer。
  - 代码中尽量编写注释, 标明函数的作用。
+
+
+ ### FAQ
+ 
