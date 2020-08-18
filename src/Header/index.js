@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Menu, Icon, Button } from 'antd';
+import { Menu, Icon, Button, Tag, Popover } from 'antd';
 import * as FileSaver from 'file-saver';
 import './index.css';
 const ButtonGroup = Button.Group;
@@ -9,6 +9,12 @@ const Header = ({ canvas, history }) => {
   const [isLock, setIsLock] = useState(false); // 是否处于锁定状态
 
   const [scaleNumber, setScaleNumber] = useState(1); // 缩放的基数
+
+  const [lineStyle, setLineStyle] = useState('直线')
+
+  const [fromArrowType, setFromArrowType] = useState('无箭头')
+
+  const [toArrowType, setToArrowType] = useState('实心三角形')
 
   /**
   * 导入json
@@ -118,7 +124,7 @@ const Header = ({ canvas, history }) => {
         const result = new Blob([JSON.stringify(canvas.data)], { type: 'text/plain;charset=utf-8' });
         reader.readAsText(result, 'text/plain;charset=utf-8');
         reader.onload = (e) => {
-          history.push({ pathname: '/preview', state: { data: JSON.parse(reader.result) } });
+          history.push({ pathname: '/preview', state: { data: JSON.parse(reader.result), id: history.location.state.id } });
         }
         break;
       default:
@@ -126,12 +132,12 @@ const Header = ({ canvas, history }) => {
     }
   }
 
- /**
- * 放大画布
- */
+  /**
+  * 放大画布
+  */
 
   const scaleZoomOut = () => {
-    if(scaleNumber < 5) {
+    if (scaleNumber < 5) {
       setScaleNumber(scaleNumber + 0.5);
       canvas.scaleTo(scaleNumber + 0.5)
     }
@@ -142,11 +148,139 @@ const Header = ({ canvas, history }) => {
    */
 
   const scaleZoomIn = () => {
-    if(scaleNumber > 0.5) {
+    if (scaleNumber > 0.5) {
       setScaleNumber(scaleNumber - 0.5);
       canvas.scaleTo(scaleNumber - 0.5)
     }
   }
+
+  /**
+  * 设置默认的连线类型
+  */
+
+  const onHandleSelectMenu = data => {
+    setLineStyle(data.item.props.children);
+    canvas.data.lineName = data.key;
+    canvas.render();
+  }
+
+  /**
+  * 设置默认的连线起始箭头
+  */
+
+ const onHandleSelectMenu1 = data => {
+  setFromArrowType(data.item.props.children);
+  canvas.data.fromArrowType = data.key;
+  canvas.render();
+}
+
+  /**
+  * 设置默认的连线终止箭头
+  */
+
+ const onHandleSelectMenu2 = data => {
+  setToArrowType(data.item.props.children);
+  canvas.data.toArrowType = data.key;
+  canvas.render();
+}
+
+
+  /**
+  * 元素连线之间的选项
+  */
+
+ const menu2 = (
+  <Menu onClick={data => onHandleSelectMenu2(data)} style={{ border: 0 }}>
+    <Menu.Item key="空">
+      无箭头
+    </Menu.Item>
+    <Menu.Item key="triangleSolid">
+      实心三角形
+    </Menu.Item>
+    <Menu.Item key="triangle">
+      空心三角形
+    </Menu.Item>
+    <Menu.Item key="diamondSolid">
+      实心菱形
+    </Menu.Item>
+    <Menu.Item key="diamond">
+      空心菱形
+    </Menu.Item>
+    <Menu.Item key="circleSolid">
+      实心圆
+    </Menu.Item>
+    <Menu.Item key="circle">
+      空心圆
+    </Menu.Item>
+    <Menu.Item key="line">
+      线型箭头
+    </Menu.Item>
+    <Menu.Item key="lineUp">
+      上单边线箭头
+    </Menu.Item>
+    <Menu.Item key="lineDown">
+      下单边线箭头
+    </Menu.Item>
+  </Menu>
+);
+
+  /**
+  * 元素连线之间的选项
+  */
+
+  const menu1 = (
+    <Menu onClick={data => onHandleSelectMenu1(data)} style={{ border: 0 }}>
+      <Menu.Item key="空">
+        无箭头
+      </Menu.Item>
+      <Menu.Item key="triangleSolid">
+        实心三角形
+      </Menu.Item>
+      <Menu.Item key="triangle">
+        空心三角形
+      </Menu.Item>
+      <Menu.Item key="diamondSolid">
+        实心菱形
+      </Menu.Item>
+      <Menu.Item key="diamond">
+        空心菱形
+      </Menu.Item>
+      <Menu.Item key="circleSolid">
+        实心圆
+      </Menu.Item>
+      <Menu.Item key="circle">
+        空心圆
+      </Menu.Item>
+      <Menu.Item key="line">
+        线型箭头
+      </Menu.Item>
+      <Menu.Item key="lineUp">
+        上单边线箭头
+      </Menu.Item>
+      <Menu.Item key="lineDown">
+        下单边线箭头
+      </Menu.Item>
+    </Menu>
+  );
+
+
+  /**
+  * 连线起始箭头
+  */
+
+  const menu = (
+    <Menu onClick={data => onHandleSelectMenu(data)} style={{ border: 0 }}>
+      <Menu.Item key="line">
+        直线
+    </Menu.Item>
+      <Menu.Item key="polyline">
+        折线
+    </Menu.Item>
+      <Menu.Item key="curve">
+        曲线
+    </Menu.Item>
+    </Menu>
+  );
 
   return (
     <div style={{ height: 48, width: '100vw', borderBottom: '1px solid #e8e8e8' }}>
@@ -197,7 +331,21 @@ const Header = ({ canvas, history }) => {
         </SubMenu>
       </Menu>
 
+      <Tag color="cyan" style={{ float: 'right', right: 10, marginTop: 12 }}>x{scaleNumber}</Tag>
+
       <ButtonGroup style={{ float: 'right', right: 10, marginTop: 7 }}>
+        <Popover content={menu} title="默认连线类型" trigger="hover">
+          <Button>{lineStyle}</Button>
+        </Popover>
+
+        <Popover content={menu1} title="默认起点箭头" trigger="hover">
+          <Button>{fromArrowType}</Button>
+        </Popover>
+
+        <Popover content={menu2} title="默认终点箭头" trigger="hover">
+          <Button>{toArrowType}</Button>
+        </Popover>
+
         <Button onClick={() => onHandleSelect({ key: 'preview' })}>
           <Icon type="eye" />
           预览
@@ -211,7 +359,10 @@ const Header = ({ canvas, history }) => {
           锁定
         </Button>
         }
-
+        <Button onClick={() => history.push('/')}>
+          <Icon type="rollback" />
+          返回主页
+        </Button>
         <Button onClick={() => scaleZoomOut()}>
           <Icon type="plus" />
         </Button>

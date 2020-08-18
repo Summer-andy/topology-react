@@ -75,6 +75,7 @@ import {
   sequenceFocusIconRect,
   sequenceFocusTextRect
 } from '@topology/sequence-diagram';
+import {  Modal } from "antd";
 import { Tools } from '../config/config';
 import { getNodeById } from '../Service/topologyService'
 import Header from '../Header';
@@ -82,6 +83,7 @@ import NodeComponent from './component/nodeComponent';
 import BackgroundComponent from './component/backgroundComponent';
 import LineComponent from './component/lineComponent';
 import './index.css'
+const { confirm } = Modal;
 let canvas;
 const Layout = ({ history }) => {
 
@@ -96,12 +98,30 @@ const Layout = ({ history }) => {
     canvasOptions.on = onMessage;
     canvasRegister();
     canvas = new Topology('topology-canvas', canvasOptions);
-    if (history.location?.state?.id) {
-      async function getNodeData() {
-        const data = await getNodeById(history.location.state.id);
-        canvas.open(data.data)
+    console.log(history);
+
+    async function getNodeData() {
+      const data = await getNodeById(history.location.state.id);
+      canvas.open(data.data)
+    }
+
+    if(history.location.state.from === "/preview") {
+      console.log(history.location.state);
+      confirm({
+        title: '是否要保存预览前的数据?',
+        okText: '保存',
+        cancelText: '取消',
+        onOk() {
+          canvas.open(history.location.state.data);
+        },
+        onCancel() {
+          getNodeData();
+        },
+      });
+    } else {
+      if (history.location?.state?.id) {
+        getNodeData();
       }
-      getNodeData();
     }
     setIsLoadCanvas(true);
   }, [history]);
