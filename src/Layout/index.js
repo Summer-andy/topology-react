@@ -98,8 +98,6 @@ const Layout = ({ history }) => {
     canvasOptions.on = onMessage;
     canvasRegister();
     canvas = new Topology('topology-canvas', canvasOptions);
-    console.log(history);
-
     async function getNodeData() {
       const data = await getNodeById(history.location.state.id);
       canvas.open(data.data)

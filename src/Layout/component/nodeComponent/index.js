@@ -1,5 +1,6 @@
 import React, { useMemo, useEffect } from 'react';
 import { Form, InputNumber, Tabs, Collapse, Row, Col, Input, Select, Tag } from 'antd';
+// import ExtraDataForm from './ExtraDataForm';
 import './index.css';
 const { Panel } = Collapse;
 const { TabPane } = Tabs;
@@ -176,6 +177,7 @@ const CanvasProps = ({ data, form: { getFieldDecorator }, form, onFormValueChang
             initialValue: extraFields
           })(<TextArea rows={10} />)}
         </Form.Item>
+        {/* <ExtraDataForm extraFields={extraFields} form={form} /> */}
       </Col>
     </Form>
   }, [extraFields, getFieldDecorator])
