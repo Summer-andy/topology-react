@@ -2120,17 +2120,32 @@
   dependencies:
     "@topology/core" "^0.2.24"
 
-"@topology/core@^0.2.24", "@topology/core@^0.2.26":
+"@topology/core@^0.2.24":
   version "0.2.26"
   resolved "https://registry.npm.taobao.org/@topology/core/download/@topology/core-0.2.26.tgz#ab596869f30f7019b2b4cac89a53355f11ea447a"
   integrity sha1-q1loafMPcBmytMrImlM1XxHqRHo=
   dependencies:
     le5le-store "^1.0.7"
 
+"@topology/core@^0.3.1":
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/@topology/core/-/core-0.3.2.tgz#fcc6d24867dd500d75b880b84103fdd47ac48c5a"
+  integrity sha512-tpBq1YBNC7NRxzUscgVQd7+0zHXvOO8afWEj75BKhBx40EtpqDvd7xwoYqvfzYSmGIljs1PebBY+J4veEtfVIQ==
+  dependencies:
+    le5le-store "^1.0.7"
+    mitt "^2.1.0"
+
 "@topology/flow-diagram@^0.2.24":
   version "0.2.24"
   resolved "https://registry.npm.taobao.org/@topology/flow-diagram/download/@topology/flow-diagram-0.2.24.tgz#fff56b125724813fb64399cc5339a36a7c12d32b"
   integrity sha1-//VrElckgT+2Q5nMUzmjanwS0ys=
+  dependencies:
+    "@topology/core" "^0.2.24"
+
+"@topology/layout@^0.2.24":
+  version "0.2.24"
+  resolved "https://registry.npm.taobao.org/@topology/layout/download/@topology/layout-0.2.24.tgz#987d364b4620b73c56d1154b2d99ef63fa95d4a7"
+  integrity sha1-mH02S0YgtzxW0RVLLZnvY/qV1Kc=
   dependencies:
     "@topology/core" "^0.2.24"
 
@@ -8087,6 +8102,11 @@ mississippi@^3.0.0:
     pumpify "^1.3.3"
     stream-each "^1.1.0"
     through2 "^2.0.0"
+
+mitt@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/mitt/-/mitt-2.1.0.tgz#f740577c23176c6205b121b2973514eade1b2230"
+  integrity sha512-ILj2TpLiysu2wkBbWjAmww7TkZb65aiQO+DkVdUTBpBXq+MHYiETENkKFMtsJZX1Lf4pe4QOrTSjIfUwN5lRdg==
 
 mixin-deep@^1.2.0:
   version "1.3.2"

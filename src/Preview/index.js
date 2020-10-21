@@ -5,9 +5,15 @@ let canvas;
 const Preview = ({ history }) => {
 
   useEffect(() => {
-    canvas = new Topology('topology-canvas-preview', {});
+    const canvasOptions = {
+      rotateCursor: '/rotate.cur',
+      locked: 1
+    };
+    canvas = new Topology('topology-canvas-preview', canvasOptions);
+    history.location.state.data.locked = 1;
     canvas.open(history.location.state.data);
-  }, [history]);
+  }, []);
+
 
   return (
     <>

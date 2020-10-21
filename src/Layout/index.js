@@ -104,7 +104,6 @@ const Layout = ({ history }) => {
     }
 
     if(history.location.state.from === "/preview") {
-      console.log(history.location.state);
       confirm({
         title: '是否要保存预览前的数据?',
         okText: '保存',
@@ -196,6 +195,7 @@ const Layout = ({ history }) => {
         }
       }
     }
+
     canvas.updateProps(selected.node);
   }, [selected]);
 

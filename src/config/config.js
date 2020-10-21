@@ -1,163 +1,7 @@
 export const Tools = [
   {
-    group: '物流调度',
-    children: [
-      {
-        name: '减速带',
-        icon: 'icon-jiansudai',
-        data: {
-          text: '',
-          rect: {
-            width: 100,
-            height: 100
-          },
-          name: 'rectangle',
-          icon: '\ue662',
-          iconFamily: 'iconfont',
-          iconColor: '#2f54eb',
-          rotate: 60
-        }
-      },
-      {
-        name: 'fangxiangbiao',
-        icon: 'icon-fangxiangbiao',
-        data: {
-          text: '',
-          rect: {
-            width: 100,
-            height: 100
-          },
-          name: 'rectangle',
-          icon: '\ue60b',
-          iconFamily: 'iconfont',
-          iconColor: '#2f54eb',
-          is3D: true,
-          z: 10,
-          zRotate: 15,
-        }
-      },
-      {
-        name: 'chongdianzhuang',
-        icon: 'icon-chongdianzhuang',
-        data: {
-          text: '',
-          rect: {
-            width: 100,
-            height: 100
-          },
-          name: 'rectangle',
-          icon: '\ue645',
-          iconFamily: 'iconfont',
-          iconColor: '#2f54eb',
-          is3D: true,
-          z: 10,
-          zRotate: 15,
-        }
-      },
-      {
-        name: 'jichuang',
-        icon: 'icon-jichuang',
-        data: {
-          text: '',
-          rect: {
-            width: 100,
-            height: 100
-          },
-          name: 'rectangle',
-          icon: '\ue609',
-          iconFamily: 'iconfont',
-          iconColor: '#2f54eb',
-          is3D: true,
-          z: 10,
-          zRotate: 15,
-        }
-      },
-      {
-        name: 'tubiaozhizuomoban-',
-        icon: 'icon-tubiaozhizuomoban-',
-        data: {
-          text: '',
-          rect: {
-            width: 100,
-            height: 100
-          },
-          name: 'rectangle',
-          icon: '\ue6e0',
-          iconFamily: 'iconfont',
-          iconColor: '#2f54eb',
-          is3D: true,
-          z: 10,
-          zRotate: 15,
-        }
-      },
-      {
-        name: 'icon_xiaoche',
-        icon: 'icon-icon_xiaoche',
-        data: {
-          text: '',
-          rect: {
-            width: 100,
-            height: 100
-          },
-          name: 'rectangle',
-          icon: '\ue678',
-          iconFamily: 'iconfont',
-          iconColor: '#2f54eb',
-        }
-      },
-      {
-        name: 'icon-two-agv-white-green-yellow-red-2',
-        icon: 'icon-icon-two-agv-white-green-yellow-red-2',
-        data: {
-          text: '',
-          rect: {
-            width: 100,
-            height: 100
-          },
-          name: 'rectangle',
-          icon: '\ue64e',
-          iconFamily: 'iconfont',
-          iconColor: '#2f54eb',
-        }
-      },
-      {
-        name: 'site',
-        icon: 'icon-site',
-        data: {
-          text: '',
-          rect: {
-            width: 100,
-            height: 100
-          },
-          name: 'rectangle',
-          icon: '\ue610',
-          iconFamily: 'iconfont',
-          iconColor: '#2f54eb',
-        }
-      }
-    ]
-  },
-  {
     group: '基本形状',
     children: [
-      {
-        name: 'jichuang',
-        icon: 'icon-jichuang',
-        data: {
-          text: '',
-          rect: {
-            width: 100,
-            height: 100
-          },
-          name: 'cube',
-          icon: '\ue609',
-          iconFamily: 'iconfont',
-          iconColor: '#2f54eb',
-          is3D: true,
-          z: 10,
-          zRotate: 15,
-        }
-      },
       {
         name: 'image',
         icon: 'icon-image',
@@ -381,38 +225,6 @@ export const Tools = [
         }
       },
       {
-        name: 'image',
-        icon: 'icon-image',
-        data: {
-          text: '',
-          rect: {
-            width: 100,
-            height: 100
-          },
-          name: 'image',
-          image: '/assets/img/logo.png'
-        }
-      },
-      {
-        name: 'jichuang',
-        icon: 'icon-jichuang',
-        data: {
-          rect: {
-            width: 50,
-            height: 70
-          },
-          // is3D: true, 
-          z: 10,
-          // zRotate: 15,
-          // fillStyle: '#ddd',
-          name: 'icon-jichuang',
-          // icon: '\ue63c',
-          iconFamily: 'iconfont',
-          iconColor: '#777',
-          iconSize: 30
-        }
-      },
-      {
         name: 'people',
         icon: 'icon-people',
         data: {
@@ -436,7 +248,7 @@ export const Tools = [
           paddingRight: 10,
           paddingTop: 10,
           paddingBottom: 10,
-          // strokeStyle: 'transparent',
+          strokeStyle: 'transparent',
           name: 'div'
         }
       }
