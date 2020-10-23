@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback, useMemo, Fragment } from 'react';
 import { Topology, registerNode } from '@topology/core';
+import { register as registerChart } from '@topology/chart-diagram';
 import {
   flowData,
   flowDataAnchors,
@@ -75,18 +76,22 @@ import {
   sequenceFocusIconRect,
   sequenceFocusTextRect
 } from '@topology/sequence-diagram';
-import {  Modal } from "antd";
+import { Modal, Tabs } from 'antd';
 import { Tools } from '../config/config';
-import { getNodeById } from '../Service/topologyService'
+import { getNodeById } from '../Service/topologyService';
 import Header from '../Header';
 import NodeComponent from './component/nodeComponent';
 import BackgroundComponent from './component/backgroundComponent';
 import LineComponent from './component/lineComponent';
-import './index.css'
-const { confirm } = Modal;
-export let canvas;
-const Layout = ({ history }) => {
+import SystemComponent from './LeftAreaComponent/SystemComponent';
+import MyComponent from './LeftAreaComponent/MyComponent';
 
+import './index.css';
+const { confirm } = Modal;
+const { TabPane } = Tabs;
+export let canvas;
+registerChart();
+const Layout = ({ history }) => {
   const [selected, setSelected] = useState({});
 
   const [isLoadCanvas, setIsLoadCanvas] = useState(false);
@@ -101,10 +106,10 @@ const Layout = ({ history }) => {
     canvas = new Topology('topology-canvas', canvasOptions);
     async function getNodeData() {
       const data = await getNodeById(history.location.state.id);
-      canvas.open(data.data)
+      canvas.open(data.data);
     }
 
-    if(history.location.state.from === "/preview") {
+    if (history.location.state && history.location.state.from === '/preview') {
       confirm({
         title: '是否要保存预览前的数据?',
         okText: '保存',
@@ -115,7 +120,7 @@ const Layout = ({ history }) => {
         },
         onCancel() {
           getNodeData();
-        },
+        }
       });
     } else {
       if (history.location?.state?.id) {
@@ -125,16 +130,28 @@ const Layout = ({ history }) => {
     setIsLoadCanvas(true);
   }, [history]);
 
-
   /**
-  * 注册图形库
-  */
+   * 注册图形库
+   */
 
   const canvasRegister = () => {
+
     registerNode('flowData', flowData, flowDataAnchors, flowDataIconRect, flowDataTextRect);
-    registerNode('flowSubprocess', flowSubprocess, null, flowSubprocessIconRect, flowSubprocessTextRect);
+    registerNode(
+      'flowSubprocess',
+      flowSubprocess,
+      null,
+      flowSubprocessIconRect,
+      flowSubprocessTextRect
+    );
     registerNode('flowDb', flowDb, null, flowDbIconRect, flowDbTextRect);
-    registerNode('flowDocument', flowDocument, flowDocumentAnchors, flowDocumentIconRect, flowDocumentTextRect);
+    registerNode(
+      'flowDocument',
+      flowDocument,
+      flowDocumentAnchors,
+      flowDocumentIconRect,
+      flowDocumentTextRect
+    );
     registerNode(
       'flowInternalStorage',
       flowInternalStorage,
@@ -150,13 +167,31 @@ const Layout = ({ history }) => {
       flowExternStorageTextRect
     );
     registerNode('flowQueue', flowQueue, null, flowQueueIconRect, flowQueueTextRect);
-    registerNode('flowManually', flowManually, flowManuallyAnchors, flowManuallyIconRect, flowManuallyTextRect);
-    registerNode('flowDisplay', flowDisplay, flowDisplayAnchors, flowDisplayIconRect, flowDisplayTextRect);
+    registerNode(
+      'flowManually',
+      flowManually,
+      flowManuallyAnchors,
+      flowManuallyIconRect,
+      flowManuallyTextRect
+    );
+    registerNode(
+      'flowDisplay',
+      flowDisplay,
+      flowDisplayAnchors,
+      flowDisplayIconRect,
+      flowDisplayTextRect
+    );
     registerNode('flowParallel', flowParallel, flowParallelAnchors, null, null);
     registerNode('flowComment', flowComment, flowCommentAnchors, null, null);
 
     // activity
-    registerNode('activityFinal', activityFinal, null, activityFinalIconRect, activityFinalTextRect);
+    registerNode(
+      'activityFinal',
+      activityFinal,
+      null,
+      activityFinalIconRect,
+      activityFinalTextRect
+    );
     registerNode('swimlaneV', swimlaneV, null, swimlaneVIconRect, swimlaneVTextRect);
     registerNode('swimlaneH', swimlaneH, null, swimlaneHIconRect, swimlaneHTextRect);
     registerNode('forkH', fork, forkHAnchors, forkIconRect, forkTextRect);
@@ -164,81 +199,124 @@ const Layout = ({ history }) => {
 
     // class
     registerNode('simpleClass', simpleClass, null, simpleClassIconRect, simpleClassTextRect);
-    registerNode('interfaceClass', interfaceClass, null, interfaceClassIconRect, interfaceClassTextRect);
+    registerNode(
+      'interfaceClass',
+      interfaceClass,
+      null,
+      interfaceClassIconRect,
+      interfaceClassTextRect
+    );
 
     // sequence
     registerNode('lifeline', lifeline, lifelineAnchors, lifelineIconRect, lifelineTextRect);
-    registerNode('sequenceFocus', sequenceFocus, sequenceFocusAnchors, sequenceFocusIconRect, sequenceFocusTextRect);
-  }
-
+    registerNode(
+      'sequenceFocus',
+      sequenceFocus,
+      sequenceFocusAnchors,
+      sequenceFocusIconRect,
+      sequenceFocusTextRect
+    );
+  };
 
   const onDrag = (event, node) => {
     event.dataTransfer.setData('Text', JSON.stringify(node.data));
-  }
+  };
 
   /**
-  * 当表单数据变化时, 重新渲染canvas
-  * @params {object} value - 图形的宽度,高度, x, y等等
-  */
+   * 当表单数据变化时, 重新渲染canvas
+   * @params {object} value - 图形的宽度,高度, x, y等等
+   */
 
-  const onHandleFormValueChange = useCallback(value => {
-    const { rotate, data, lineWidth, strokeStyle, dash, color, fontSize, fontFamily, text, ...other } = value;
-    const changedValues = { node: { rect: other, font: { color, fontSize, fontFamily }, rotate, lineWidth, strokeStyle, dash, text, data } }
-    if (changedValues.node) {
-      // 遍历查找修改的属性，赋值给原始Node
-      for (const key in changedValues.node) {
-        if (Array.isArray(changedValues.node[key])) {
-        } else if (typeof changedValues.node[key] === 'object') {
-          for (const k in changedValues.node[key]) {
-            selected.node[key][k] = changedValues.node[key][k];
+  const onHandleFormValueChange = useCallback(
+    (value) => {
+      const {
+        rotate,
+        data,
+        lineWidth,
+        strokeStyle,
+        dash,
+        color,
+        fontSize,
+        fontFamily,
+        text,
+        ...other
+      } = value;
+      const changedValues = {
+        node: {
+          rect: other,
+          font: { color, fontSize, fontFamily },
+          rotate,
+          lineWidth,
+          strokeStyle,
+          dash,
+          text,
+          data
+        }
+      };
+      if (changedValues.node) {
+        // 遍历查找修改的属性，赋值给原始Node
+        for (const key in changedValues.node) {
+          if (Array.isArray(changedValues.node[key])) {
+          } else if (typeof changedValues.node[key] === 'object') {
+            for (const k in changedValues.node[key]) {
+              selected.node[key][k] = changedValues.node[key][k];
+            }
+          } else {
+            selected.node[key] = changedValues.node[key];
           }
-        } else {
-          selected.node[key] = changedValues.node[key];
         }
       }
-    }
 
-    canvas.updateProps(selected.node);
-  }, [selected]);
+      canvas.updateProps(selected.node);
+    },
+    [selected]
+  );
 
-  const onEventValueChange = value => {
-    console.log(value);
-    selected.node.events = value;
-    canvas.updateProps(selected.node);
-  }
+  const onEventValueChange = useCallback(
+    (value) => {
+      selected.node.events = value;
+      canvas.updateProps(selected.node);
+    },
+    [selected]
+  );
 
   /**
-  * 当线条表单数据变化时, 重新渲染canvas
-  * @params {object} value - 图形的宽度,高度, x, y等等
-  */
+   * 当线条表单数据变化时, 重新渲染canvas
+   * @params {object} value - 图形的宽度,高度, x, y等等
+   */
 
-  const onHandleLineFormValueChange = useCallback(value => {
-    const { dash, lineWidth, strokeStyle, name, fromArrow, toArrow, ...other } = value;
-    const changedValues = { line: { rect: other, lineWidth, dash, strokeStyle, name, fromArrow, toArrow } }
-    if (changedValues.line) {
-      // 遍历查找修改的属性，赋值给原始line
-      for (const key in changedValues.line) {
-        if (Array.isArray(changedValues.line[key])) {
-        } else if (typeof changedValues.line[key] === 'object') {
-          for (const k in changedValues.line[key]) {
-            selected.line[key][k] = changedValues.line[key][k];
+  const onHandleLineFormValueChange = useCallback(
+    (value) => {
+      const { dash, lineWidth, strokeStyle, name, fromArrow, toArrow, ...other } = value;
+      const changedValues = {
+        line: { rect: other, lineWidth, dash, strokeStyle, name, fromArrow, toArrow }
+      };
+      if (changedValues.line) {
+        // 遍历查找修改的属性，赋值给原始line
+        for (const key in changedValues.line) {
+          if (Array.isArray(changedValues.line[key])) {
+          } else if (typeof changedValues.line[key] === 'object') {
+            for (const k in changedValues.line[key]) {
+              selected.line[key][k] = changedValues.line[key][k];
+            }
+          } else {
+            selected.line[key] = changedValues.line[key];
           }
-        } else {
-          selected.line[key] = changedValues.line[key];
         }
       }
-    }
-    canvas.updateProps(selected.line);
-  }, [selected]);
-
+      canvas.updateProps(selected.line);
+    },
+    [selected]
+  );
 
   /**
-  * 监听画布上元素的事件
-  * @params {string} event - 事件名称
-  * @params {object} data - 节点数据
-  */
+   * 监听画布上元素的事件
+   * @params {string} event - 事件名称
+   * @params {object} data - 节点数据
+   */
 
   const onMessage = (event, data) => {
+    console.log(event, data);
     switch (event) {
       case 'node': // 节点
       case 'addNode':
@@ -258,107 +336,78 @@ const Layout = ({ history }) => {
           multi: false,
           nodes: null,
           locked: data.locked
-        })
+        });
         break;
-      case 'space':  // 空白处
+      case 'space': // 空白处
         setSelected({
           node: null,
           line: null,
           multi: false,
           nodes: null,
           locked: null
-        })
+        });
         break;
       default:
         break;
     }
-  }
+  };
 
   /**
-  * 画布右侧配置区域
-  */
+   * 画布右侧配置区域
+   */
 
   const rightAreaConfig = useMemo(() => {
     return {
-      node: selected && <NodeComponent data={selected} onFormValueChange={onHandleFormValueChange} onEventValueChange={onEventValueChange} />, // 渲染Node节点类型的组件
-      line: selected && <LineComponent data={selected} onFormValueChange={onHandleLineFormValueChange} />, // 渲染线条类型的组件
+      node: selected && (
+        <NodeComponent
+          data={selected}
+          onFormValueChange={onHandleFormValueChange}
+          onEventValueChange={onEventValueChange}
+        />
+      ), // 渲染Node节点类型的组件
+      line: selected && (
+        <LineComponent data={selected} onFormValueChange={onHandleLineFormValueChange} />
+      ), // 渲染线条类型的组件
       default: canvas && <BackgroundComponent data={canvas} /> // 渲染画布背景的组件
-    }
-  }, [selected, onHandleFormValueChange, onHandleLineFormValueChange])
+    };
+  }, [selected, onHandleFormValueChange, onHandleLineFormValueChange, onEventValueChange]);
 
   /**
-  * 渲染画布右侧区域操作栏
-  */
+   * 渲染画布右侧区域操作栏
+   */
 
   const renderRightArea = useMemo(() => {
     let _component = rightAreaConfig.default;
-    Object.keys(rightAreaConfig).forEach(item => {
+    Object.keys(rightAreaConfig).forEach((item) => {
       if (selected[item]) {
-        _component = rightAreaConfig[item]
+        _component = rightAreaConfig[item];
       }
-    })
+    });
     return _component;
   }, [selected, rightAreaConfig]);
 
-
-   const renderHeader = useMemo(() => {
-     if(isLoadCanvas)
-     return <Header canvas={canvas} history={history} />
-   }, [isLoadCanvas, history])
-
+  const renderHeader = useMemo(() => {
+    if (isLoadCanvas) return <Header canvas={canvas} history={history} />;
+  }, [isLoadCanvas, history]);
 
   return (
     <Fragment>
-      {
-        renderHeader
-      }
+      {renderHeader}
       <div className="page">
         <div className="tool">
-          {
-            Tools.map((item, index) => <div key={index}>
-              <div className="title">{item.group}</div>
-              <div className="button">
-                {
-                  item.children.map((item, idx) => {
-                    // eslint-disable-next-line jsx-a11y/anchor-is-valid
-                    return (<a key={idx} title={item.name} draggable href="#" onDragStart={ev => onDrag(ev, item)}>
-                      <i className={'iconfont ' + item.icon} style={{ fontSize: 13 }}>
-                      </i>
-                    </a>)
-                  })
-                }
-              </div>
-            </div>)
-          }
+          <Tabs defaultActiveKey="1">
+          <TabPane tab="系统组件" key="1" style={{ margin: 0 }}>
+            <SystemComponent onDrag={onDrag} Tools={Tools} />
+          </TabPane>
+          <TabPane tab="我的图片" key="2" style={{ margin: 0 }}>
+            <MyComponent />
+          </TabPane>
+          </Tabs>
         </div>
-        <div className="full" >
-          <svg
-            width="100%"
-            height="100%"
-            style={{
-              position: 'absolute',
-              left: 0,
-              right: 0,
-              top: 0,
-              bottom: 0,
-            }}
-            xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
-                <path d="M 10 0 L 0 0 0 10" fill="none" stroke="#f3f3f3" strokeWidth="1" />
-              </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#grid)" >
-
-            </rect>
-          </svg>
+        <div className="full">
           <div id="topology-canvas" style={{ height: '100%', width: '100%' }} />
         </div>
-        <div className="props">
-          {
-            renderRightArea
-          }
-        </div>
+        <div className="props">{renderRightArea}</div>
       </div>
     </Fragment>
   );

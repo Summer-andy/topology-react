@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import Layout from './Layout';
-import Home from './Home';
 import Preview from './Preview';
 import * as serviceWorker from './serviceWorker';
 import { Route, BrowserRouter } from 'react-router-dom';
@@ -10,8 +9,7 @@ import { Route, BrowserRouter } from 'react-router-dom';
 const App = () => {
 
   return <BrowserRouter>
-    <Route exact path="/" component={Home} />
-    <Route exact path="/workspace" component={Layout} />
+    <Route exact path="/" component={Layout} />
     <Route exact path="/preview" component={Preview} />
   </BrowserRouter >
 }

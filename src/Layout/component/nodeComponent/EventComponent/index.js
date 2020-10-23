@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Button, Collapse, Select, Col, Form, Input, Icon } from 'antd';
+import { useCallback } from 'react';
 import './index.css'
 const { Panel } = Collapse;
 const Page = ({ form: { getFieldDecorator, validateFields, resetFields }, onEventValueChange, canvasData }) => {
@@ -143,12 +144,12 @@ const Page = ({ form: { getFieldDecorator, validateFields, resetFields }, onEven
   * 删除自定义事件
   */
 
-  const onHandleDeleteItem = idx => {
+  const onHandleDeleteItem =  useCallback(idx => {
     const data = [...eventData];
     delete data[idx];
     resetFields();
     setEventData(data.filter(Boolean))
-  }
+  }, [eventData, resetFields]) 
 
   /**
   * 渲染事件列表
@@ -161,7 +162,7 @@ const Page = ({ form: { getFieldDecorator, validateFields, resetFields }, onEven
         renderFontForm(item, index)
       }
     </Panel>)}</Collapse>
-  }, [eventData, renderFontForm])
+  }, [eventData, renderFontForm, onHandleDeleteItem])
 
   return (
     <div>

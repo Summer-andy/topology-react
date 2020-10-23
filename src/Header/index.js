@@ -121,10 +121,11 @@ const Header = ({ canvas, history }) => {
         break;
       case 'preview':
         let reader = new FileReader();
+        console.log(canvas.data);
         const result = new Blob([JSON.stringify(canvas.data)], { type: 'text/plain;charset=utf-8' });
         reader.readAsText(result, 'text/plain;charset=utf-8');
         reader.onload = (e) => {
-          history.push({ pathname: '/preview', state: { data: JSON.parse(reader.result), id: history.location.state.id } });
+          history.push({ pathname: '/preview', state: { data: JSON.parse(reader.result) } });
         }
         break;
       default:
@@ -359,10 +360,6 @@ const Header = ({ canvas, history }) => {
           锁定
         </Button>
         }
-        <Button onClick={() => history.push('/')}>
-          <Icon type="rollback" />
-          返回主页
-        </Button>
         <Button onClick={() => scaleZoomOut()}>
           <Icon type="plus" />
         </Button>

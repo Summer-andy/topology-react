@@ -1,6 +1,6 @@
 import React, { useMemo, useEffect } from 'react';
 import { Form, InputNumber, Tabs, Collapse, Row, Col, Input, Select, Tag } from 'antd';
-// import ExtraDataForm from './ExtraDataForm';
+import AnimateComponent from './AnimateComponent';
 import EventComponent from './EventComponent';
 import './index.css';
 const { Panel } = Collapse;
@@ -178,12 +178,9 @@ const CanvasProps = ({ data, form: { getFieldDecorator }, form, onFormValueChang
             initialValue: extraFields
           })(<TextArea rows={10} />)}
         </Form.Item>
-        {/* <ExtraDataForm extraFields={extraFields} form={form} /> */}
       </Col>
     </Form>
   }, [extraFields, getFieldDecorator])
-
-
 
   return (
     <div className="rightArea">
@@ -225,8 +222,11 @@ const CanvasProps = ({ data, form: { getFieldDecorator }, form, onFormValueChang
           <EventComponent canvasData={data} onEventValueChange={onEventValueChange} />
         </TabPane>
         <TabPane tab="动效" key="4" style={{ margin: 0 }}>
+          {/* <AnimateComponent canvasData={data} /> */}
+          待开发...
         </TabPane>
         <TabPane tab="结构" key="5" style={{ margin: 0 }}>
+          待开发...
         </TabPane>
       </Tabs>
 

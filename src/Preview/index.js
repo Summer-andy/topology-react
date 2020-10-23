@@ -12,7 +12,7 @@ const Preview = ({ history }) => {
     canvas = new Topology('topology-canvas-preview', canvasOptions);
     history.location.state.data.locked = 1;
     canvas.open(history.location.state.data);
-  }, []);
+  }, [history.location.state.data]);
 
 
   return (
@@ -21,7 +21,7 @@ const Preview = ({ history }) => {
         style={{
           border: '1px solid rgb(235, 237, 240)',
         }}
-        onBack={() => history.push({ pathname: '/workspace', state: { data: history.location.state.data, id: history.location.state.id , from: '/preview' } })}
+        onBack={() => history.push({ pathname: '/', state: { data: history.location.state.data, from: '/preview' } })}
         title="返回画板"
         subTitle="预览"
       />

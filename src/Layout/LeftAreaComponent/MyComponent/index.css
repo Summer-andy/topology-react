@@ -1,0 +1,14 @@
+.container {
+  height: 100%;
+  width:100%;
+}
+
+.btn {
+  margin: 10px 48px;
+  width: 150px;
+}
+
+ .colStyle {
+  text-align: center ;
+  margin: 10px 0;
+}
