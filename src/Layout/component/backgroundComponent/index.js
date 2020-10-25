@@ -1,13 +1,15 @@
-import React, { useMemo, useEffect } from 'react';
+import React, { useMemo, useEffect, useState } from 'react';
 import { Form, Tabs, Row, Col, Input, Collapse, Button } from 'antd';
 import './index.css';
 import MQTTComponent from './MQTTComponent';
 import { canvas } from '../../index';
 const { TabPane } = Tabs;
 const { Panel } = Collapse;
+const { TextArea } = Input;
 const CanvasProps = ({ data, form: { getFieldDecorator }, form }) => {
 
   const { bkColor, bkImage } = data.data;
+  const [wsAddress, setWsAddress] = useState('ws://123.207.136.134:9010/ajaxchattest');
 
   useEffect(() => {
     form.validateFields((err, value) => {
@@ -50,8 +52,13 @@ const CanvasProps = ({ data, form: { getFieldDecorator }, form }) => {
     </Form>
   }, [bkColor, bkImage, getFieldDecorator]);
 
+
+  /**
+  * 发起websocket连接
+  */
+
   const onHandleConnectWS = () => {
-  console.log(canvas);
+    canvas.openSocket(wsAddress);
   }
 
   return (
@@ -69,7 +76,7 @@ const CanvasProps = ({ data, form: { getFieldDecorator }, form }) => {
         <TabPane tab="消息通信" key="2" style={{ margin: 0 }}>
           <Collapse defaultActiveKey={['1', '2']}>
             <Panel header="websocket地址" key="1">
-                <Input placeholder="请输入websocket地址" />
+                <TextArea placeholder="请输入websocket地址" value={wsAddress} onChange={e => setWsAddress(e.target.value)} />
                 <Button type="primary" style={{ width: 265, marginTop: 10 }} onClick={() => onHandleConnectWS()}>测试连接</Button>
             </Panel>
             <Panel header="MQTT地址" key="2">

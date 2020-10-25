@@ -316,7 +316,6 @@ const Layout = ({ history }) => {
    */
 
   const onMessage = (event, data) => {
-    console.log(event, data);
     switch (event) {
       case 'node': // 节点
       case 'addNode':

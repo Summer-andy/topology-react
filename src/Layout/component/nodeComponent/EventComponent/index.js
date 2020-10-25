@@ -2,13 +2,20 @@ import React, { useState, useMemo } from 'react';
 import { Button, Collapse, Select, Col, Form, Input, Icon } from 'antd';
 import { useCallback } from 'react';
 import './index.css';
+import { useEffect } from 'react';
+const { TextArea } = Input;
 const { Panel } = Collapse;
 const Page = ({
   form: { getFieldDecorator, validateFields, resetFields },
   onEventValueChange,
   canvasData
 }) => {
+
   const [eventData, setEventData] = useState(canvasData.node.events);
+
+  useEffect(() => {
+    setEventData(canvasData.node.events);
+  }, [canvasData])
 
   /**
    * 新增事件
@@ -168,7 +175,7 @@ const Page = ({
               {getFieldDecorator(`code${idx}`, {
                 initialValue: item.value || void 0
               })(
-                <Input
+                <TextArea
                   placeholder="请输入自定义代码"
                   onChange={(e) => onHandleCodeChange(e, idx)}
                 />
