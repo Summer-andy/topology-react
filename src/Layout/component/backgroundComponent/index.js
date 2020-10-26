@@ -48,7 +48,7 @@ const CanvasProps = ({ data, form: { getFieldDecorator }, form }) => {
             <Form.Item label="背景图片">
               {getFieldDecorator('bkImage', {
                 initialValue: bkImage
-              })(<Input placeholder="请输入图片的地址" />)}
+              })(<TextArea placeholder="请输入图片的地址" />)}
             </Form.Item>
           </Col>
           <Col span={24}>

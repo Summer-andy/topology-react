@@ -90,7 +90,6 @@ import './index.css';
 const { confirm } = Modal;
 const { TabPane } = Tabs;
 export let canvas;
-registerChart();
 const Layout = ({ history }) => {
   const [selected, setSelected] = useState({});
 
@@ -135,7 +134,7 @@ const Layout = ({ history }) => {
    */
 
   const canvasRegister = () => {
-
+    registerChart();
     registerNode('flowData', flowData, flowDataAnchors, flowDataIconRect, flowDataTextRect);
     registerNode(
       'flowSubprocess',

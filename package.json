@@ -7,7 +7,7 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "@topology/activity-diagram": "^0.2.24",
-    "@topology/chart-diagram": "^0.2.24",
+    "@topology/chart-diagram": "0.3.0",
     "@topology/class-diagram": "^0.2.24",
     "@topology/core": "^0.3.1",
     "@topology/flow-diagram": "^0.2.24",

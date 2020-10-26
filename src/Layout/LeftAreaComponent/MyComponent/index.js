@@ -61,8 +61,8 @@ const Layout = () => {
       <Row>
         {list.map((item, index) => (
           <Col key={index} span={12} className="colStyle">
-            <a draggable href="javascript:void(0);" onDragStart={(ev) => onDrag(ev, item)}>
-              <img src={item} style={{ width: 100, height: 100 }} />
+            <a draggable href="/#" onDragStart={(ev) => onDrag(ev, item)}>
+              <img alt="pic" src={item} style={{ width: 100, height: 100 }} />
             </a>
           </Col>
         ))}

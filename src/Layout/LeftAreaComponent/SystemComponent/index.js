@@ -12,7 +12,7 @@ const Layout = ({ Tools, onDrag }) => {
               key={idx}
               title={item.name}
               draggable
-              href="#"
+              href="/#"
               onDragStart={(ev) => onDrag(ev, item)}
             >
               <i className={'iconfont ' + item.icon} style={{ fontSize: 13 }}></i>

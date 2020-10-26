@@ -17,7 +17,7 @@ const MQTTForm = ({ form: { getFieldDecorator, validateFields } }) => {
   const onHandleConnectMQTT = () => {
     validateFields((err, value) => {
       if(err) return;
-      const { mqtt, clientId, username, password, topics } = value;
+      const { mqtt, clientId, username, password } = value;
       canvas.openMqtt(mqtt, {
         clientId,
         username,

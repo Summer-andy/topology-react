@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form, Row, Col, InputNumber, Button } from 'antd';
-import { layout, spaceBetween, alignNodes } from '@topology/layout';
+import { layout } from '@topology/layout';
 import { canvas } from '../../../index';
 const formLayout = {
   labelCol: { span: 8 },
@@ -12,10 +12,7 @@ const Layout = ({ form: { getFieldDecorator, validateFields } }) => {
     validateFields((err, value) => {
       if(err) return;
       if(canvas) {
-        console.log(value);
-        console.log(canvas.data.pens);
         layout(canvas.data.pens, value);
-        console.log(canvas.data.pens);
         canvas.updateProps(true, canvas.data.pens);
       }
     });
