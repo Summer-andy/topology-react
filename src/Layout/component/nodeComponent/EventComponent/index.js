@@ -179,6 +179,7 @@ const Page = ({
                 <TextArea
                   placeholder="请输入自定义代码"
                   onChange={(e) => onHandleCodeChange(e, idx)}
+                  rows={10}
                 />
               )}
             </Form.Item>

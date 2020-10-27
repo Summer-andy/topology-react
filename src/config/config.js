@@ -1,6 +1,6 @@
 export const Tools = [
   {
-    group: '基本形状',
+    group: '自定义图片',
     children: [
       {
         name: 'image',
@@ -28,6 +28,11 @@ export const Tools = [
           image: require('./machine.jpg')
         }
       },
+    ]
+  },
+  {
+    group: '基本形状',
+    children: [
       {
         name: 'rectangle',
         icon: 'icon-rectangle',

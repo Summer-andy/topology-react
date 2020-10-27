@@ -175,7 +175,7 @@ const CanvasProps = ({ data, form: { getFieldDecorator }, form, onFormValueChang
       <Col>
         <Form.Item label="自定义数据字段">
           {getFieldDecorator('data', {
-            initialValue: typeof extraFields === 'object' ?  JSON.stringify(extraFields) : extraFields
+            initialValue: extraFields 
           })(<TextArea rows={10} />)}
         </Form.Item>
       </Col>
