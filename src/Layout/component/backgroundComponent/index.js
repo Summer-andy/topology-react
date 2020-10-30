@@ -35,7 +35,7 @@ const CanvasProps = ({ data, form: { getFieldDecorator }, form }) => {
       wrapperCol: { span: 15 }
     };
     return (
-      <Form {...formLayout} style={{ marginTop: 10 }}>
+      <Form {...formLayout} style={{ marginTop: 10, position: 'relative' }}>
         <Row>
           <Col span={24}>
             <Form.Item label="背景颜色">
@@ -82,9 +82,17 @@ const CanvasProps = ({ data, form: { getFieldDecorator }, form }) => {
 
   return (
     <div className="rightArea">
-      <Tabs defaultActiveKey="1">
-        <TabPane tab="图文设置" key="1" style={{ margin: 0 }}>
+      <Tabs defaultActiveKey="1" animated={false}>
+        <TabPane tab="图文设置" key="1" style={{ margin: 0, position: 'relative' }}>
           {renderForm}
+          <ul className="bottomTip">
+              <li>← ↑ → ↓ ：移动5个像素</li>
+              <li>Ctrl + 鼠标点击：多选</li>
+              <li>Ctrl + 鼠标滚轮：缩放画布</li>
+              <li>Ctrl + ← ↑ → ↓ ：移动1个像素</li>
+              <li>Ctrl + 鼠标拖拽空白：移动整个画布</li>
+              <li>Shift/Alt + 鼠标拖拽节点：独立拖拽（子）节点</li>
+          </ul>
         </TabPane>
         <TabPane tab="消息通信" key="2" style={{ margin: 0 }}>
           <Collapse defaultActiveKey={['1', '2']}>
