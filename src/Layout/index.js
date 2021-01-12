@@ -142,89 +142,86 @@ const Layout = ({ history }) => {
     registerNode('result', reactNodes(Result), null, null, null);
     registerNode('table', reactNodes(Table), null, null, null);
 
+    registerNode('flowData', flowData, flowDataAnchors, flowDataIconRect, flowDataTextRect);
+    registerNode(
+      'flowSubprocess',
+      flowSubprocess,
+      null,
+      flowSubprocessIconRect,
+      flowSubprocessTextRect
+    );
+    registerNode('flowDb', flowDb, null, flowDbIconRect, flowDbTextRect);
+    registerNode(
+      'flowDocument',
+      flowDocument,
+      flowDocumentAnchors,
+      flowDocumentIconRect,
+      flowDocumentTextRect
+    );
+    registerNode(
+      'flowInternalStorage',
+      flowInternalStorage,
+      null,
+      flowInternalStorageIconRect,
+      flowInternalStorageTextRect
+    );
+    registerNode(
+      'flowExternStorage',
+      flowExternStorage,
+      flowExternStorageAnchors,
+      flowExternStorageIconRect,
+      flowExternStorageTextRect
+    );
+    registerNode('flowQueue', flowQueue, null, flowQueueIconRect, flowQueueTextRect);
+    registerNode(
+      'flowManually',
+      flowManually,
+      flowManuallyAnchors,
+      flowManuallyIconRect,
+      flowManuallyTextRect
+    );
+    registerNode(
+      'flowDisplay',
+      flowDisplay,
+      flowDisplayAnchors,
+      flowDisplayIconRect,
+      flowDisplayTextRect
+    );
+    registerNode('flowParallel', flowParallel, flowParallelAnchors, null, null);
+    registerNode('flowComment', flowComment, flowCommentAnchors, null, null);
 
-    // registerNode('dom', domNodes, null, null, null);
+    // activity
+    registerNode(
+      'activityFinal',
+      activityFinal,
+      null,
+      activityFinalIconRect,
+      activityFinalTextRect
+    );
+    registerNode('swimlaneV', swimlaneV, null, swimlaneVIconRect, swimlaneVTextRect);
+    registerNode('swimlaneH', swimlaneH, null, swimlaneHIconRect, swimlaneHTextRect);
+    registerNode('forkH', fork, forkHAnchors, forkIconRect, forkTextRect);
+    registerNode('forkV', fork, forkVAnchors, forkIconRect, forkTextRect);
 
-    // registerNode('flowData', flowData, flowDataAnchors, flowDataIconRect, flowDataTextRect);
-    // registerNode(
-    //   'flowSubprocess',
-    //   flowSubprocess,
-    //   null,
-    //   flowSubprocessIconRect,
-    //   flowSubprocessTextRect
-    // );
-    // registerNode('flowDb', flowDb, null, flowDbIconRect, flowDbTextRect);
-    // registerNode(
-    //   'flowDocument',
-    //   flowDocument,
-    //   flowDocumentAnchors,
-    //   flowDocumentIconRect,
-    //   flowDocumentTextRect
-    // );
-    // registerNode(
-    //   'flowInternalStorage',
-    //   flowInternalStorage,
-    //   null,
-    //   flowInternalStorageIconRect,
-    //   flowInternalStorageTextRect
-    // );
-    // registerNode(
-    //   'flowExternStorage',
-    //   flowExternStorage,
-    //   flowExternStorageAnchors,
-    //   flowExternStorageIconRect,
-    //   flowExternStorageTextRect
-    // );
-    // registerNode('flowQueue', flowQueue, null, flowQueueIconRect, flowQueueTextRect);
-    // registerNode(
-    //   'flowManually',
-    //   flowManually,
-    //   flowManuallyAnchors,
-    //   flowManuallyIconRect,
-    //   flowManuallyTextRect
-    // );
-    // registerNode(
-    //   'flowDisplay',
-    //   flowDisplay,
-    //   flowDisplayAnchors,
-    //   flowDisplayIconRect,
-    //   flowDisplayTextRect
-    // );
-    // registerNode('flowParallel', flowParallel, flowParallelAnchors, null, null);
-    // registerNode('flowComment', flowComment, flowCommentAnchors, null, null);
+    // class
+    registerNode('simpleClass', simpleClass, null, simpleClassIconRect, simpleClassTextRect);
+    registerNode(
+      'interfaceClass',
+      interfaceClass,
+      null,
+      interfaceClassIconRect,
+      interfaceClassTextRect
+    );
 
-    // // activity
-    // registerNode(
-    //   'activityFinal',
-    //   activityFinal,
-    //   null,
-    //   activityFinalIconRect,
-    //   activityFinalTextRect
-    // );
-    // registerNode('swimlaneV', swimlaneV, null, swimlaneVIconRect, swimlaneVTextRect);
-    // registerNode('swimlaneH', swimlaneH, null, swimlaneHIconRect, swimlaneHTextRect);
-    // registerNode('forkH', fork, forkHAnchors, forkIconRect, forkTextRect);
-    // registerNode('forkV', fork, forkVAnchors, forkIconRect, forkTextRect);
-
-    // // class
-    // registerNode('simpleClass', simpleClass, null, simpleClassIconRect, simpleClassTextRect);
-    // registerNode(
-    //   'interfaceClass',
-    //   interfaceClass,
-    //   null,
-    //   interfaceClassIconRect,
-    //   interfaceClassTextRect
-    // );
-
-    // // sequence
-    // registerNode('lifeline', lifeline, lifelineAnchors, lifelineIconRect, lifelineTextRect);
-    // registerNode(
-    //   'sequenceFocus',
-    //   sequenceFocus,
-    //   sequenceFocusAnchors,
-    //   sequenceFocusIconRect,
-    //   sequenceFocusTextRect
-    // );
+    // sequence
+    registerNode('lifeline', lifeline, lifelineAnchors, lifelineIconRect, lifelineTextRect);
+    registerNode(
+      'sequenceFocus',
+      sequenceFocus,
+      sequenceFocusAnchors,
+      sequenceFocusIconRect,
+      sequenceFocusTextRect
+    );
   };
 
   const onDrag = (event, node) => {
