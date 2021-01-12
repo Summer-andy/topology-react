@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback, useMemo, Fragment } from 'react';
 import { Topology, registerNode } from '@topology/core';
+import reactNodes from './Plugin/React-nodes';
 import { register as registerChart } from '@topology/chart-diagram';
 import {
   flowData,
@@ -76,7 +77,7 @@ import {
   sequenceFocusIconRect,
   sequenceFocusTextRect
 } from '@topology/sequence-diagram';
-import { Modal, Tabs } from 'antd';
+import { Modal, Tabs, Button, DatePicker, Result, Table } from 'antd';
 import { Tools } from '../config/config';
 import { getNodeById } from '../Service/topologyService';
 import Header from '../Header';
@@ -98,7 +99,7 @@ const Layout = ({ history }) => {
   useEffect(() => {
     const canvasOptions = {
       rotateCursor: '/rotate.cur',
-      locked: 0
+      locked: 2
     };
     canvasOptions.on = onMessage;
     canvasRegister();
@@ -135,86 +136,95 @@ const Layout = ({ history }) => {
 
   const canvasRegister = () => {
     registerChart();
-    registerNode('flowData', flowData, flowDataAnchors, flowDataIconRect, flowDataTextRect);
-    registerNode(
-      'flowSubprocess',
-      flowSubprocess,
-      null,
-      flowSubprocessIconRect,
-      flowSubprocessTextRect
-    );
-    registerNode('flowDb', flowDb, null, flowDbIconRect, flowDbTextRect);
-    registerNode(
-      'flowDocument',
-      flowDocument,
-      flowDocumentAnchors,
-      flowDocumentIconRect,
-      flowDocumentTextRect
-    );
-    registerNode(
-      'flowInternalStorage',
-      flowInternalStorage,
-      null,
-      flowInternalStorageIconRect,
-      flowInternalStorageTextRect
-    );
-    registerNode(
-      'flowExternStorage',
-      flowExternStorage,
-      flowExternStorageAnchors,
-      flowExternStorageIconRect,
-      flowExternStorageTextRect
-    );
-    registerNode('flowQueue', flowQueue, null, flowQueueIconRect, flowQueueTextRect);
-    registerNode(
-      'flowManually',
-      flowManually,
-      flowManuallyAnchors,
-      flowManuallyIconRect,
-      flowManuallyTextRect
-    );
-    registerNode(
-      'flowDisplay',
-      flowDisplay,
-      flowDisplayAnchors,
-      flowDisplayIconRect,
-      flowDisplayTextRect
-    );
-    registerNode('flowParallel', flowParallel, flowParallelAnchors, null, null);
-    registerNode('flowComment', flowComment, flowCommentAnchors, null, null);
 
-    // activity
-    registerNode(
-      'activityFinal',
-      activityFinal,
-      null,
-      activityFinalIconRect,
-      activityFinalTextRect
-    );
-    registerNode('swimlaneV', swimlaneV, null, swimlaneVIconRect, swimlaneVTextRect);
-    registerNode('swimlaneH', swimlaneH, null, swimlaneHIconRect, swimlaneHTextRect);
-    registerNode('forkH', fork, forkHAnchors, forkIconRect, forkTextRect);
-    registerNode('forkV', fork, forkVAnchors, forkIconRect, forkTextRect);
+    registerNode('button', reactNodes(Button), null, null, null);
+    registerNode('datePicker', reactNodes(DatePicker), null, null, null);
+    registerNode('result', reactNodes(Result), null, null, null);
+    registerNode('table', reactNodes(Table), null, null, null);
 
-    // class
-    registerNode('simpleClass', simpleClass, null, simpleClassIconRect, simpleClassTextRect);
-    registerNode(
-      'interfaceClass',
-      interfaceClass,
-      null,
-      interfaceClassIconRect,
-      interfaceClassTextRect
-    );
 
-    // sequence
-    registerNode('lifeline', lifeline, lifelineAnchors, lifelineIconRect, lifelineTextRect);
-    registerNode(
-      'sequenceFocus',
-      sequenceFocus,
-      sequenceFocusAnchors,
-      sequenceFocusIconRect,
-      sequenceFocusTextRect
-    );
+    // registerNode('dom', domNodes, null, null, null);
+
+    // registerNode('flowData', flowData, flowDataAnchors, flowDataIconRect, flowDataTextRect);
+    // registerNode(
+    //   'flowSubprocess',
+    //   flowSubprocess,
+    //   null,
+    //   flowSubprocessIconRect,
+    //   flowSubprocessTextRect
+    // );
+    // registerNode('flowDb', flowDb, null, flowDbIconRect, flowDbTextRect);
+    // registerNode(
+    //   'flowDocument',
+    //   flowDocument,
+    //   flowDocumentAnchors,
+    //   flowDocumentIconRect,
+    //   flowDocumentTextRect
+    // );
+    // registerNode(
+    //   'flowInternalStorage',
+    //   flowInternalStorage,
+    //   null,
+    //   flowInternalStorageIconRect,
+    //   flowInternalStorageTextRect
+    // );
+    // registerNode(
+    //   'flowExternStorage',
+    //   flowExternStorage,
+    //   flowExternStorageAnchors,
+    //   flowExternStorageIconRect,
+    //   flowExternStorageTextRect
+    // );
+    // registerNode('flowQueue', flowQueue, null, flowQueueIconRect, flowQueueTextRect);
+    // registerNode(
+    //   'flowManually',
+    //   flowManually,
+    //   flowManuallyAnchors,
+    //   flowManuallyIconRect,
+    //   flowManuallyTextRect
+    // );
+    // registerNode(
+    //   'flowDisplay',
+    //   flowDisplay,
+    //   flowDisplayAnchors,
+    //   flowDisplayIconRect,
+    //   flowDisplayTextRect
+    // );
+    // registerNode('flowParallel', flowParallel, flowParallelAnchors, null, null);
+    // registerNode('flowComment', flowComment, flowCommentAnchors, null, null);
+
+    // // activity
+    // registerNode(
+    //   'activityFinal',
+    //   activityFinal,
+    //   null,
+    //   activityFinalIconRect,
+    //   activityFinalTextRect
+    // );
+    // registerNode('swimlaneV', swimlaneV, null, swimlaneVIconRect, swimlaneVTextRect);
+    // registerNode('swimlaneH', swimlaneH, null, swimlaneHIconRect, swimlaneHTextRect);
+    // registerNode('forkH', fork, forkHAnchors, forkIconRect, forkTextRect);
+    // registerNode('forkV', fork, forkVAnchors, forkIconRect, forkTextRect);
+
+    // // class
+    // registerNode('simpleClass', simpleClass, null, simpleClassIconRect, simpleClassTextRect);
+    // registerNode(
+    //   'interfaceClass',
+    //   interfaceClass,
+    //   null,
+    //   interfaceClassIconRect,
+    //   interfaceClassTextRect
+    // );
+
+    // // sequence
+    // registerNode('lifeline', lifeline, lifelineAnchors, lifelineIconRect, lifelineTextRect);
+    // registerNode(
+    //   'sequenceFocus',
+    //   sequenceFocus,
+    //   sequenceFocusAnchors,
+    //   sequenceFocusIconRect,
+    //   sequenceFocusTextRect
+    // );
   };
 
   const onDrag = (event, node) => {

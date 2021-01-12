@@ -1,4 +1,134 @@
+import React from 'react';
+import { Table, Divider, Tag } from 'antd';
+
+const columns = [
+  {
+    title: 'Name',
+    dataIndex: 'name',
+    key: 'name',
+  },
+  {
+    title: 'Age',
+    dataIndex: 'age',
+    key: 'age'
+  },
+  {
+    title: 'Address',
+    dataIndex: 'address',
+    key: 'address'
+  }
+];
+
+const data = [
+  {
+    key: '1',
+    name: 'John Brown',
+    age: 32,
+    address: 'New York No. 1 Lake Park',
+  },
+  {
+    key: '2',
+    name: 'Jim Green',
+    age: 42,
+    address: 'London No. 1 Lake Park',
+  },
+  {
+    key: '3',
+    name: 'Joe Black',
+    age: 32,
+    address: 'Sidney No. 1 Lake Park',
+  }
+];
+
 export const Tools = [
+  {
+    group: 'react组件',
+    children: [
+      {
+        text: '按钮',
+        icon: 'icon-rectangle',
+        name: 'button',
+        data: {
+          autoRect: true,
+          strokeStyle: '#fff',
+          rect: {
+            x: 100,
+            y: 200,
+            width: 100,
+            height: 200
+          },
+          name: 'button',
+          data: {
+            props: {
+              type: 'primary',
+              children: '查询'
+            }
+          }
+        }
+      },
+      {
+        text: '日期组件',
+        icon: 'icon-diamond',
+        name: 'datePicker',
+        data: {
+          strokeStyle: '#fff',
+          rect: {
+            x: 100,
+            y: 200,
+            width: 300,
+            height: 200
+          },
+          name: 'datePicker',
+          data: {
+            props: {}
+          }
+        }
+      },
+      {
+        text: '结果页',
+        icon: 'icon-pentagon',
+        name: 'result',
+        data: {
+          strokeStyle: '#fff',
+          rect: {
+            x: 100,
+            y: 200,
+            width: 200,
+            height: 200
+          },
+          name: 'result',
+          data: {
+            props: {
+              status: '403',
+              title: '403',
+              subTitle: 'Sorry, you are not authorized to access this page.'
+            }
+          }
+        }
+      },
+      {
+        text: '表格',
+        icon: 'icon-triangle',
+        name: 'table',
+        data: {
+          strokeStyle: '#fff',
+          rect: {
+            x: 100,
+            y: 200,
+            width: 600,
+            height: 400
+          },
+          name: 'table',
+          data: {
+            props: {
+              columns: columns,
+              dataSource: data
+            }
+          }
+        }
+      }
+    ]
+  },
   {
     group: '自定义图片',
     children: [
@@ -27,7 +157,7 @@ export const Tools = [
           name: 'image',
           image: require('./machine.jpg')
         }
-      },
+      }
     ]
   },
   {
@@ -283,10 +413,12 @@ export const Tools = [
                 yAxis: {
                   type: 'value'
                 },
-                series: [{
-                  data: [820, 932, 901, 934, 1290, 1330, 1320],
-                  type: 'line'
-                }]
+                series: [
+                  {
+                    data: [820, 932, 901, 934, 1290, 1330, 1320],
+                    type: 'line'
+                  }
+                ]
               }
             }
           }
@@ -308,8 +440,9 @@ export const Tools = [
                 color: ['#3398DB'],
                 tooltip: {
                   trigger: 'axis',
-                  axisPointer: {            // 坐标轴指示器，坐标轴触发有效
-                    type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                  axisPointer: {
+                    // 坐标轴指示器，坐标轴触发有效
+                    type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
                   }
                 },
                 grid: {
@@ -404,7 +537,8 @@ export const Tools = [
             }
           }
         }
-      }, {
+      },
+      {
         name: '仪表盘',
         icon: 'icon-dashboard-chart',
         data: {
@@ -438,7 +572,7 @@ export const Tools = [
             }
           }
         }
-      },
+      }
     ]
   },
   {
