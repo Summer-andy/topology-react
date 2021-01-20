@@ -2,13 +2,23 @@ import React, { useMemo, useEffect } from 'react';
 import { Form, InputNumber, Tabs, Collapse, Row, Col, Input, Select, Tag } from 'antd';
 import AnimateComponent from './AnimateComponent';
 import EventComponent from './EventComponent';
+import ReactComponent from './ReactComponent';
+import HttpComponent from './HttpComponent';
+
 import './index.css';
 const { Panel } = Collapse;
 const { TabPane } = Tabs;
 const { Option } = Select;
 const { TextArea } = Input;
-const CanvasProps = ({ data, form: { getFieldDecorator }, form, onFormValueChange, onEventValueChange }) => {
-
+const CanvasProps = ({
+  data,
+  form: { getFieldDecorator },
+  form,
+  onFormValueChange,
+  onEventValueChange,
+  onUpdateComponentProps,
+  onUpdateHttpProps
+}) => {
   const { x, y, width, height } = data?.node?.rect || {};
   const { rotate, lineWidth, strokeStyle, dash, text, id } = data?.node || {};
   const { color, fontSize, fontFamily } = data?.node?.font || {};
@@ -18,169 +28,208 @@ const CanvasProps = ({ data, form: { getFieldDecorator }, form, onFormValueChang
     form.validateFields((err, value) => {
       if (err) return;
       if (Object.keys(data).length === 0) return;
-      if (value.x === x && value.y === y && value.width === width && value.height === height && value.rotate === rotate && value.lineWidth === lineWidth && value.strokeStyle === strokeStyle && value.dash === dash && value.color === color && value.fontFamily === fontFamily && value.fontSize === fontSize && value.text === text && value.data === extraFields) return;
+      if (
+        value.x === x &&
+        value.y === y &&
+        value.width === width &&
+        value.height === height &&
+        value.rotate === rotate &&
+        value.lineWidth === lineWidth &&
+        value.strokeStyle === strokeStyle &&
+        value.dash === dash &&
+        value.color === color &&
+        value.fontFamily === fontFamily &&
+        value.fontSize === fontSize &&
+        value.text === text &&
+        value.data === extraFields
+      )
+        return;
       onFormValueChange(value);
       form.resetFields();
-    })
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [form])
+  }, [form]);
 
   /**
-  * 渲染位置和大小的表单
-  */
+   * 渲染位置和大小的表单
+   */
 
   const renderForm = useMemo(() => {
-    return <Form>
-      <Row>
-        <Col span={12}>
-          <Form.Item label="X(px)">
-            {getFieldDecorator('x', {
-              initialValue: x
-            })(<InputNumber />)}
-          </Form.Item>
-        </Col>
-        <Col span={12}>
-          <Form.Item label="Y(px)" name="y">
-            {getFieldDecorator('y', {
-              initialValue: y
-            })(<InputNumber />)}
-          </Form.Item>
-        </Col>
-        <Col span={12}>
-          <Form.Item label="宽(px)" name="width">
-            {getFieldDecorator('width', {
-              initialValue: width
-            })(<InputNumber />)}
-          </Form.Item>
-        </Col>
-        <Col span={12}>
-          <Form.Item label="高(px)" name="height">
-            {getFieldDecorator('height', {
-              initialValue: height
-            })(<InputNumber />)}
-          </Form.Item>
-        </Col>
-        <Col span={12}>
-          <Form.Item label="角度(deg)" name="rotate">
-            {getFieldDecorator('rotate', {
-              initialValue: rotate
-            })(<InputNumber />)}
-          </Form.Item>
-        </Col>
-      </Row>
-    </Form>
+    return (
+      <Form>
+        <Row>
+          <Col span={12}>
+            <Form.Item label="X(px)">
+              {getFieldDecorator('x', {
+                initialValue: x
+              })(<InputNumber />)}
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item label="Y(px)" name="y">
+              {getFieldDecorator('y', {
+                initialValue: y
+              })(<InputNumber />)}
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item label="宽(px)" name="width">
+              {getFieldDecorator('width', {
+                initialValue: width
+              })(<InputNumber />)}
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item label="高(px)" name="height">
+              {getFieldDecorator('height', {
+                initialValue: height
+              })(<InputNumber />)}
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item label="角度(deg)" name="rotate">
+              {getFieldDecorator('rotate', {
+                initialValue: rotate
+              })(<InputNumber />)}
+            </Form.Item>
+          </Col>
+        </Row>
+      </Form>
+    );
   }, [x, y, width, height, rotate, getFieldDecorator]);
 
   /**
-  * 渲染样式的表单
-  */
+   * 渲染样式的表单
+   */
 
   const renderStyleForm = useMemo(() => {
-    return <Form>
-      <Row>
+    return (
+      <Form>
+        <Row>
+          <Col span={24}>
+            <Form.Item label="线条颜色">
+              {getFieldDecorator('strokeStyle', {
+                initialValue: strokeStyle
+              })(<Input type="color" />)}
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item label="线条样式">
+              {getFieldDecorator('dash', {
+                initialValue: dash
+              })(
+                <Select style={{ width: '95%' }}>
+                  <Option value={0}>_________</Option>
+                  <Option value={1}>---------</Option>
+                  <Option value={2}>_ _ _ _ _</Option>
+                  <Option value={3}>- . - . - .</Option>
+                </Select>
+              )}
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item label="线条宽度">
+              {getFieldDecorator('lineWidth', {
+                initialValue: lineWidth
+              })(<InputNumber style={{ width: '100%' }} />)}
+            </Form.Item>
+          </Col>
+        </Row>
+      </Form>
+    );
+  }, [lineWidth, strokeStyle, dash, getFieldDecorator]);
+
+  /**
+   * 渲染字体的表单
+   */
+
+  const renderFontForm = useMemo(() => {
+    return (
+      <Form>
         <Col span={24}>
-          <Form.Item label="线条颜色">
-            {getFieldDecorator('strokeStyle', {
-              initialValue: strokeStyle
+          <Form.Item label="字体颜色">
+            {getFieldDecorator('color', {
+              initialValue: color
             })(<Input type="color" />)}
           </Form.Item>
         </Col>
         <Col span={12}>
-          <Form.Item label="线条样式">
-            {getFieldDecorator('dash', {
-              initialValue: dash
-            })(
-              <Select style={{ width: '95%' }}>
-                <Option value={0}>_________</Option>
-                <Option value={1}>---------</Option>
-                <Option value={2}>_ _ _ _ _</Option>
-                <Option value={3}>- . - . - .</Option>
-              </Select>
-            )}
+          <Form.Item label="字体类型">
+            {getFieldDecorator('fontFamily', {
+              initialValue: fontFamily
+            })(<Input />)}
           </Form.Item>
         </Col>
-        <Col span={12}>
-          <Form.Item label="线条宽度">
-            {getFieldDecorator('lineWidth', {
-              initialValue: lineWidth
-            })(<InputNumber style={{ width: '100%' }} />)}
+        <Col span={11} offset={1}>
+          <Form.Item label="字体大小">
+            {getFieldDecorator('fontSize', {
+              initialValue: fontSize
+            })(<InputNumber />)}
           </Form.Item>
         </Col>
-      </Row>
-    </Form>
-  }, [lineWidth, strokeStyle, dash, getFieldDecorator]);
+        <Col span={24}>
+          <Form.Item label="内容">
+            {getFieldDecorator('text', {
+              initialValue: text
+            })(<TextArea />)}
+          </Form.Item>
+        </Col>
+      </Form>
+    );
+  }, [color, fontFamily, fontSize, text, getFieldDecorator]);
 
   /**
-  * 渲染字体的表单
-  */
-
-  const renderFontForm = useMemo(() => {
-    return <Form>
-      <Col span={24}>
-        <Form.Item label="字体颜色">
-          {getFieldDecorator('color', {
-            initialValue: color
-          })(<Input type="color" />)}
-        </Form.Item>
-      </Col>
-      <Col span={12}>
-        <Form.Item label="字体类型">
-          {getFieldDecorator('fontFamily', {
-            initialValue: fontFamily
-          })(<Input />)}
-        </Form.Item>
-      </Col>
-      <Col span={11} offset={1}>
-        <Form.Item label="字体大小">
-          {getFieldDecorator('fontSize', {
-            initialValue: fontSize
-          })(<InputNumber />)}
-        </Form.Item>
-      </Col>
-      <Col span={24}>
-        <Form.Item label="内容">
-          {getFieldDecorator('text', {
-            initialValue: text
-          })(<TextArea />)}
-        </Form.Item>
-      </Col>
-    </Form>
-  }, [color, fontFamily, fontSize, text, getFieldDecorator])
-
-  /**
-  * 渲染元素本身数据
-  */
+   * 渲染元素本身数据
+   */
 
   const renderDataForm = useMemo(() => {
     const formItemLayout = {
       labelCol: { span: 4 },
-      wrapperCol: { span: 20 },
+      wrapperCol: { span: 20 }
     };
-    return <Form {...formItemLayout}>
-      <Col>
-        <Form.Item label="ID">
-          <span className="ant-form-text"><Tag color="#f50">{id}</Tag></span>
-        </Form.Item>
-      </Col>
-    </Form>
+    return (
+      <Form {...formItemLayout}>
+        <Col>
+          <Form.Item label="ID">
+            <span className="ant-form-text">
+              <Tag color="#f50">{id}</Tag>
+            </span>
+          </Form.Item>
+        </Col>
+      </Form>
+    );
   }, [id]);
 
-
   /**
-  * 渲染元素额外数据
-  */
+   * 渲染元素额外数据
+   */
 
   const renderExtraDataForm = useMemo(() => {
-    return <Form >
-      <Col>
-        <Form.Item label="自定义数据字段">
-          {getFieldDecorator('data', {
-            initialValue: extraFields 
-          })(<TextArea rows={10} />)}
-        </Form.Item>
-      </Col>
-    </Form>
-  }, [extraFields, getFieldDecorator])
+    let value = extraFields;
+    if(data.node.data && data.node.data.echarts) {
+      value = JSON.stringify(extraFields)
+    }
+
+    return (
+      <Form>
+        <Col>
+          <Form.Item label="自定义数据字段">
+            {getFieldDecorator('data', {
+              initialValue: value
+            })(<TextArea rows={10} />)}
+          </Form.Item>
+        </Col>
+      </Form>
+    );
+  }, [extraFields, getFieldDecorator, data]);
+
+  const renderReactComponent = useMemo(() => {
+    return <ReactComponent onUpdateComponentProps={value => onUpdateComponentProps(value)} />;
+  }, [onUpdateComponentProps]);
+
+  const renderHttpComponent = useMemo(() => {
+    return <HttpComponent onUpdateHttpProps={value => onUpdateHttpProps(value)} />;
+  }, [onUpdateHttpProps]);
 
   return (
     <div className="rightArea">
@@ -188,33 +237,23 @@ const CanvasProps = ({ data, form: { getFieldDecorator }, form, onFormValueChang
         <TabPane tab="外观" key="1" style={{ margin: 0 }}>
           <Collapse defaultActiveKey={['1', '2', '3']}>
             <Panel header="位置和大小" key="1">
-              {
-                renderForm
-              }
+              {renderForm}
             </Panel>
             <Panel header="样式" key="2">
-              {
-                renderStyleForm
-              }
+              {renderStyleForm}
             </Panel>
-            <Panel header="文字" key="3" >
-              {
-                renderFontForm
-              }
+            <Panel header="文字" key="3">
+              {renderFontForm}
             </Panel>
           </Collapse>
         </TabPane>
         <TabPane tab="数据" key="2" style={{ margin: 0 }}>
           <Collapse defaultActiveKey={['1', '2']}>
             <Panel header="本身数据" key="1">
-              {
-                renderDataForm
-              }
+              {renderDataForm}
             </Panel>
             <Panel header="自定义数据" key="2">
-              {
-                renderExtraDataForm
-              }
+              {renderExtraDataForm}
             </Panel>
           </Collapse>
         </TabPane>
@@ -224,11 +263,13 @@ const CanvasProps = ({ data, form: { getFieldDecorator }, form, onFormValueChang
         <TabPane tab="动效" key="4" style={{ margin: 0 }}>
           <AnimateComponent canvasData={data} />
         </TabPane>
-        <TabPane tab="结构" key="5" style={{ margin: 0 }}>
-          待开发...
+        <TabPane tab="组件" key="5" style={{ margin: 0 }}>
+          {renderReactComponent}
+        </TabPane>
+        <TabPane tab="http" key="6" style={{ margin: 0 }}>
+          {renderHttpComponent}
         </TabPane>
       </Tabs>
-
     </div>
   );
 };

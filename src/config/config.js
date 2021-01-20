@@ -2,7 +2,7 @@ const columns = [
   {
     title: 'Name',
     dataIndex: 'name',
-    key: 'name',
+    key: 'name'
   },
   {
     title: 'Age',
@@ -21,19 +21,19 @@ const data = [
     key: '1',
     name: 'John Brown',
     age: 32,
-    address: 'New York No. 1 Lake Park',
+    address: 'New York No. 1 Lake Park'
   },
   {
     key: '2',
     name: 'Jim Green',
     age: 42,
-    address: 'London No. 1 Lake Park',
+    address: 'London No. 1 Lake Park'
   },
   {
     key: '3',
     name: 'Joe Black',
     age: 32,
-    address: 'Sidney No. 1 Lake Park',
+    address: 'Sidney No. 1 Lake Park'
   }
 ];
 
@@ -52,15 +52,34 @@ export const Tools = [
             x: 100,
             y: 200,
             width: 100,
-            height: 200
+            height: 50
           },
           name: 'button',
           data: {
+            // 组件属性配置
             props: {
               type: 'primary',
               children: '查询'
+            },
+            // 异步请求配置
+            http: {
+              api: '/api/topologies?',
+              type: 'get',
+              paramsGetStyle: 'subscribe',
+              paramsArr: []
+            },
+            // 绑定如图表图例id
+            bind: []
+          },
+          events: [
+            {
+              type: 'doFn',
+              action: 'Function',
+              value: `let fun = (a) =>  params + a; fun(123); return 1231;  `,
+              params: 123,
+              name: 'onClick'
             }
-          }
+          ]
         }
       },
       {
@@ -77,8 +96,48 @@ export const Tools = [
           },
           name: 'datePicker',
           data: {
-            props: {}
-          }
+            props: {
+              allowClear: true
+            }
+          },
+          events: [
+            {
+              type: 'doFn',
+              action: 'Function',
+              value: `let fun = (a) =>  console.log(params + a); fun(123);`,
+              params: 123,
+              name: 'onChange'
+            }
+          ]
+        }
+      },
+      {
+        text: '输入框文本',
+        icon: 'icon-diamond',
+        name: 'input',
+        data: {
+          strokeStyle: '#fff',
+          rect: {
+            x: 100,
+            y: 200,
+            width: 200,
+            height: 50
+          },
+          name: 'input',
+          data: {
+            props: {
+              allowClear: true
+            }
+          },
+          events: [
+            {
+              type: 'doFn',
+              action: 'Function',
+              value: `let fun = (a) =>  console.log(params + a); fun(123);`,
+              params: 123,
+              name: 'onChange'
+            }
+          ]
         }
       },
       {
@@ -100,7 +159,8 @@ export const Tools = [
               title: '403',
               subTitle: 'Sorry, you are not authorized to access this page.'
             }
-          }
+          },
+          events: []
         }
       },
       {
@@ -415,7 +475,45 @@ export const Tools = [
                     data: [820, 932, 901, 934, 1290, 1330, 1320],
                     type: 'line'
                   }
-                ]
+                ],
+                seriesFunction: ` return {
+                  color: ['#3398DB'],
+                  tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                      // 坐标轴指示器，坐标轴触发有效
+                      type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+                    }
+                  },
+                  grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                  },
+                  xAxis: [
+                    {
+                      type: 'category',
+                      data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                      axisTick: {
+                        alignWithLabel: true
+                      }
+                    }
+                  ],
+                  yAxis: [
+                    {
+                      type: 'value'
+                    }
+                  ],
+                  series: [
+                    {
+                      name: '直接访问',
+                      type: 'bar',
+                      barWidth: '60%',
+                      data: [10, 52, 200, 334, 390, 330, 220]
+                    }
+                  ]
+                }`
               }
             }
           }

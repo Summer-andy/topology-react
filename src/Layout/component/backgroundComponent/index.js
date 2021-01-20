@@ -11,8 +11,6 @@ const CanvasProps = ({ data, form: { getFieldDecorator }, form }) => {
   const { bkColor, bkImage } = data.data;
   const [wsAddress, setWsAddress] = useState('ws://123.207.136.134:9010/ajaxchattest');
 
-  console.log(canvas.layout);
-
   useEffect(() => {
     form.validateFields((err, value) => {
       if (err) return;

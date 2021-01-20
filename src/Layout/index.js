@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback, useMemo, Fragment } from 'react';
 import { Topology, registerNode } from '@topology/core';
+import { Store } from 'le5le-store';
 import reactNodes from './Plugin/React-nodes';
 import { register as registerChart } from '@topology/chart-diagram';
 import {
@@ -77,7 +78,7 @@ import {
   sequenceFocusIconRect,
   sequenceFocusTextRect
 } from '@topology/sequence-diagram';
-import { Modal, Tabs, Button, DatePicker, Result, Table } from 'antd';
+import { Modal, Tabs, Button, DatePicker, Result, Table, Input } from 'antd';
 import { Tools } from '../config/config';
 import { getNodeById } from '../Service/topologyService';
 import Header from '../Header';
@@ -104,6 +105,11 @@ const Layout = ({ history }) => {
     canvasOptions.on = onMessage;
     canvasRegister();
     canvas = new Topology('topology-canvas', canvasOptions);
+
+    const subcribe = Store.subscribe('sxdsxd', (value) => {
+      console.log('name:', value);
+    });
+
     async function getNodeData() {
       const data = await getNodeById(history.location.state.id);
       canvas.open(data.data);
@@ -141,6 +147,8 @@ const Layout = ({ history }) => {
     registerNode('datePicker', reactNodes(DatePicker), null, null, null);
     registerNode('result', reactNodes(Result), null, null, null);
     registerNode('table', reactNodes(Table), null, null, null);
+    registerNode('input', reactNodes(Input), null, null, null);
+
 
     registerNode('flowData', flowData, flowDataAnchors, flowDataIconRect, flowDataTextRect);
     registerNode(
@@ -286,6 +294,44 @@ const Layout = ({ history }) => {
     [selected]
   );
 
+  const onUpdateComponentProps = useCallback(
+    (data) => {
+      const { bind, ...value } = data;
+      let idx = canvas.data.pens.findIndex((pen) => pen.id === selected.node.id);
+      canvas.data.pens[idx].data.props = { ...canvas.data.pens[idx].data.props, ...value };
+      canvas.data.pens[idx].data.bind = bind;
+      let reader = new FileReader();
+      const result = new Blob([JSON.stringify(canvas.data)], { type: 'text/plain;charset=utf-8' });
+      reader.readAsText(result, 'text/plain;charset=utf-8');
+      reader.onload = (e) => {
+        canvas.open(JSON.parse(reader.result));
+      };
+    },
+    [selected]
+  );
+
+  const onUpdateHttpProps = useCallback(
+    (data) => {
+      let idx = canvas.data.pens.findIndex((pen) => pen.id === selected.node.id);
+      canvas.data.pens[idx].data.http = {
+        api: data.api,
+        type: data.type,
+        paramsGetStyle: 'subscribe',
+        paramsArr: data.keys.map((item) => ({
+          key: data.paramsKey[item],
+          value: data.paramsValue[item]
+        }))
+      };
+      let reader = new FileReader();
+      const result = new Blob([JSON.stringify(canvas.data)], { type: 'text/plain;charset=utf-8' });
+      reader.readAsText(result, 'text/plain;charset=utf-8');
+      reader.onload = (e) => {
+        canvas.open(JSON.parse(reader.result));
+      };
+    },
+    [selected]
+  );
+
   /**
    * 当线条表单数据变化时, 重新渲染canvas
    * @params {object} value - 图形的宽度,高度, x, y等等
@@ -322,6 +368,7 @@ const Layout = ({ history }) => {
    */
 
   const onMessage = (event, data) => {
+    console.log(event);
     switch (event) {
       case 'node': // 节点
       case 'addNode':
@@ -368,6 +415,8 @@ const Layout = ({ history }) => {
           data={selected}
           onFormValueChange={onHandleFormValueChange}
           onEventValueChange={onEventValueChange}
+          onUpdateComponentProps={(value) => onUpdateComponentProps(value)}
+          onUpdateHttpProps={(value) => onUpdateHttpProps(value)}
         />
       ), // 渲染Node节点类型的组件
       line: selected && (
@@ -375,7 +424,14 @@ const Layout = ({ history }) => {
       ), // 渲染线条类型的组件
       default: canvas && <BackgroundComponent data={canvas} /> // 渲染画布背景的组件
     };
-  }, [selected, onHandleFormValueChange, onHandleLineFormValueChange, onEventValueChange]);
+  }, [
+    selected,
+    onHandleFormValueChange,
+    onHandleLineFormValueChange,
+    onEventValueChange,
+    onUpdateComponentProps,
+    onUpdateHttpProps
+  ]);
 
   /**
    * 渲染画布右侧区域操作栏
@@ -401,12 +457,12 @@ const Layout = ({ history }) => {
       <div className="page">
         <div className="tool">
           <Tabs defaultActiveKey="1">
-          <TabPane tab="系统组件" key="1" style={{ margin: 0 }}>
-            <SystemComponent onDrag={onDrag} Tools={Tools} />
-          </TabPane>
-          <TabPane tab="我的图片" key="2" style={{ margin: 0 }}>
-            <MyComponent />
-          </TabPane>
+            <TabPane tab="系统组件" key="1" style={{ margin: 0 }}>
+              <SystemComponent onDrag={onDrag} Tools={Tools} />
+            </TabPane>
+            <TabPane tab="我的图片" key="2" style={{ margin: 0 }}>
+              <MyComponent />
+            </TabPane>
           </Tabs>
         </div>
         <div className="full">

@@ -1,6 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { s8, createDiv, rectangle } from '@topology/core';
+import { Store } from 'le5le-store';
+import { s8, createDiv, rectangle, Line } from '@topology/core';
+import { canvas } from '../index';
+import Axios from '../../utils/Service';
+import moment from 'moment';
+const querystring = require('querystring');
 // 存放原生dom节点
 const reactNodesData = {};
 
@@ -27,14 +32,89 @@ const reactNodes = (ReactComponent) => (ctx, node) => {
     };
     node.elementLoaded = true;
     document.body.appendChild(reactNodesData[node.id].div);
-    
+
     // 添加当前节点到div层，否则无法显示
     node.addToDiv();
 
     // 初始化 react 组件
-    if(node && node.data && node.data.props) {
+    if (node && node.data && node.data.props) {
+      let eventProps = {};
+      if (node.events.length > 0) {
+        node.events.forEach((element) => {
+          // eslint-disable-next-line no-new-func
+          let _fn = new Function('params', element.value);
+          eventProps[element.name] = async (componentValue) => {
+
+            /**
+             * 对不同组件的回调函数进行特殊的处理, 将组件的回调值传入Store中, 供其他组件使用.
+             */
+
+            if (['datePicker'].includes(node.name)) {
+              Store.set(`componentValue-${node.id}`, moment(componentValue).format('YYYY-MM-DD'));
+            } else if (['input'].includes(node.name)) {
+              Store.set(`componentValue-${node.id}`, componentValue.target.value);
+              node.data.props.value = componentValue.target.value;
+            } else {
+              Store.set(`componentValue-${node.id}`, componentValue);
+            }
+
+            if (node.data && node.data.http) {
+
+              const { api, type, paramsArr } = node.data.http;
+              const queryData = {};
+              paramsArr.forEach((item) => {
+                queryData[item.key] = Store.get(item.value);
+              });
+
+              /**
+               * 异步请求在此调用, 并且将获得的数据塞入store
+               */
+
+              const data = await Axios[type](`${api}${querystring.stringify(queryData)}`);
+              
+              Store.set(`http-${node.id}`, data);
+
+              /**
+               * 从画布中获取绑定的节点, 进行值的更新, 目前只支持ECharts图表的更新
+               */
+
+              if (node.data.bind && node.data.bind.length > 0) {
+                node.data.bind.forEach((b) => {
+                  let _pen = canvas.data.pens.find((pen) => pen.id === b);
+                  let idx = canvas.data.pens.findIndex((pen) => pen.id === b);
+                  if (_pen.data.echarts) {
+                    canvas.data.pens[idx].elementRendered = false;
+                    const { seriesFunction } = canvas.data.pens[idx].data.echarts.option;
+                    let _seriesFn = new Function('params', seriesFunction);
+                    canvas.data.pens[idx].data.echarts.option = _seriesFn(data)
+                  } else {
+                    // 暂时忽略线条节点的处理
+                    if (canvas.data.pens[idx] instanceof Line) {
+                      return;
+                    }
+
+                    // 后期可以处理正常的节点
+                  }
+                });
+              }
+
+              let reader = new FileReader();
+              const result = new Blob([JSON.stringify(canvas.data)], {
+                type: 'text/plain;charset=utf-8'
+              });
+              reader.readAsText(result, 'text/plain;charset=utf-8');
+              reader.onload = (e) => {
+                canvas.open(JSON.parse(reader.result));
+              };
+            }
+
+            await _fn(element.params);
+          };
+        });
+      }
+
       reactNodesData[node.id].component = ReactDOM.render(
-        <ReactComponent {...node.data.props} />,
+        <ReactComponent {...node.data.props} {...eventProps} />,
         reactNodesData[node.id].div
       );
     }

@@ -16,6 +16,7 @@
     "antd": "3.26.7",
     "axios": "^0.19.2",
     "file-saver": "^2.0.2",
+    "moment": "^2.29.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
