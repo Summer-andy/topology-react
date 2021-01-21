@@ -92,7 +92,7 @@ export const Tools = [
             x: 100,
             y: 200,
             width: 300,
-            height: 200
+            height: 50
           },
           name: 'datePicker',
           data: {

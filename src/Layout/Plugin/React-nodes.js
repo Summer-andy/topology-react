@@ -71,7 +71,7 @@ const reactNodes = (ReactComponent) => (ctx, node) => {
                */
 
               const data = await Axios[type](`${api}${querystring.stringify(queryData)}`);
-              
+
               Store.set(`http-${node.id}`, data);
 
               /**
@@ -114,7 +114,7 @@ const reactNodes = (ReactComponent) => (ctx, node) => {
       }
 
       reactNodesData[node.id].component = ReactDOM.render(
-        <ReactComponent {...node.data.props} {...eventProps} />,
+        <ReactComponent {...node.data.props} {...eventProps} style={{ width: '100%', height: '100%' }} />,
         reactNodesData[node.id].div
       );
     }
