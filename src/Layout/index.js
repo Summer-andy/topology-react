@@ -166,9 +166,9 @@ const Layout = ({ history }) => {
         api: data.api,
         type: data.type,
         paramsGetStyle: 'subscribe',
-        paramsArr: data.keys.map((item) => ({
-          key: data.paramsKey[item],
-          value: data.paramsValue[item]
+        paramsArr: data.keys.map((item, index) => ({
+          key: data.paramsKey[index],
+          value: data.paramsValue[index]
         }))
       };
       let reader = new FileReader();

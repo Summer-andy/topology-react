@@ -1,30 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { Form, Col, Input, Select, Button, Divider } from 'antd';
+import React from 'react';
+import { Form, Col, Input, Select, Button } from 'antd';
 import { canvas } from '../../../index';
 let id = 0;
-const Page = ({ form, form: { getFieldDecorator, getFieldValue }, onUpdateHttpProps }) => {
-
-  useEffect(() => {
-    form.validateFields((err, value) => {
-      if (err) return;
-      onUpdateHttpProps(value);
-    });
-  }, [
-    form.getFieldValue('api'),
-    form.getFieldValue('type'),
-    form.getFieldValue('paramsKey'),
-    form.getFieldValue('paramsValue')
-  ]);
-
+const Page = ({ form, form: { getFieldDecorator, getFieldValue }, data }) => {
+  id = data.paramsArr ? data.paramsArr.length : 0;
   const renderForm = () => {
-    getFieldDecorator('keys', { initialValue: [] });
+    getFieldDecorator('keys', { initialValue: data.paramsArr || [] });
     const keys = getFieldValue('keys');
     return keys.map((item, idx) => (
       <div key={idx}>
         <Col span={24}>
           <Form.Item label={`${idx + 1}参数名key`}>
             {getFieldDecorator(`paramsKey[${idx}]`, {
-              initialValue: void 0
+              initialValue: item.key
             })(<Input style={{ width: 180 }} placeholder="请填写key" />)}
           </Form.Item>
         </Col>
@@ -32,12 +20,12 @@ const Page = ({ form, form: { getFieldDecorator, getFieldValue }, onUpdateHttpPr
         <Col span={24}>
           <Form.Item label={`${idx + 1}参数value`}>
             {getFieldDecorator(`paramsValue[${idx}]`, {
-              initialValue: void 0
+              initialValue: item.value
             })(
               <Select style={{ width: 180 }} placeholder="请选择绑定的源数据">
                 {canvas.data.pens.map((item) => (
                   <Select.Option key={item.id} value={`componentValue-${item.id}`}>
-                    {item.id}
+                    {item.id}-{item.name}
                   </Select.Option>
                 ))}
               </Select>
@@ -52,16 +40,16 @@ const Page = ({ form, form: { getFieldDecorator, getFieldValue }, onUpdateHttpPr
     const keys = form.getFieldValue('keys');
     const nextKeys = keys.concat(id++);
     form.setFieldsValue({
-      keys: nextKeys,
+      keys: nextKeys
     });
-  }
+  };
 
   return (
     <Form layout="inline">
       <Col span={24}>
         <Form.Item label="后端地址">
           {getFieldDecorator('api', {
-            initialValue: ''
+            initialValue: data.api
           })(<Input style={{ width: 200 }} placeholder="请填写后端地址" />)}
         </Form.Item>
       </Col>
@@ -69,7 +57,7 @@ const Page = ({ form, form: { getFieldDecorator, getFieldValue }, onUpdateHttpPr
       <Col span={24}>
         <Form.Item label="请求类型">
           {getFieldDecorator('type', {
-            initialValue: 'get'
+            initialValue: data.type
           })(
             <Select style={{ width: 200 }}>
               <Select.Option value="get" key="get">
@@ -94,4 +82,8 @@ const Page = ({ form, form: { getFieldDecorator, getFieldValue }, onUpdateHttpPr
   );
 };
 
-export default Form.create()(Page);
+export default Form.create({
+  onValuesChange: (props, changedValues, allValues) => {
+    props.onUpdateHttpProps(allValues);
+  }
+})(Page);

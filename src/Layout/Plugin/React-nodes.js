@@ -71,12 +71,13 @@ const reactNodes = (ReactComponent) => (ctx, node) => {
                   const { api, type, paramsArr } = _pen.data.http;
                   const queryData = {};
                   paramsArr.forEach((item) => {
-                    queryData[item.key] = item.value;
+                    queryData[item.key] = Store.get(item.value);;
                   });
                   const data = await Axios[type](`${api}${querystring.stringify(queryData)}`);
                   if (_pen.data.echarts) {
                     canvas.data.pens[idx].elementRendered = false;
                     const { seriesFunction } = _pen.data.echarts.option;
+                    // eslint-disable-next-line no-new-func
                     let _seriesFn = new Function('params', seriesFunction);
                     canvas.data.pens[idx].data.echarts.option = { ..._seriesFn(data), seriesFunction }
                   } else {

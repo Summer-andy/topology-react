@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect } from 'react';
+import React, { useMemo } from 'react';
 import { Form, InputNumber, Tabs, Collapse, Row, Col, Input, Select, Tag } from 'antd';
 import AnimateComponent from './AnimateComponent';
 import EventComponent from './EventComponent';
@@ -13,8 +13,6 @@ const { TextArea } = Input;
 const CanvasProps = ({
   data,
   form: { getFieldDecorator },
-  form,
-  onFormValueChange,
   onEventValueChange,
   onUpdateComponentProps,
   onUpdateHttpProps
@@ -207,8 +205,8 @@ const CanvasProps = ({
   }, [onUpdateComponentProps, data]);
 
   const renderHttpComponent = useMemo(() => {
-    return <HttpComponent onUpdateHttpProps={(value) => onUpdateHttpProps(value)} />;
-  }, [onUpdateHttpProps]);
+    return <HttpComponent onUpdateHttpProps={(value) => onUpdateHttpProps(value)}  data={data.node.data.http || {}} />;
+  }, [onUpdateHttpProps, data]);
 
   return (
     <div className="rightArea">

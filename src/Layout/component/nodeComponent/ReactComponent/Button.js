@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Col, Select } from 'antd';
 import { canvas } from '../../../index';
 
-const Button = ({ getFieldDecorator }) => {
+const Button = ({ getFieldDecorator, data }) => {
   return (
     <>
       <Col span={24}>
@@ -53,11 +53,11 @@ const Button = ({ getFieldDecorator }) => {
       <Col span={24}>
         <Form.Item label="绑定图例">
           {getFieldDecorator('bind', {
-            initialValue: void 0
+            initialValue: data.bind
           })(
             <Select style={{ width: 200 }} mode="multiple" placeholder="请选择图例">
               {canvas.data.pens.map((item) => (
-                <Select.Option key={item.id}>{item.id}</Select.Option>
+                <Select.Option key={item.id}>{item.id}-{item.name}</Select.Option>
               ))}
             </Select>
           )}

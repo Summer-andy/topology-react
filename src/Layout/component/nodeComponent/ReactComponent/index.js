@@ -12,7 +12,7 @@ const Page = ({
   const renderForm = () => {
     switch (data.node.name) {
       case 'button':
-        return <ButtonForm getFieldDecorator={getFieldDecorator} data={data.node.data.props} />;
+        return <ButtonForm getFieldDecorator={getFieldDecorator} data={data.node.data} />;
       case 'table':
         return (
           <TableForm
@@ -33,7 +33,6 @@ const Page = ({
 export default Form.create({
   onValuesChange: (props, changedValues, allValues) => {
     const { onUpdateComponentProps } = props;
-    console.log(props);
     if(props.data.node.name === 'table') {
       allValues.columns = allValues.key.map((item, index) => ({
         title: allValues.title[index] || 'NA',
