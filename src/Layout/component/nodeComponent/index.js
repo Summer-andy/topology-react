@@ -24,32 +24,6 @@ const CanvasProps = ({
   const { color, fontSize, fontFamily } = data?.node?.font || {};
   const extraFields = data.node.data; // 用户自定义数据片段
 
-  useEffect(() => {
-    form.validateFields((err, value) => {
-      if (err) return;
-      if (Object.keys(data).length === 0) return;
-      if (
-        value.x === x &&
-        value.y === y &&
-        value.width === width &&
-        value.height === height &&
-        value.rotate === rotate &&
-        value.lineWidth === lineWidth &&
-        value.strokeStyle === strokeStyle &&
-        value.dash === dash &&
-        value.color === color &&
-        value.fontFamily === fontFamily &&
-        value.fontSize === fontSize &&
-        value.text === text &&
-        value.data === extraFields
-      )
-        return;
-      onFormValueChange(value);
-      form.resetFields();
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [form]);
-
   /**
    * 渲染位置和大小的表单
    */
@@ -204,10 +178,10 @@ const CanvasProps = ({
    * 渲染元素额外数据
    */
 
-  const renderExtraDataForm = useMemo(() => {
+  const renderExtraDataForm = () => {
     let value = extraFields;
-    if(data.node.data && data.node.data.echarts) {
-      value = JSON.stringify(extraFields)
+    if (data.node.data && data.node.data.echarts) {
+      value = data.node.data.echarts.option.seriesFunction;
     }
 
     return (
@@ -221,14 +195,19 @@ const CanvasProps = ({
         </Col>
       </Form>
     );
-  }, [extraFields, getFieldDecorator, data]);
+  };
 
   const renderReactComponent = useMemo(() => {
-    return <ReactComponent onUpdateComponentProps={value => onUpdateComponentProps(value)} />;
-  }, [onUpdateComponentProps]);
+    return (
+      <ReactComponent
+        onUpdateComponentProps={(value) => onUpdateComponentProps(value)}
+        data={data}
+      />
+    );
+  }, [onUpdateComponentProps, data]);
 
   const renderHttpComponent = useMemo(() => {
-    return <HttpComponent onUpdateHttpProps={value => onUpdateHttpProps(value)} />;
+    return <HttpComponent onUpdateHttpProps={(value) => onUpdateHttpProps(value)} />;
   }, [onUpdateHttpProps]);
 
   return (
@@ -253,7 +232,7 @@ const CanvasProps = ({
               {renderDataForm}
             </Panel>
             <Panel header="自定义数据" key="2">
-              {renderExtraDataForm}
+              {renderExtraDataForm()}
             </Panel>
           </Collapse>
         </TabPane>
@@ -274,4 +253,14 @@ const CanvasProps = ({
   );
 };
 
-export default Form.create()(CanvasProps);
+export default Form.create({
+  onValuesChange: (props, changedValues, allValues) => {
+    const { onFormValueChange } = props;
+    if(props.data.node.name === 'echarts') {
+      props.data.node.data.echarts.option.seriesFunction = changedValues.data;
+      onFormValueChange(props.data.node);
+      return;
+    }
+    onFormValueChange(allValues);
+  }
+})(CanvasProps);

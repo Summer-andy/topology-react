@@ -44,7 +44,6 @@ const reactNodes = (ReactComponent) => (ctx, node) => {
           // eslint-disable-next-line no-new-func
           let _fn = new Function('params', element.value);
           eventProps[element.name] = async (componentValue) => {
-
             /**
              * 对不同组件的回调函数进行特殊的处理, 将组件的回调值传入Store中, 供其他组件使用.
              */
@@ -58,55 +57,49 @@ const reactNodes = (ReactComponent) => (ctx, node) => {
               Store.set(`componentValue-${node.id}`, componentValue);
             }
 
-            if (node.data && node.data.http) {
-
-              const { api, type, paramsArr } = node.data.http;
-              const queryData = {};
-              paramsArr.forEach((item) => {
-                queryData[item.key] = Store.get(item.value);
-              });
-
-              /**
-               * 异步请求在此调用, 并且将获得的数据塞入store
-               */
-
-              const data = await Axios[type](`${api}${querystring.stringify(queryData)}`);
-
-              Store.set(`http-${node.id}`, data);
+            if (['table'].includes(node.name)) {
+            }
 
               /**
                * 从画布中获取绑定的节点, 进行值的更新, 目前只支持ECharts图表的更新
                */
 
               if (node.data.bind && node.data.bind.length > 0) {
-                node.data.bind.forEach((b) => {
+                node.data.bind.forEach(async (b) => {
                   let _pen = canvas.data.pens.find((pen) => pen.id === b);
                   let idx = canvas.data.pens.findIndex((pen) => pen.id === b);
+                  const { api, type, paramsArr } = _pen.data.http;
+                  const queryData = {};
+                  paramsArr.forEach((item) => {
+                    queryData[item.key] = item.value;
+                  });
+                  const data = await Axios[type](`${api}${querystring.stringify(queryData)}`);
                   if (_pen.data.echarts) {
                     canvas.data.pens[idx].elementRendered = false;
-                    const { seriesFunction } = canvas.data.pens[idx].data.echarts.option;
+                    const { seriesFunction } = _pen.data.echarts.option;
                     let _seriesFn = new Function('params', seriesFunction);
-                    canvas.data.pens[idx].data.echarts.option = _seriesFn(data)
+                    canvas.data.pens[idx].data.echarts.option = { ..._seriesFn(data), seriesFunction }
                   } else {
                     // 暂时忽略线条节点的处理
                     if (canvas.data.pens[idx] instanceof Line) {
                       return;
                     }
-
+                    /**
+                     * 异步请求在此调用, 并且将获得的数据塞入store
+                     */             
+                    canvas.data.pens[idx].data.props.dataSource = data.list;
                     // 后期可以处理正常的节点
                   }
+                  let reader = new FileReader();
+                  const result = new Blob([JSON.stringify(canvas.data)], {
+                    type: 'text/plain;charset=utf-8'
+                  });
+                  reader.readAsText(result, 'text/plain;charset=utf-8');
+                  reader.onload = (e) => {
+                    canvas.open(JSON.parse(reader.result));
+                  };
                 });
               }
-
-              let reader = new FileReader();
-              const result = new Blob([JSON.stringify(canvas.data)], {
-                type: 'text/plain;charset=utf-8'
-              });
-              reader.readAsText(result, 'text/plain;charset=utf-8');
-              reader.onload = (e) => {
-                canvas.open(JSON.parse(reader.result));
-              };
-            }
 
             await _fn(element.params);
           };
@@ -114,7 +107,7 @@ const reactNodes = (ReactComponent) => (ctx, node) => {
       }
 
       reactNodesData[node.id].component = ReactDOM.render(
-        <ReactComponent {...node.data.props} {...eventProps} style={{ width: '100%', height: '100%' }} />,
+        <ReactComponent {...node.data.props} {...eventProps} />,
         reactNodesData[node.id].div
       );
     }
@@ -125,7 +118,6 @@ const reactNodes = (ReactComponent) => (ctx, node) => {
   // 节点的elementRendered用于判断第三方图形库是否需要重绘
   // 绘画引擎需要重绘节点时，会把此属性设置为false
   if (!node.elementRendered) {
-    console.log('!node.elementRendered');
     // 初始化时，等待父div先渲染完成，避免初始图表控件太大。
     setTimeout(() => {
       // 重绘完成，避免不必要的重复重绘

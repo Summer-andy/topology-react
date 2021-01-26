@@ -9,7 +9,7 @@
     "@topology/activity-diagram": "^0.2.24",
     "@topology/chart-diagram": "0.3.0",
     "@topology/class-diagram": "^0.2.24",
-    "@topology/core": "^0.3.1",
+    "@topology/core": "0.3.2",
     "@topology/flow-diagram": "^0.2.24",
     "@topology/layout": "^0.3.0",
     "@topology/sequence-diagram": "^0.2.24",

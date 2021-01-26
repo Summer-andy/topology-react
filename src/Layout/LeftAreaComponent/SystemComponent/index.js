@@ -15,7 +15,7 @@ const Layout = ({ Tools, onDrag }) => {
               href="/#"
               onDragStart={(ev) => onDrag(ev, item)}
             >
-              <i className={'iconfont ' + item.icon} style={{ fontSize: 13 }}></i>
+              <i className={'iconfont ' + item.icon}></i>
             </a>
           );
         })}

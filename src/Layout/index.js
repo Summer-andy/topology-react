@@ -1,84 +1,8 @@
-import React, { useEffect, useState, useCallback, useMemo, Fragment } from 'react';
+import React, { useEffect, useState, useCallback, useMemo, Fragment, useRef } from 'react';
 import { Topology, registerNode } from '@topology/core';
-import { Store } from 'le5le-store';
 import reactNodes from './Plugin/React-nodes';
 import { register as registerChart } from '@topology/chart-diagram';
-import {
-  flowData,
-  flowDataAnchors,
-  flowDataIconRect,
-  flowDataTextRect,
-  flowSubprocess,
-  flowSubprocessIconRect,
-  flowSubprocessTextRect,
-  flowDb,
-  flowDbIconRect,
-  flowDbTextRect,
-  flowDocument,
-  flowDocumentAnchors,
-  flowDocumentIconRect,
-  flowDocumentTextRect,
-  flowInternalStorage,
-  flowInternalStorageIconRect,
-  flowInternalStorageTextRect,
-  flowExternStorage,
-  flowExternStorageAnchors,
-  flowExternStorageIconRect,
-  flowExternStorageTextRect,
-  flowQueue,
-  flowQueueIconRect,
-  flowQueueTextRect,
-  flowManually,
-  flowManuallyAnchors,
-  flowManuallyIconRect,
-  flowManuallyTextRect,
-  flowDisplay,
-  flowDisplayAnchors,
-  flowDisplayIconRect,
-  flowDisplayTextRect,
-  flowParallel,
-  flowParallelAnchors,
-  flowComment,
-  flowCommentAnchors
-} from '@topology/flow-diagram';
-
-import {
-  activityFinal,
-  activityFinalIconRect,
-  activityFinalTextRect,
-  swimlaneV,
-  swimlaneVIconRect,
-  swimlaneVTextRect,
-  swimlaneH,
-  swimlaneHIconRect,
-  swimlaneHTextRect,
-  fork,
-  forkHAnchors,
-  forkIconRect,
-  forkTextRect,
-  forkVAnchors
-} from '@topology/activity-diagram';
-
-import {
-  simpleClass,
-  simpleClassIconRect,
-  simpleClassTextRect,
-  interfaceClass,
-  interfaceClassIconRect,
-  interfaceClassTextRect
-} from '@topology/class-diagram';
-
-import {
-  lifeline,
-  lifelineAnchors,
-  lifelineIconRect,
-  lifelineTextRect,
-  sequenceFocus,
-  sequenceFocusAnchors,
-  sequenceFocusIconRect,
-  sequenceFocusTextRect
-} from '@topology/sequence-diagram';
-import { Modal, Tabs, Button, DatePicker, Result, Table, Input } from 'antd';
+import { Modal, Tabs, Button, DatePicker, Table, Input } from 'antd';
 import { Tools } from '../config/config';
 import { getNodeById } from '../Service/topologyService';
 import Header from '../Header';
@@ -94,21 +18,21 @@ const { TabPane } = Tabs;
 export let canvas;
 const Layout = ({ history }) => {
   const [selected, setSelected] = useState({});
-
   const [isLoadCanvas, setIsLoadCanvas] = useState(false);
+
+  const nodeFormRef = useRef(null);
 
   useEffect(() => {
     const canvasOptions = {
       rotateCursor: '/rotate.cur',
-      locked: 2
+      locked: 2,
+      grid: true,
+      rule: true,
+      ruleColor: '#2db7f5'
     };
     canvasOptions.on = onMessage;
     canvasRegister();
     canvas = new Topology('topology-canvas', canvasOptions);
-
-    const subcribe = Store.subscribe('sxdsxd', (value) => {
-      console.log('name:', value);
-    });
 
     async function getNodeData() {
       const data = await getNodeById(history.location.state.id);
@@ -145,91 +69,8 @@ const Layout = ({ history }) => {
 
     registerNode('button', reactNodes(Button), null, null, null);
     registerNode('datePicker', reactNodes(DatePicker), null, null, null);
-    registerNode('result', reactNodes(Result), null, null, null);
     registerNode('table', reactNodes(Table), null, null, null);
     registerNode('input', reactNodes(Input), null, null, null);
-
-
-    registerNode('flowData', flowData, flowDataAnchors, flowDataIconRect, flowDataTextRect);
-    registerNode(
-      'flowSubprocess',
-      flowSubprocess,
-      null,
-      flowSubprocessIconRect,
-      flowSubprocessTextRect
-    );
-    registerNode('flowDb', flowDb, null, flowDbIconRect, flowDbTextRect);
-    registerNode(
-      'flowDocument',
-      flowDocument,
-      flowDocumentAnchors,
-      flowDocumentIconRect,
-      flowDocumentTextRect
-    );
-    registerNode(
-      'flowInternalStorage',
-      flowInternalStorage,
-      null,
-      flowInternalStorageIconRect,
-      flowInternalStorageTextRect
-    );
-    registerNode(
-      'flowExternStorage',
-      flowExternStorage,
-      flowExternStorageAnchors,
-      flowExternStorageIconRect,
-      flowExternStorageTextRect
-    );
-    registerNode('flowQueue', flowQueue, null, flowQueueIconRect, flowQueueTextRect);
-    registerNode(
-      'flowManually',
-      flowManually,
-      flowManuallyAnchors,
-      flowManuallyIconRect,
-      flowManuallyTextRect
-    );
-    registerNode(
-      'flowDisplay',
-      flowDisplay,
-      flowDisplayAnchors,
-      flowDisplayIconRect,
-      flowDisplayTextRect
-    );
-    registerNode('flowParallel', flowParallel, flowParallelAnchors, null, null);
-    registerNode('flowComment', flowComment, flowCommentAnchors, null, null);
-
-    // activity
-    registerNode(
-      'activityFinal',
-      activityFinal,
-      null,
-      activityFinalIconRect,
-      activityFinalTextRect
-    );
-    registerNode('swimlaneV', swimlaneV, null, swimlaneVIconRect, swimlaneVTextRect);
-    registerNode('swimlaneH', swimlaneH, null, swimlaneHIconRect, swimlaneHTextRect);
-    registerNode('forkH', fork, forkHAnchors, forkIconRect, forkTextRect);
-    registerNode('forkV', fork, forkVAnchors, forkIconRect, forkTextRect);
-
-    // class
-    registerNode('simpleClass', simpleClass, null, simpleClassIconRect, simpleClassTextRect);
-    registerNode(
-      'interfaceClass',
-      interfaceClass,
-      null,
-      interfaceClassIconRect,
-      interfaceClassTextRect
-    );
-
-    // sequence
-    registerNode('lifeline', lifeline, lifelineAnchors, lifelineIconRect, lifelineTextRect);
-    registerNode(
-      'sequenceFocus',
-      sequenceFocus,
-      sequenceFocusAnchors,
-      sequenceFocusIconRect,
-      sequenceFocusTextRect
-    );
   };
 
   const onDrag = (event, node) => {
@@ -243,6 +84,12 @@ const Layout = ({ history }) => {
 
   const onHandleFormValueChange = useCallback(
     (value) => {
+
+      if (selected.node.name === 'echarts') {
+        canvas.updateProps(selected.node);
+        return;
+      }
+
       const {
         rotate,
         data,
@@ -253,9 +100,10 @@ const Layout = ({ history }) => {
         fontSize,
         fontFamily,
         text,
+        seriesFunction,
         ...other
       } = value;
-      const changedValues = {
+      let changedValues = {
         node: {
           rect: other,
           font: { color, fontSize, fontFamily },
@@ -267,6 +115,7 @@ const Layout = ({ history }) => {
           data
         }
       };
+
       if (changedValues.node) {
         // 遍历查找修改的属性，赋值给原始Node
         for (const key in changedValues.node) {
@@ -368,10 +217,13 @@ const Layout = ({ history }) => {
    */
 
   const onMessage = (event, data) => {
-    console.log(event);
     switch (event) {
       case 'node': // 节点
       case 'addNode':
+        // 切换node的时候, 清空上一个节点残留的信息
+        if(nodeFormRef.current) {
+          nodeFormRef.current.resetFields();
+        }
         setSelected({
           node: data,
           line: null,
@@ -417,6 +269,7 @@ const Layout = ({ history }) => {
           onEventValueChange={onEventValueChange}
           onUpdateComponentProps={(value) => onUpdateComponentProps(value)}
           onUpdateHttpProps={(value) => onUpdateHttpProps(value)}
+          ref={nodeFormRef}
         />
       ), // 渲染Node节点类型的组件
       line: selected && (

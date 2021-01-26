@@ -1,79 +1,51 @@
 import React from 'react';
-import { Form, Col, Collapse, Switch, Select } from 'antd';
-import { useEffect } from 'react';
-import { canvas } from '../../../index';
+import { Form } from 'antd';
+import ButtonForm from './Button';
+import TableForm from './Table';
 
-const Page = ({ form, form: { getFieldDecorator }, onUpdateComponentProps }) => {
-  useEffect(() => {
-    form.validateFields((err, value) => {
-      if (err) return;
-      onUpdateComponentProps(value);
-    });
-  }, [form.getFieldValue('type'), form.getFieldValue('size'), form.getFieldValue('bind')]);
+const Page = ({
+  data,
+  form,
+  form: { getFieldDecorator, getFieldValue },
+  onUpdateComponentProps
+}) => {
+  const renderForm = () => {
+    switch (data.node.name) {
+      case 'button':
+        return <ButtonForm getFieldDecorator={getFieldDecorator} data={data.node.data.props} />;
+      case 'table':
+        return (
+          <TableForm
+            getFieldDecorator={getFieldDecorator}
+            getFieldValue={getFieldValue}
+            form={form}
+            data={data.node.data.props}
+          />
+        );
+      default:
+        break;
+    }
+  };
 
-  return (
-    <Form layout="inline">
-      <Col span={24}>
-        <Form.Item label="按钮主题">
-          {getFieldDecorator('type', {
-            initialValue: 'danger'
-          })(
-            <Select style={{ width: 200 }}>
-              <Select.Option value="primary" key="primary">
-                primary
-              </Select.Option>
-              <Select.Option value="default" key="default">
-                default
-              </Select.Option>
-              <Select.Option value="dashed" key="dashed">
-                dashed
-              </Select.Option>
-              <Select.Option value="danger" key="danger">
-                danger
-              </Select.Option>
-              <Select.Option value="link" key="link">
-                link
-              </Select.Option>
-            </Select>
-          )}
-        </Form.Item>
-      </Col>
-      <Col span={24}>
-        <Form.Item label="按钮大小">
-          {getFieldDecorator('size', {
-            initialValue: 'default'
-          })(
-            <Select style={{ width: 200 }}>
-              <Select.Option value="small" key="small">
-                small
-              </Select.Option>
-              <Select.Option value="default" key="default">
-                default
-              </Select.Option>
-              <Select.Option value="large" key="large">
-                large
-              </Select.Option>
-            </Select>
-          )}
-        </Form.Item>
-      </Col>
-
-      <Col span={24}>
-        <Form.Item label="绑定图例">
-          {getFieldDecorator('bind', {
-            initialValue: void 0
-          })(
-            <Select style={{ width: 200 }} mode="multiple" placeholder="请选择图例">
-              {canvas.data.pens.map((item) => (
-                <Select.Option key={item.id}>{item.id}</Select.Option>
-              ))}
-            </Select>
-          )}
-        </Form.Item>
-      </Col>
-
-    </Form>
-  );
+  return <Form layout="inline">{renderForm()}</Form>;
 };
 
-export default Form.create()(Page);
+export default Form.create({
+  onValuesChange: (props, changedValues, allValues) => {
+    const { onUpdateComponentProps } = props;
+    console.log(props);
+    if(props.data.node.name === 'table') {
+      allValues.columns = allValues.key.map((item, index) => ({
+        title: allValues.title[index] || 'NA',
+        key: item || 'NA',
+        dataIndex: item || 'NA'
+      }));
+      const { key, keys, title, dataSource, ...other } = allValues;
+      onUpdateComponentProps(other);
+      return;
+    }
+    onUpdateComponentProps(allValues);
+    console.log(allValues);
+
+  }
+})(Page);
