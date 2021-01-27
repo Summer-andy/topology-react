@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Col, Input, Select, Button } from 'antd';
+import { Form, Col, Input, Select, Button, Icon, Tooltip } from 'antd';
 import { canvas } from '../../../index';
 let id = 0;
 const Page = ({ form, form: { getFieldDecorator, getFieldValue }, data }) => {
@@ -72,7 +72,7 @@ const Page = ({ form, form: { getFieldDecorator, getFieldValue }, data }) => {
       </Col>
 
       <Col span={24}>
-        <Form.Item label="结果处理">
+        <Form.Item label={<>结果<Tooltip title="如果后端api返回的数据是 { list: [], count: 100 },想要把list的数据传入控件, 那么此处填写list即可"><Icon style={{ margin: '12px 0 0 13px' }} type="question-circle" /></Tooltip></>}>
           {getFieldDecorator('handleResult', {
             initialValue: data.handleResult
           })(<Input style={{ width: 200 }} placeholder="请填写处理的值" />)}
