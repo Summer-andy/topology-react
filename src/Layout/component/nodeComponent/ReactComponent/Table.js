@@ -1,6 +1,5 @@
 import React from 'react';
 import { Form, Col, Select, Input, Button } from 'antd';
-const { TextArea } = Input;
 let id = 0;
 const Table = ({ getFieldDecorator, getFieldValue, data, form }) => {
   getFieldDecorator('keys', { initialValue: [] });
@@ -68,13 +67,6 @@ const Table = ({ getFieldDecorator, getFieldValue, data, form }) => {
           <Button type="primary" size="small" icon="plus" style={{ marginLeft: 20, width: 250 }} onClick={() => onHandleAdd()}>
             新增
           </Button>
-        </Form.Item>
-      </Col>
-      <Col span={24}>
-        <Form.Item label="表格数据源">
-          {getFieldDecorator('dataSource', {
-            initialValue: JSON.stringify(data.dataSource) || []
-          })(<TextArea allowClear placeholder="请输入表格数据源" />)}
         </Form.Item>
       </Col>
     </>

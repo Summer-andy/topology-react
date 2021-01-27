@@ -66,33 +66,47 @@ const reactNodes = (ReactComponent) => (ctx, node) => {
              */
 
             if (node.data.bind && node.data.bind.length > 0) {
-              node.data.bind.forEach(async (b) => {
-                let _pen = canvas.data.pens.find((pen) => pen.id === b);
-                let idx = canvas.data.pens.findIndex((pen) => pen.id === b);
-                const { api, type, paramsArr, handleResult } = _pen.data.http;
-                const queryData = {};
-                paramsArr.forEach((item) => {
-                  queryData[item.key] = Store.get(item.value);
-                });
-                const data = await Axios[type](`${api}${querystring.stringify(queryData)}`);
-                if (_pen.data.echarts) {
-                  canvas.data.pens[idx].elementRendered = false;
-                  const { seriesFunction } = _pen.data.echarts.option;
-                  // eslint-disable-next-line no-new-func
-                  let _seriesFn = new Function('params', seriesFunction);
-                  canvas.data.pens[idx].data.echarts.option = {
-                    ..._seriesFn(get(data, handleResult, data)),
-                    seriesFunction
-                  };
-                } else {
-                  // 暂时忽略线条节点的处理
-                  if (canvas.data.pens[idx] instanceof Line) {
-                    return;
-                  }
+              let _pens = canvas.data.pens;
+              function handleNode(b) {
+                return new Promise(async (resolve, reject) => {
+                  try {
+                    let _pen = _pens.find((pen) => pen.id === b);
+                    let idx = _pens.findIndex((pen) => pen.id === b);
+                    const { api, type, paramsArr, handleResult } = _pen.data.http;
+                    const queryData = {};
+                    paramsArr.forEach((item) => {
+                      queryData[item.key] = Store.get(item.value);
+                    });
+                    const data = await Axios[type](`${api}${querystring.stringify(queryData)}`);
+                    if (_pen.data.echarts) {
+                      _pens[idx].elementRendered = false;
+                      const { seriesFunction } = _pen.data.echarts.option;
+                      // eslint-disable-next-line no-new-func
+                      let _seriesFn = new Function('params', seriesFunction);
+                      _pens[idx].data.echarts.option = {
+                        ..._seriesFn(get(data, handleResult, data)),
+                        seriesFunction
+                      };
+                    } else {
+                      // 暂时忽略线条节点的处理
+                      if (_pens[idx] instanceof Line) {
+                        return;
+                      }
 
-                  canvas.data.pens[idx].data.props.dataSource = get(data, handleResult, data);
-                  // 后期可以处理正常的节点
-                }
+                      if(['table'].includes(_pen.name)) {
+                        _pens[idx].data.props.dataSource = get(data, handleResult, data);
+                      }
+                      // 后期可以处理正常的节点
+                    }
+                    resolve('finish');
+                  } catch (error) {
+                    console.error('系统出错!')
+                    reject('error');
+                  }
+                });
+              }
+
+              Promise.all(node.data.bind.map((item) => handleNode(item))).then((res) => {
                 let reader = new FileReader();
                 const result = new Blob([JSON.stringify(canvas.data)], {
                   type: 'text/plain;charset=utf-8'
