@@ -33,7 +33,6 @@ const Layout = ({ history }) => {
     canvasOptions.on = onMessage;
     canvasRegister();
     canvas = new Topology('topology-canvas', canvasOptions);
-
     async function getNodeData() {
       const data = await getNodeById(history.location.state.id);
       canvas.open(data.data);
@@ -66,7 +65,6 @@ const Layout = ({ history }) => {
 
   const canvasRegister = () => {
     registerChart();
-
     registerNode('button', reactNodes(Button), null, null, null);
     registerNode('datePicker', reactNodes(DatePicker), null, null, null);
     registerNode('table', reactNodes(Table), null, null, null);
@@ -166,6 +164,7 @@ const Layout = ({ history }) => {
         api: data.api,
         type: data.type,
         paramsGetStyle: 'subscribe',
+        handleResult: data.handleResult,
         paramsArr: data.keys.map((item, index) => ({
           key: data.paramsKey[index],
           value: data.paramsValue[index]

@@ -180,7 +180,10 @@ const CanvasProps = ({
     let value = extraFields;
     if (data.node.data && data.node.data.echarts) {
       value = data.node.data.echarts.option.seriesFunction;
+    } else {
+      value = JSON.stringify(value)
     }
+
 
     return (
       <Form>
@@ -188,7 +191,7 @@ const CanvasProps = ({
           <Form.Item label="自定义数据字段">
             {getFieldDecorator('data', {
               initialValue: value
-            })(<TextArea rows={10} />)}
+            })(<TextArea rows={30} />)}
           </Form.Item>
         </Col>
       </Form>

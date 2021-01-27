@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Store } from 'le5le-store';
 import { s8, createDiv, rectangle, Line } from '@topology/core';
+import { get } from 'lodash';
 import { canvas } from '../index';
 import Axios from '../../utils/Service';
 import moment from 'moment';
@@ -52,7 +53,7 @@ const reactNodes = (ReactComponent) => (ctx, node) => {
               Store.set(`componentValue-${node.id}`, moment(componentValue).format('YYYY-MM-DD'));
             } else if (['input'].includes(node.name)) {
               Store.set(`componentValue-${node.id}`, componentValue.target.value);
-              node.data.props.value = componentValue.target.value;
+              node.data.props.defaultValue = componentValue.target.value;
             } else {
               Store.set(`componentValue-${node.id}`, componentValue);
             }
@@ -60,47 +61,48 @@ const reactNodes = (ReactComponent) => (ctx, node) => {
             if (['table'].includes(node.name)) {
             }
 
-              /**
-               * 从画布中获取绑定的节点, 进行值的更新, 目前只支持ECharts图表的更新
-               */
+            /**
+             * 从画布中获取绑定的节点, 进行值的更新, 目前只支持ECharts图表的更新
+             */
 
-              if (node.data.bind && node.data.bind.length > 0) {
-                node.data.bind.forEach(async (b) => {
-                  let _pen = canvas.data.pens.find((pen) => pen.id === b);
-                  let idx = canvas.data.pens.findIndex((pen) => pen.id === b);
-                  const { api, type, paramsArr } = _pen.data.http;
-                  const queryData = {};
-                  paramsArr.forEach((item) => {
-                    queryData[item.key] = Store.get(item.value);;
-                  });
-                  const data = await Axios[type](`${api}${querystring.stringify(queryData)}`);
-                  if (_pen.data.echarts) {
-                    canvas.data.pens[idx].elementRendered = false;
-                    const { seriesFunction } = _pen.data.echarts.option;
-                    // eslint-disable-next-line no-new-func
-                    let _seriesFn = new Function('params', seriesFunction);
-                    canvas.data.pens[idx].data.echarts.option = { ..._seriesFn(data), seriesFunction }
-                  } else {
-                    // 暂时忽略线条节点的处理
-                    if (canvas.data.pens[idx] instanceof Line) {
-                      return;
-                    }
-                    /**
-                     * 异步请求在此调用, 并且将获得的数据塞入store
-                     */             
-                    canvas.data.pens[idx].data.props.dataSource = data.list;
-                    // 后期可以处理正常的节点
-                  }
-                  let reader = new FileReader();
-                  const result = new Blob([JSON.stringify(canvas.data)], {
-                    type: 'text/plain;charset=utf-8'
-                  });
-                  reader.readAsText(result, 'text/plain;charset=utf-8');
-                  reader.onload = (e) => {
-                    canvas.open(JSON.parse(reader.result));
-                  };
+            if (node.data.bind && node.data.bind.length > 0) {
+              node.data.bind.forEach(async (b) => {
+                let _pen = canvas.data.pens.find((pen) => pen.id === b);
+                let idx = canvas.data.pens.findIndex((pen) => pen.id === b);
+                const { api, type, paramsArr, handleResult } = _pen.data.http;
+                const queryData = {};
+                paramsArr.forEach((item) => {
+                  queryData[item.key] = Store.get(item.value);
                 });
-              }
+                const data = await Axios[type](`${api}${querystring.stringify(queryData)}`);
+                if (_pen.data.echarts) {
+                  canvas.data.pens[idx].elementRendered = false;
+                  const { seriesFunction } = _pen.data.echarts.option;
+                  // eslint-disable-next-line no-new-func
+                  let _seriesFn = new Function('params', seriesFunction);
+                  canvas.data.pens[idx].data.echarts.option = {
+                    ..._seriesFn(get(data, handleResult, data)),
+                    seriesFunction
+                  };
+                } else {
+                  // 暂时忽略线条节点的处理
+                  if (canvas.data.pens[idx] instanceof Line) {
+                    return;
+                  }
+
+                  canvas.data.pens[idx].data.props.dataSource = get(data, handleResult, data);
+                  // 后期可以处理正常的节点
+                }
+                let reader = new FileReader();
+                const result = new Blob([JSON.stringify(canvas.data)], {
+                  type: 'text/plain;charset=utf-8'
+                });
+                reader.readAsText(result, 'text/plain;charset=utf-8');
+                reader.onload = (e) => {
+                  canvas.open(JSON.parse(reader.result));
+                };
+              });
+            }
 
             await _fn(element.params);
           };

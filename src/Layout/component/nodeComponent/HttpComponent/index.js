@@ -70,6 +70,15 @@ const Page = ({ form, form: { getFieldDecorator, getFieldValue }, data }) => {
           )}
         </Form.Item>
       </Col>
+
+      <Col span={24}>
+        <Form.Item label="结果处理">
+          {getFieldDecorator('handleResult', {
+            initialValue: data.handleResult
+          })(<Input style={{ width: 200 }} placeholder="请填写处理的值" />)}
+        </Form.Item>
+      </Col>
+
       {renderForm()}
       <Col span={24}>
         <Form.Item>
