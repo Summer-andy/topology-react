@@ -366,12 +366,12 @@ const Layout = ({ history }) => {
                 ref={dragRef}
                 style={{
                   position: 'absolute',
-                  width: 10,
-                  height: 10,
-                  background: 'red',
                   right: 0,
                   bottom: 0,
+                  width: 10,
+                  height: 10,
                   zIndex: 999,
+                  background: 'gray',
                   cursor: 'cell'
                 }}
               ></div>
