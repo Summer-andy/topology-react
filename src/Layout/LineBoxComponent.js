@@ -1,5 +1,4 @@
-import React, { useRef } from 'react';
-import { useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState  } from 'react';
 
 const LineComponent = ({ direction }) => {
   const multiple = 1;
