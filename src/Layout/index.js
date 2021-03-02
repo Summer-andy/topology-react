@@ -11,7 +11,7 @@ import BackgroundComponent from './component/backgroundComponent';
 import LineComponent from './component/lineComponent';
 import SystemComponent from './LeftAreaComponent/SystemComponent';
 import MyComponent from './LeftAreaComponent/MyComponent';
-
+import LineBoxComponent from './LineBoxComponent';
 import './index.css';
 const { confirm } = Modal;
 const { TabPane } = Tabs;
@@ -21,13 +21,14 @@ const Layout = ({ history }) => {
   const [isLoadCanvas, setIsLoadCanvas] = useState(false);
 
   const nodeFormRef = useRef(null);
+  const dragRef = useRef(null);
 
   useEffect(() => {
     const canvasOptions = {
       rotateCursor: '/rotate.cur',
       locked: 2,
       grid: true,
-      rule: true,
+      // rule: true,
       ruleColor: '#2db7f5'
     };
     canvasOptions.on = onMessage;
@@ -82,7 +83,6 @@ const Layout = ({ history }) => {
 
   const onHandleFormValueChange = useCallback(
     (value) => {
-
       if (selected.node.name === 'echarts') {
         canvas.updateProps(selected.node);
         return;
@@ -220,7 +220,7 @@ const Layout = ({ history }) => {
       case 'node': // 节点
       case 'addNode':
         // 切换node的时候, 清空上一个节点残留的信息
-        if(nodeFormRef.current) {
+        if (nodeFormRef.current) {
           nodeFormRef.current.resetFields();
         }
         setSelected({
@@ -303,6 +303,35 @@ const Layout = ({ history }) => {
     if (isLoadCanvas) return <Header canvas={canvas} history={history} />;
   }, [isLoadCanvas, history]);
 
+  useEffect(() => {
+    if (dragRef.current) {
+      let disX = 0,
+        disY = 0,
+        disW = 0,
+        disH = 0;
+      const oPanel = document.getElementById('topology-canvas');
+      dragRef.current.onmousedown = (ev) => {
+        ev = ev || window.event;
+        disX = ev.clientX; // 获取鼠标按下时光标x的值
+        disY = ev.clientY; // 获取鼠标按下时光标Y的值
+        disW = oPanel.offsetWidth; // 获取拖拽前div的宽
+        disH = oPanel.offsetHeight;
+        document.onmousemove = function (ev) {
+          //拖拽时为了对宽和高 限制一下范围，定义两个变量
+          var W = ev.clientX - disX + disW;
+          var H = ev.clientY - disY + disH;
+          oPanel.style.width = W + 'px'; // 拖拽后物体的宽
+          oPanel.style.height = H + 'px'; // 拖拽后物体的高
+          canvas.resize({ width: W, height: H });
+        };
+        document.onmouseup = function () {
+          document.onmousemove = null;
+          document.onmouseup = null;
+        };
+      };
+    }
+  }, []);
+
   return (
     <Fragment>
       {renderHeader}
@@ -318,7 +347,36 @@ const Layout = ({ history }) => {
           </Tabs>
         </div>
         <div className="full">
-          <div id="topology-canvas" style={{ height: '100%', width: '100%' }} />
+          <div style={{ minWidth: 2000 }}>
+            <LineBoxComponent direction="up" id="calibrationUp" />
+            <div style={{ width: 50, height: '100%', position: 'absolute', left: 0, top: 50 }}>
+              <LineBoxComponent direction="right" id="calibrationLeft" />
+            </div>
+            <div
+              id="topology-canvas"
+              style={{
+                height: 500,
+                width: 500,
+                boxShadow: '2px 0 10px rgb(0 0 0 / 20%)',
+                position: 'relative',
+                margin: '50px 50px'
+              }}
+            >
+              <div
+                ref={dragRef}
+                style={{
+                  position: 'absolute',
+                  width: 10,
+                  height: 10,
+                  background: 'red',
+                  right: 0,
+                  bottom: 0,
+                  zIndex: 999,
+                  cursor: 'cell'
+                }}
+              ></div>
+            </div>
+          </div>
         </div>
         <div className="props">{renderRightArea}</div>
       </div>

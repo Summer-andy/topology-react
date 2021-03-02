@@ -284,6 +284,273 @@ export const Tools = [
         }
       },
       {
+        elementRendered: false,
+        name: '折线图',
+        icon: 'icon-line-chart',
+        data: {
+          text: '折线图',
+          rect: {
+            width: 300,
+            height: 200,
+          },
+          strokeStyle: '#fff',
+          name: 'echarts',
+          data: {
+            echarts: {
+              option: {
+                backgroundColor: '#FFF',
+                legend: {
+                  data: ['A1班', 'B1班', 'C1班'],
+                  orient: 'vertical',
+                  right: '2%',
+                  top: '5%'
+                },
+                grid: {
+                  top: '9%',
+                  bottom: '15%',
+                  left: '6%',
+                  right: '10%'
+                },
+                tooltip: {
+                  trigger: 'axis',
+                  label: {
+                    show: true
+                  }
+                },
+                xAxis: {
+                  boundaryGap: true,
+                  axisLine: {
+                    show: false
+                  },
+                  splitLine: {
+                    show: false
+                  },
+                  axisTick: {
+                    show: false,
+                    alignWithLabel: true
+                  },
+                  data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+                },
+                yAxis: {
+                  axisLine: {
+                    show: false
+                  },
+                  splitLine: {
+                    show: true,
+                    lineStyle: {
+                      type: 'dotted',
+                      color: '#d9d9d9'
+                    }
+                  },
+                  axisTick: {
+                    show: false
+                  }
+                },
+                series: [
+                  {
+                    name: 'A1班',
+                    type: 'line',
+                    symbol: 'circle',
+                    symbolSize: 7,
+                    lineStyle: {
+                      color: 'rgb(33, 148, 246)',
+                      shadowBlur: 12,
+                      shadowColor: 'rgb(33, 148, 246,0.9)',
+                      shadowOffsetX: 1,
+                      shadowOffsetY: 1
+                    },
+                    itemStyle: {
+                      color: 'rgb(33, 148, 246)',
+                      borderWidth: 1,
+                      borderColor: '#FFF'
+                    },
+                    label: {
+                      show: false,
+                      distance: 1
+                    },
+                    data: [2000, 1800, 2800, 900, 1600, 2000, 3000]
+                  },
+                  {
+                    name: 'B1班',
+                    type: 'line',
+                    symbol: 'circle',
+                    symbolSize: 7,
+                    lineStyle: {
+                      color: 'rgb(78, 203, 115)',
+                      shadowBlur: 12,
+                      shadowColor: 'rgb(78, 203, 115,0.9)',
+                      shadowOffsetX: 1,
+                      shadowOffsetY: 1
+                    },
+                    itemStyle: {
+                      color: 'rgb(78, 203, 115)',
+                      borderWidth: 1,
+                      borderColor: '#FFF'
+                    },
+                    label: {
+                      show: false,
+                      distance: 1
+                    },
+                    data: [2900, 1350, 3479, 4126, 3570, 2122, 1256]
+                  },
+                  {
+                    name: 'C1班',
+                    type: 'line',
+                    symbol: 'circle',
+                    symbolSize: 7,
+                    lineStyle: {
+                      color: 'rgb(51, 201, 255)',
+                      shadowBlur: 12,
+                      shadowColor: 'rgb(51, 201, 255,0.9)',
+                      shadowOffsetX: 1,
+                      shadowOffsetY: 1
+                    },
+                    itemStyle: {
+                      color: 'rgb(51, 201, 255)',
+                      borderWidth: 1,
+                      borderColor: '#FFF'
+                    },
+                    label: {
+                      show: false,
+                      distance: 1
+                    },
+                    data: [3781, 3265, 3289, 3167, 4421, 4312, 3256]
+                  }
+                ],          
+                seriesFunction: ` return {
+                  backgroundColor: '#FFF',
+                  legend: {
+                    data: ['A1班', 'B1班', 'C1班'],
+                    orient: 'vertical',
+                    right: '2%',
+                    top: '5%'
+                  },
+                  grid: {
+                    top: '9%',
+                    bottom: '15%',
+                    left: '6%',
+                    right: '10%'
+                  },
+                  tooltip: {
+                    trigger: 'axis',
+                    label: {
+                      show: true
+                    }
+                  },
+                  xAxis: {
+                    boundaryGap: true,
+                    axisLine: {
+                      show: false
+                    },
+                    splitLine: {
+                      show: false
+                    },
+                    axisTick: {
+                      show: false,
+                      alignWithLabel: true
+                    },
+                    data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+                  },
+                  yAxis: {
+                    axisLine: {
+                      show: false
+                    },
+                    splitLine: {
+                      show: true,
+                      lineStyle: {
+                        type: 'dotted',
+                        color: '#d9d9d9'
+                      }
+                    },
+                    axisTick: {
+                      show: false
+                    }
+                  },
+                  series: [
+                    {
+                      name: 'A1班',
+                      type: 'line',
+                      symbol: 'circle',
+                      symbolSize: 7,
+                      lineStyle: {
+                        color: 'rgb(33, 148, 246)',
+                        shadowBlur: 12,
+                        shadowColor: 'rgb(33, 148, 246,0.9)',
+                        shadowOffsetX: 1,
+                        shadowOffsetY: 1
+                      },
+                      itemStyle: {
+                        color: 'rgb(33, 148, 246)',
+                        borderWidth: 1,
+                        borderColor: '#FFF'
+                      },
+                      label: {
+                        show: false,
+                        distance: 1
+                      },
+                      data: [2000, 1800, 2800, 900, 1600, 2000, 3000]
+                    },
+                    {
+                      name: 'B1班',
+                      type: 'line',
+                      symbol: 'circle',
+                      symbolSize: 7,
+                      lineStyle: {
+                        color: 'rgb(78, 203, 115)',
+                        shadowBlur: 12,
+                        shadowColor: 'rgb(78, 203, 115,0.9)',
+                        shadowOffsetX: 1,
+                        shadowOffsetY: 1
+                      },
+                      itemStyle: {
+                        color: 'rgb(78, 203, 115)',
+                        borderWidth: 1,
+                        borderColor: '#FFF'
+                      },
+                      label: {
+                        show: false,
+                        distance: 1
+                      },
+                      data: [2900, 1350, 3479, 4126, 3570, 2122, 1256]
+                    },
+                    {
+                      name: 'C1班',
+                      type: 'line',
+                      symbol: 'circle',
+                      symbolSize: 7,
+                      lineStyle: {
+                        color: 'rgb(51, 201, 255)',
+                        shadowBlur: 12,
+                        shadowColor: 'rgb(51, 201, 255,0.9)',
+                        shadowOffsetX: 1,
+                        shadowOffsetY: 1
+                      },
+                      itemStyle: {
+                        color: 'rgb(51, 201, 255)',
+                        borderWidth: 1,
+                        borderColor: '#FFF'
+                      },
+                      label: {
+                        show: false,
+                        distance: 1
+                      },
+                      data: [3781, 3265, 3289, 3167, 4421, 4312, 3256]
+                    }
+                  ]
+                };
+            `
+              }
+            },
+            http: {
+              api: '/api/topologies?',
+              type: 'get',
+              paramsGetStyle: 'subscribe',
+              paramsArr : [{ key: 'pageIndex', value: 1 }, { key: 'pageCount', value: 10 }]
+            },
+          }
+        }
+      },
+      {
         name: '柱状图',
         icon: 'icon-bar-chart',
         data: {

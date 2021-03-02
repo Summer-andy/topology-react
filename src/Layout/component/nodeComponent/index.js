@@ -208,7 +208,7 @@ const CanvasProps = ({
   }, [onUpdateComponentProps, data]);
 
   const renderHttpComponent = useMemo(() => {
-    return <HttpComponent onUpdateHttpProps={(value) => onUpdateHttpProps(value)}  data={data.node.data.http || {}} />;
+    return <HttpComponent onUpdateHttpProps={(value) => onUpdateHttpProps(value)}  data={data.node?.data?.http || {}} />;
   }, [onUpdateHttpProps, data]);
 
   return (
