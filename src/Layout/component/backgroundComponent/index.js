@@ -1,5 +1,5 @@
 import React, { useMemo, useEffect, useState } from 'react';
-import { Form, Tabs, Row, Col, Input, Collapse, Button, Switch } from 'antd';
+import { Form, Tabs, Row, Col, Input, Collapse, Button } from 'antd';
 import './index.css';
 import MQTTComponent from './MQTTComponent';
 import LayoutComponent from './LayoutComponent';
@@ -47,22 +47,6 @@ const CanvasProps = ({ data, form: { getFieldDecorator }, form }) => {
               {getFieldDecorator('bkImage', {
                 initialValue: bkImage
               })(<TextArea placeholder="请输入图片的地址" />)}
-            </Form.Item>
-          </Col>
-          <Col span={24}>
-            <Form.Item label="背景网格">
-              {getFieldDecorator('grid', {
-                initialValue: true
-              })(
-                <Switch
-                  checkedChildren="开"
-                  unCheckedChildren="关"
-                  onClick={(e) => {
-                    console.log(e);
-                    canvas.showGrid(e);
-                  }}
-                />
-              )}
             </Form.Item>
           </Col>
         </Row>

@@ -355,8 +355,8 @@ const Layout = ({ history }) => {
             <div
               id="topology-canvas"
               style={{
-                height: 500,
-                width: 500,
+                width: 1200,
+                height: 800,
                 boxShadow: '2px 0 10px rgb(0 0 0 / 20%)',
                 position: 'relative',
                 margin: '50px 50px'
