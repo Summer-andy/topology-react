@@ -15,7 +15,15 @@ const Layout = ({ Tools, onDrag }) => {
               href="/#"
               onDragStart={(ev) => onDrag(ev, item)}
             >
-              <i className={'iconfont ' + item.icon}></i>
+              {item.data.name === 'image' ? (
+                <img
+                  style={{ height: 30, width: 30, margin: '0 1px' }}
+                  src={item.data.image}
+                  alt="img"
+                />
+              ) : (
+                <i className={'iconfont ' + item.icon} style={{ fontSize: 13 }} />
+              )}
             </a>
           );
         })}
