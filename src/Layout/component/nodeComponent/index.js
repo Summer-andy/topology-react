@@ -18,8 +18,7 @@ const CanvasProps = ({
   onUpdateHttpProps
 }) => {
   const { x, y, width, height } = data?.node?.rect || {};
-  const { rotate, lineWidth, strokeStyle, dash, text, id } = data?.node || {};
-  const { color, fontSize, fontFamily } = data?.node?.font || {};
+  const { rotate, lineWidth, strokeStyle, dash, text, id, fontColor, fontSize = 12, fontFamily } = data?.node || {};
   const extraFields = data.node.data; // 用户自定义数据片段
 
   /**
@@ -120,8 +119,8 @@ const CanvasProps = ({
       <Form>
         <Col span={24}>
           <Form.Item label="字体颜色">
-            {getFieldDecorator('color', {
-              initialValue: color
+            {getFieldDecorator('fontColor', {
+              initialValue: fontColor
             })(<Input type="color" />)}
           </Form.Item>
         </Col>
@@ -148,7 +147,7 @@ const CanvasProps = ({
         </Col>
       </Form>
     );
-  }, [color, fontFamily, fontSize, text, getFieldDecorator]);
+  }, [fontColor, fontFamily, fontSize, text, getFieldDecorator]);
 
   /**
    * 渲染元素本身数据
@@ -180,9 +179,7 @@ const CanvasProps = ({
     let value = extraFields;
     if (data.node.data && data.node.data.echarts) {
       value = data.node.data.echarts.option.seriesFunction;
-    } else {
-      value = JSON.stringify(value)
-    }
+    } 
 
 
     return (
@@ -191,7 +188,7 @@ const CanvasProps = ({
           <Form.Item label="自定义数据字段">
             {getFieldDecorator('data', {
               initialValue: value
-            })(<TextArea rows={30} />)}
+            })(<TextArea rows={30} disabled={!(data.node.data && data.node.data.echarts)} />)}
           </Form.Item>
         </Col>
       </Form>

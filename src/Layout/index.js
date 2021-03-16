@@ -112,6 +112,7 @@ const Layout = ({ history }) => {
         color,
         fontSize,
         fontFamily,
+        fontColor,
         text,
         seriesFunction,
         ...other
@@ -119,7 +120,9 @@ const Layout = ({ history }) => {
       let changedValues = {
         node: {
           rect: other,
-          font: { color, fontSize, fontFamily },
+          fontColor, 
+          fontSize, 
+          fontFamily,
           rotate,
           lineWidth,
           strokeStyle,
