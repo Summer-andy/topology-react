@@ -199,7 +199,84 @@ export const Tools = [
             height: 100
           },
           name: 'image',
-          image: require('./machine.jpg')
+          image: require('./sprites.svg')
+        }
+      },
+      {
+        name: 'image',
+        icon: 'icon-image',
+        data: {
+          text: '',
+          rect: {
+            width: 100,
+            height: 100
+          },
+          name: 'image',
+          image: require('./site.svg')
+        }
+      },
+      {
+        name: 'image',
+        icon: 'icon-image',
+        data: {
+          text: '',
+          rect: {
+            width: 100,
+            height: 100
+          },
+          name: 'image',
+          image: require('./car.svg'),
+          data: {
+            car: 1
+          }
+        }
+      },
+      {
+        name: 'image',
+        icon: 'icon-image',
+        data: {
+          text: '',
+          rect: {
+            width: 100,
+            height: 100
+          },
+          name: 'image',
+          image: require('./point.svg'),
+          data: {
+            car: 1
+          }
+        }
+      },
+      {
+        name: 'image',
+        icon: 'icon-image',
+        data: {
+          text: '',
+          rect: {
+            width: 100,
+            height: 100
+          },
+          name: 'image',
+          image: require('./charge.svg'),
+          data: {
+            car: 1
+          }
+        }
+      },
+      {
+        name: 'image',
+        icon: 'icon-image',
+        data: {
+          text: '',
+          rect: {
+            width: 100,
+            height: 100
+          },
+          name: 'image',
+          image: require('./warehouse.svg'),
+          data: {
+            car: 1
+          }
         }
       }
     ]
@@ -696,6 +773,44 @@ export const Tools = [
                 ]
               }
             }
+          }
+        }
+      }
+    ]
+  },
+  {
+    group: '活动图',
+    children: [
+      {
+        name: '非交叉节点',
+        icon: 'icon-inital',
+        data: {
+          text: '',
+          rect: {
+            width: 20,
+            height: 20
+          },
+          name: 'circle',
+          fillStyle: '#555',
+          strokeStyle: 'transparent',
+          data: {
+            crossPoint: 2
+          }
+        }
+      },
+      {
+        name: '交叉节点',
+        icon: 'icon-final',
+        data: {
+          text: '',
+          rect: {
+            width: 25,
+            height: 25
+          },
+          name: 'activityFinal',
+          fillStyle: '#555',
+          data: {
+            crossPoint: 1
           }
         }
       }

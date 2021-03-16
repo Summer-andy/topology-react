@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="205px" height="251px" viewBox="0 0 205 251" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 57.1 (83088) - https://sketch.com -->
+    <title>建筑</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="50%" y1="5.50681939%" x2="50%" y2="96.2443724%" id="linearGradient-1">
+            <stop stop-color="#0088FE" stop-opacity="0.5" offset="0%"></stop>
+            <stop stop-color="#0088FD" stop-opacity="0.8" offset="100%"></stop>
+        </linearGradient>
+        <radialGradient cx="-282.566623%" cy="6.63877346%" fx="-282.566623%" fy="6.63877346%" r="1612.36428%" gradientTransform="translate(-2.825666,0.066388),scale(0.509246,1.000000),rotate(-0.565153),scale(1.000000,2.240189),translate(2.825666,-0.066388)" id="radialGradient-2">
+            <stop stop-color="#FFFFFF" offset="0%"></stop>
+            <stop stop-color="#0088FE" stop-opacity="0" offset="100%"></stop>
+        </radialGradient>
+        <linearGradient x1="100%" y1="43.973827%" x2="0%" y2="56.0614869%" id="linearGradient-3">
+            <stop stop-color="#0088FF" offset="0%"></stop>
+            <stop stop-color="#0088FF" stop-opacity="0.2" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="33.0664123%" x2="49.1496627%" y2="90.5860199%" id="linearGradient-4">
+            <stop stop-color="#0088FF" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#FFFFFF" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="100%" y1="46.9386957%" x2="0%" y2="53.0792439%" id="linearGradient-5">
+            <stop stop-color="#0088FF" offset="0%"></stop>
+            <stop stop-color="#0088FF" stop-opacity="0.2" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="41.3977137%" x2="49.1496627%" y2="70.6177551%" id="linearGradient-6">
+            <stop stop-color="#0088FF" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#FFFFFF" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="5.50681939%" x2="50%" y2="96.2443724%" id="linearGradient-7">
+            <stop stop-color="#0088FE" stop-opacity="0.5" offset="0%"></stop>
+            <stop stop-color="#0088FD" stop-opacity="0.8" offset="100%"></stop>
+        </linearGradient>
+        <radialGradient cx="-282.566623%" cy="6.63877346%" fx="-282.566623%" fy="6.63877346%" r="1574.55135%" gradientTransform="translate(-2.825666,0.066388),scale(0.521477,1.000000),rotate(-0.578726),scale(1.000000,2.240189),translate(2.825666,-0.066388)" id="radialGradient-8">
+            <stop stop-color="#FFFFFF" offset="0%"></stop>
+            <stop stop-color="#0088FE" stop-opacity="0" offset="100%"></stop>
+        </radialGradient>
+        <linearGradient x1="100%" y1="42.8319495%" x2="0%" y2="57.2100559%" id="linearGradient-9">
+            <stop stop-color="#0088FF" offset="0%"></stop>
+            <stop stop-color="#0088FF" stop-opacity="0.2" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="29.8577285%" x2="49.1496627%" y2="98.2765167%" id="linearGradient-10">
+            <stop stop-color="#0088FF" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#FFFFFF" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="100%" y1="25.4908109%" x2="0%" y2="25.4908109%" id="linearGradient-11">
+            <stop stop-color="#0088FF" offset="0%"></stop>
+            <stop stop-color="#0088FF" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="18.9791507%" y1="27.9930236%" x2="75.7514114%" y2="76.2711185%" id="linearGradient-12">
+            <stop stop-color="#0088FF" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#FFFFFF" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="5.50681939%" x2="50%" y2="96.2443724%" id="linearGradient-13">
+            <stop stop-color="#0088FE" stop-opacity="0.5" offset="0%"></stop>
+            <stop stop-color="#0088FD" stop-opacity="0.8" offset="100%"></stop>
+        </linearGradient>
+        <radialGradient cx="-282.566623%" cy="6.63877346%" fx="-282.566623%" fy="6.63877346%" r="2070.63657%" gradientTransform="translate(-2.825666,0.066388),scale(0.396532,1.000000),rotate(-0.440071),scale(1.000000,2.240189),translate(2.825666,-0.066388)" id="radialGradient-14">
+            <stop stop-color="#FFFFFF" offset="0%"></stop>
+            <stop stop-color="#0088FE" stop-opacity="0" offset="100%"></stop>
+        </radialGradient>
+        <linearGradient x1="44.4444444%" y1="0%" x2="55.5555556%" y2="100%" id="linearGradient-15">
+            <stop stop-color="#0088FF" offset="0%"></stop>
+            <stop stop-color="#0088FF" stop-opacity="0.1" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="-52.5675456%" x2="50%" y2="169.197591%" id="linearGradient-16">
+            <stop stop-color="#AEE1FF" offset="0%"></stop>
+            <stop stop-color="#76BFFF" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="126.370133%" y1="45.585898%" x2="0%" y2="45.585898%" id="linearGradient-17">
+            <stop stop-color="#F95738" offset="0%"></stop>
+            <stop stop-color="#0088FF" stop-opacity="0.8" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="53.4704408%" y1="35.8123952%" x2="46.5842176%" y2="63.0258045%" id="linearGradient-18">
+            <stop stop-color="#0088FF" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#FFFFFF" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="建筑">
+            <g id="建筑底座" transform="translate(0.000000, 158.930750)" stroke-width="0.77">
+                <path d="M106.17905,77.2091487 L106.17905,91.4639051 L204.31495,56.3604961 L204.31235,42.1891885 L106.17905,77.2091487 Z" id="Fill-5" stroke="url(#radialGradient-2)" fill="url(#linearGradient-1)"></path>
+                <path d="M0.469329418,51.4565749 L105.318472,91.4529091 L105.407392,77.2022269 L0.484411552,37.1368685 L0.469329418,51.4565749 Z" id="Fill-7" stroke="url(#linearGradient-4)" fill="url(#linearGradient-3)"></path>
+                <path d="M1.19537029,36.5845135 L105.949297,76.6280022 L203.593807,41.6686931 L97.7822895,0.980630903 L1.19537029,36.5845135 Z" id="Fill-1" stroke="url(#linearGradient-6)" fill="url(#linearGradient-5)"></path>
+            </g>
+            <g id="楼层" transform="translate(16.600000, 149.600000)" stroke-width="0.77">
+                <path d="M89.3633944,65.0562981 L89.274484,79.3053529 L174.637046,48.5546413 L174.634457,35.477566 L89.3633944,65.0562981 Z" id="Fill-5" stroke="url(#radialGradient-8)" fill="url(#linearGradient-7)"></path>
+                <path d="M0.935274357,44.1637653 L88.5045855,79.2866862 L88.5934725,65.041383 L0.950350678,29.849578 L0.935274357,44.1637653 Z" id="Fill-7" stroke="url(#linearGradient-10)" fill="url(#linearGradient-9)"></path>
+                <path d="M1.65118932,29.3012343 L88.9899512,64.370828 L173.871854,34.9270872 L80.9277594,0.959378978 L1.65118932,29.3012343 Z" id="Fill-9" stroke="url(#linearGradient-12)" fill="url(#linearGradient-11)"></path>
+            </g>
+            <g id="楼层" transform="translate(16.600000, 130.900000)" stroke-width="0.77">
+                <path d="M89.3633944,65.0562981 L89.274484,79.3053529 L174.637046,48.5546413 L174.634457,35.477566 L89.3633944,65.0562981 Z" id="Fill-5" stroke="url(#radialGradient-8)" fill="url(#linearGradient-7)"></path>
+                <path d="M0.935274357,44.1637653 L88.5045855,79.2866862 L88.5934725,65.041383 L0.950350678,29.849578 L0.935274357,44.1637653 Z" id="Fill-7" stroke="url(#linearGradient-10)" fill="url(#linearGradient-9)"></path>
+                <path d="M1.65118932,29.3012343 L88.9899512,64.370828 L173.871854,34.9270872 L80.9277594,0.959378978 L1.65118932,29.3012343 Z" id="Fill-9" stroke="url(#linearGradient-12)" fill="url(#linearGradient-11)"></path>
+            </g>
+            <g id="楼层" transform="translate(16.600000, 112.200000)" stroke-width="0.77">
+                <path d="M89.3633944,65.0562981 L89.274484,79.3053529 L174.637046,48.5546413 L174.634457,35.477566 L89.3633944,65.0562981 Z" id="Fill-5" stroke="url(#radialGradient-8)" fill="url(#linearGradient-7)"></path>
+                <path d="M0.935274357,44.1637653 L88.5045855,79.2866862 L88.5934725,65.041383 L0.950350678,29.849578 L0.935274357,44.1637653 Z" id="Fill-7" stroke="url(#linearGradient-10)" fill="url(#linearGradient-9)"></path>
+                <path d="M1.65118932,29.3012343 L88.9899512,64.370828 L173.871854,34.9270872 L80.9277594,0.959378978 L1.65118932,29.3012343 Z" id="Fill-9" stroke="url(#linearGradient-12)" fill="url(#linearGradient-11)"></path>
+            </g>
+            <g id="楼层" transform="translate(16.600000, 93.500000)" stroke-width="0.77">
+                <path d="M89.3633944,65.0562981 L89.274484,79.3053529 L174.637046,48.5546413 L174.634457,35.477566 L89.3633944,65.0562981 Z" id="Fill-5" stroke="url(#radialGradient-8)" fill="url(#linearGradient-7)"></path>
+                <path d="M0.935274357,44.1637653 L88.5045855,79.2866862 L88.5934725,65.041383 L0.950350678,29.849578 L0.935274357,44.1637653 Z" id="Fill-7" stroke="url(#linearGradient-10)" fill="url(#linearGradient-9)"></path>
+                <path d="M1.65118932,29.3012343 L88.9899512,64.370828 L173.871854,34.9270872 L80.9277594,0.959378978 L1.65118932,29.3012343 Z" id="Fill-9" stroke="url(#linearGradient-12)" fill="url(#linearGradient-11)"></path>
+            </g>
+            <g id="楼层" transform="translate(16.600000, 74.800000)" stroke-width="0.77">
+                <path d="M89.3633944,65.0562981 L89.274484,79.3053529 L174.637046,48.5546413 L174.634457,35.477566 L89.3633944,65.0562981 Z" id="Fill-5" stroke="url(#radialGradient-8)" fill="url(#linearGradient-7)"></path>
+                <path d="M0.935274357,44.1637653 L88.5045855,79.2866862 L88.5934725,65.041383 L0.950350678,29.849578 L0.935274357,44.1637653 Z" id="Fill-7" stroke="url(#linearGradient-10)" fill="url(#linearGradient-9)"></path>
+                <path d="M1.65118932,29.3012343 L88.9899512,64.370828 L173.871854,34.9270872 L80.9277594,0.959378978 L1.65118932,29.3012343 Z" id="Fill-9" stroke="url(#linearGradient-12)" fill="url(#linearGradient-11)"></path>
+            </g>
+            <g id="楼层" transform="translate(16.600000, 56.100000)" stroke-width="0.77">
+                <path d="M89.3633944,65.0562981 L89.274484,79.3053529 L174.637046,48.5546413 L174.634457,35.477566 L89.3633944,65.0562981 Z" id="Fill-5" stroke="url(#radialGradient-8)" fill="url(#linearGradient-7)"></path>
+                <path d="M0.935274357,44.1637653 L88.5045855,79.2866862 L88.5934725,65.041383 L0.950350678,29.849578 L0.935274357,44.1637653 Z" id="Fill-7" stroke="url(#linearGradient-10)" fill="url(#linearGradient-9)"></path>
+                <path d="M1.65118932,29.3012343 L88.9899512,64.370828 L173.871854,34.9270872 L80.9277594,0.959378978 L1.65118932,29.3012343 Z" id="Fill-9" stroke="url(#linearGradient-12)" fill="url(#linearGradient-11)"></path>
+            </g>
+            <g id="楼层" transform="translate(16.600000, 37.400000)" stroke-width="0.77">
+                <path d="M89.3633944,65.0562981 L89.274484,79.3053529 L174.637046,48.5546413 L174.634457,35.477566 L89.3633944,65.0562981 Z" id="Fill-5" stroke="url(#radialGradient-8)" fill="url(#linearGradient-7)"></path>
+                <path d="M0.935274357,44.1637653 L88.5045855,79.2866862 L88.5934725,65.041383 L0.950350678,29.849578 L0.935274357,44.1637653 Z" id="Fill-7" stroke="url(#linearGradient-10)" fill="url(#linearGradient-9)"></path>
+                <path d="M1.65118932,29.3012343 L88.9899512,64.370828 L173.871854,34.9270872 L80.9277594,0.959378978 L1.65118932,29.3012343 Z" id="Fill-9" stroke="url(#linearGradient-12)" fill="url(#linearGradient-11)"></path>
+            </g>
+            <g id="楼层" transform="translate(16.600000, 18.700000)" stroke-width="0.77">
+                <path d="M89.3633944,65.0562981 L89.274484,79.3053529 L174.637046,48.5546413 L174.634457,35.477566 L89.3633944,65.0562981 Z" id="Fill-5" stroke="url(#radialGradient-8)" fill="url(#linearGradient-7)"></path>
+                <path d="M0.935274357,44.1637653 L88.5045855,79.2866862 L88.5934725,65.041383 L0.950350678,29.849578 L0.935274357,44.1637653 Z" id="Fill-7" stroke="url(#linearGradient-10)" fill="url(#linearGradient-9)"></path>
+                <path d="M1.65118932,29.3012343 L88.9899512,64.370828 L173.871854,34.9270872 L80.9277594,0.959378978 L1.65118932,29.3012343 Z" id="Fill-9" stroke="url(#linearGradient-12)" fill="url(#linearGradient-11)"></path>
+            </g>
+            <g id="楼层" transform="translate(16.600000, 0.000000)" stroke-width="0.77">
+                <path d="M89.3633944,65.0562981 L89.274484,79.3053529 L174.637046,48.5546413 L174.634457,35.477566 L89.3633944,65.0562981 Z" id="Fill-5" stroke="url(#radialGradient-8)" fill="url(#linearGradient-7)"></path>
+                <path d="M0.935274357,44.1637653 L88.5045855,79.2866862 L88.5934725,65.041383 L0.950350678,29.849578 L0.935274357,44.1637653 Z" id="Fill-7" stroke="url(#linearGradient-10)" fill="url(#linearGradient-9)"></path>
+                <path d="M1.65118932,29.3012343 L88.9899512,64.370828 L173.871854,34.9270872 L80.9277594,0.959378978 L1.65118932,29.3012343 Z" id="Fill-9" stroke="url(#linearGradient-12)" fill="url(#linearGradient-11)"></path>
+            </g>
+            <g id="屋顶" transform="translate(68.300000, 8.800000)">
+                <polygon id="矩形" stroke="url(#radialGradient-14)" stroke-width="0.77" fill="url(#linearGradient-13)" points="0 9.92031088 35.6157767 24.9759668 39.5019433 24.9855022 69.290317 14.3 69.3 26.7095297 39.4990908 37.4 35.6085115 37.3863965 0.00833518542 22.3370483"></polygon>
+                <polygon id="矩形" stroke="url(#linearGradient-16)" stroke-width="0.55" fill="url(#linearGradient-15)" points="35.2 24.2 39.6 24.2 39.6 37.4 35.2 37.4"></polygon>
+                <path d="M27.241319,0.275676272 L0.287030432,9.12073698 L0.276752673,10.1973051 L35.6891093,25.0204308 L39.4210112,25.0407414 L69.0222494,14.5700865 L69.0245661,13.5252565 L31.0810593,0.334667219 L27.241319,0.275676272 Z" id="路径-2" stroke="url(#linearGradient-18)" stroke-width="0.55" fill="url(#linearGradient-17)"></path>
+            </g>
+        </g>
+    </g>
+</svg>

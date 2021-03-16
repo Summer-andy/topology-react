@@ -2,9 +2,14 @@ import React, { useEffect, useState, useCallback, useMemo, Fragment, useRef } fr
 import { Topology, registerNode } from '@topology/core';
 import reactNodes from './Plugin/React-nodes';
 import { register as registerChart } from '@topology/chart-diagram';
-import { Modal, Tabs, Button, DatePicker, Table, Input } from 'antd';
+import {
+  activityFinal,
+  activityFinalIconRect,
+  activityFinalTextRect
+} from '@topology/activity-diagram';
+import { Tabs, Button, DatePicker, Table, Input } from 'antd';
 import { Tools } from '../config/config';
-import { getNodeById } from '../Service/topologyService';
+// import { getNodeById } from '../Service/topologyService';
 import Header from '../Header';
 import NodeComponent from './component/nodeComponent';
 import BackgroundComponent from './component/backgroundComponent';
@@ -12,8 +17,9 @@ import LineComponent from './component/lineComponent';
 import SystemComponent from './LeftAreaComponent/SystemComponent';
 import MyComponent from './LeftAreaComponent/MyComponent';
 import LineBoxComponent from './LineBoxComponent';
+import example from './test.json';
 import './index.css';
-const { confirm } = Modal;
+// const { confirm } = Modal;
 const { TabPane } = Tabs;
 export let canvas;
 const Layout = ({ history }) => {
@@ -28,35 +34,36 @@ const Layout = ({ history }) => {
       rotateCursor: '/rotate.cur',
       locked: 2,
       grid: true,
-      // rule: true,
-      ruleColor: '#2db7f5'
+      ruleColor: '#2db7f5',
     };
+    
     canvasOptions.on = onMessage;
     canvasRegister();
     canvas = new Topology('topology-canvas', canvasOptions);
-    async function getNodeData() {
-      const data = await getNodeById(history.location.state.id);
-      canvas.open(data.data);
-    }
+    // async function getNodeData() {
+    //   const data = await getNodeById(history.location.state.id);
+    //   canvas.open(data.data);
+    // }
 
-    if (history.location.state && history.location.state.from === '/preview') {
-      confirm({
-        title: '是否要保存预览前的数据?',
-        okText: '保存',
-        cancelText: '取消',
-        onOk() {
-          history.location.state.data.locked = 0;
-          canvas.open(history.location.state.data);
-        },
-        onCancel() {
-          getNodeData();
-        }
-      });
-    } else {
-      if (history.location?.state?.id) {
-        getNodeData();
-      }
-    }
+    // if (history.location.state && history.location.state.from === '/preview') {
+    //   confirm({
+    //     title: '是否要保存预览前的数据?',
+    //     okText: '保存',
+    //     cancelText: '取消',
+    //     onOk() {
+    //       history.location.state.data.locked = 0;
+    //       canvas.open(history.location.state.data);
+    //     },
+    //     onCancel() {
+    //       getNodeData();
+    //     }
+    //   });
+    // } else {
+    //   if (history.location?.state?.id) {
+    //     getNodeData();
+    //   }
+    // }
+    canvas.open(example);
     setIsLoadCanvas(true);
   }, [history]);
 
@@ -65,6 +72,14 @@ const Layout = ({ history }) => {
    */
 
   const canvasRegister = () => {
+    // activity
+    registerNode(
+      'activityFinal',
+      activityFinal,
+      null,
+      activityFinalIconRect,
+      activityFinalTextRect
+    );
     registerChart();
     registerNode('button', reactNodes(Button), null, null, null);
     registerNode('datePicker', reactNodes(DatePicker), null, null, null);

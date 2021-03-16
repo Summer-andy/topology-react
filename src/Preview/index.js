@@ -1,18 +1,70 @@
 import React, { useEffect } from 'react';
 import { Topology } from '@topology/core';
 import { PageHeader, Button } from 'antd';
+import {
+  activityFinal,
+  activityFinalIconRect,
+  activityFinalTextRect
+} from '@topology/activity-diagram';
+import { registerNode } from '@topology/core';
 let canvas;
 let x, y;
+let distance = 0;
+const canvasOptions = {
+  rotateCursor: '/rotate.cur',
+  bkColor: '#f6f6f6'
+};
 const Preview = ({ history }) => {
+
+  const canvasRegister = () => {
+    // activity
+    registerNode(
+      'activityFinal',
+      activityFinal,
+      null,
+      activityFinalIconRect,
+      activityFinalTextRect
+    )
+  };
+
   useEffect(() => {
-    const canvasOptions = {
-      rotateCursor: '/rotate.cur',
-      locked: 1
-    };
     canvas = new Topology('topology-canvas-preview', canvasOptions);
     history.location.state.data.locked = 1;
     canvas.open(history.location.state.data);
+    canvasRegister();
   }, [history.location.state.data]);
+  
+
+  useEffect(() => {
+    let node = canvas.data.pens.find((item) => item.data && item.data.car === 1);
+    let line = canvas.data.pens.find((item) => item.type === 1);
+    const timer = setInterval(() => {
+      
+      if(distance < 360) {
+        distance += 0.5;
+      }
+
+      if(distance > 180) {
+        line.strokeStyle = 'red';
+        line.lineWidth = 2;
+      } else {
+        line.strokeStyle = 'green';
+        line.lineWidth = 1;
+      }
+
+      if(distance > 350) {
+        node.rotate = 180;
+        clearInterval(timer);
+      }
+
+      node.rect.x = 625;
+      node.rect.y = 541 - distance;
+      canvas.updateProps(true, [node]);
+      canvas.render();
+    }, 30);
+
+    return () => clearInterval(timer);
+  }, [history]);
 
   /**
    * 自动适应窗口大小
@@ -29,7 +81,7 @@ const Preview = ({ history }) => {
   /**
    * 实际大小
    */
-  
+
   const onHandlePre = () => {
     canvas.translate(-x, -y);
     x = 0;
