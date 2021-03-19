@@ -8,7 +8,7 @@ import {
 } from '@topology/activity-diagram';
 import { registerNode } from '@topology/core';
 let canvas;
-let x, y;
+let x = 0, y = 0;
 let distance = 0;
 const canvasOptions = {
   rotateCursor: '/rotate.cur',
@@ -57,8 +57,8 @@ const Preview = ({ history }) => {
         clearInterval(timer);
       }
 
-      node.rect.x = 625;
-      node.rect.y = 541 - distance;
+      node.rect.x = 625 + x;
+      node.rect.y = 541 - distance +y;
       canvas.updateProps(true, [node]);
       canvas.render();
     }, 30);
