@@ -19,6 +19,8 @@ import MyComponent from './LeftAreaComponent/MyComponent';
 import LineBoxComponent from './LineBoxComponent';
 import example from './test.json';
 import './index.css';
+import { Point } from '@topology/core';
+window.Point = Point;
 // const { confirm } = Modal;
 const { TabPane } = Tabs;
 export let canvas;
@@ -40,6 +42,18 @@ const Layout = ({ history }) => {
     canvasOptions.on = onMessage;
     canvasRegister();
     canvas = new Topology('topology-canvas', canvasOptions);
+    if (window.registerTools) {
+      window.registerTools();
+      Tools[0].children = Tools[0].children.concat(
+        window.topologyTools.map((el) => {
+          return {
+            data: el.data,
+            name: el.data.name,
+            icon: 'icon-anniu'
+          };
+        })
+      );
+    }
     // async function getNodeData() {
     //   const data = await getNodeById(history.location.state.id);
     //   canvas.open(data.data);
@@ -88,7 +102,11 @@ const Layout = ({ history }) => {
   };
 
   const onDrag = (event, node) => {
-    event.dataTransfer.setData('Text', JSON.stringify(node.data));
+    console.log('ondrag1', node);
+    event.dataTransfer.setData('Topology', JSON.stringify(node.data));
+  };
+  const allowDrop = (ev) => {
+    ev.preventDefault();
   };
 
   /**
@@ -357,7 +375,7 @@ const Layout = ({ history }) => {
         <div className="tool">
           <Tabs defaultActiveKey="1">
             <TabPane tab="系统组件" key="1" style={{ margin: 0 }}>
-              <SystemComponent onDrag={onDrag} Tools={Tools} />
+              <SystemComponent onDrag={onDrag} allowDrop={allowDrop} Tools={Tools} />
             </TabPane>
             <TabPane tab="我的图片" key="2" style={{ margin: 0 }}>
               <MyComponent />
