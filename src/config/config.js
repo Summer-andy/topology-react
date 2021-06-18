@@ -21,10 +21,6 @@ const data = [
 
 export const Tools = [
   {
-    group: '企业组件',
-    children: []
-  },
-  {
     group: 'react组件',
     children: [
       {
